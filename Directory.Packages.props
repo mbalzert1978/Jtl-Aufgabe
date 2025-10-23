@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Static code analysis -->
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.15.0.120848" />
+    <!-- Application -->
+    <!-- Infrastructure -->
+    <!-- Web.Api -->
+    <PackageVersion Include="FastEndpoints" Version="7.0.0" />
+    <PackageVersion
+      Include="FastEndpoints.Generator"
+      Version="7.0.0"
+      PrivateAssets="all"
+      IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive"
+    />
+    <PackageVersion Include="FastEndpoints.Security" Version="7.0.0" />
+    <PackageVersion Include="FastEndpoints.Swagger" Version="7.0.0" />
+    <!-- ArchitectureTests -->
+    <PackageVersion Include="FastEndpoints.Testing" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+    <PackageVersion Include="xunit.v3" Version="3.0.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0" />
+  </ItemGroup>
+</Project>
