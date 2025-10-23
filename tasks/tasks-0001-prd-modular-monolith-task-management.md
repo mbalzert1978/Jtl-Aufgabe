@@ -113,8 +113,8 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 ## Tasks
 
 - [ ] 1.0 Setup Solution Structure and Foundation (src/Projects with Bounded Contexts)
-  - [ ] 1.1 Install FastEndpoints Template Pack: `dotnet new install FastEndpoints.TemplatePack`
-  - [ ] 1.2 Create solution file `JtlTask.sln` using `dotnet new sln -n JtlTask`
+  - [x] 1.1 Install FastEndpoints Template Pack: `dotnet new install FastEndpoints.TemplatePack`
+  - [x] 1.2 Create solution file `JtlTask.sln` using `dotnet new sln -n JtlTask`
   - [ ] 1.3 Create directory structure: `src/Users`, `src/Tasks`, `src/Shared`, `tests/Tests.Users`, `tests/Tests.Tasks`
   - [ ] 1.4 Create `JtlTask.WebApi` project using `dotnet new feproj -n JtlTask.WebApi` in `src/JtlTask.WebApi`
   - [ ] 1.5 Create `JtlTask.Shared.Kernel` class library in `src/Shared/JtlTask.Shared.Kernel`
