@@ -118,8 +118,8 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 1.3 Create directory structure: `src/Users`, `src/Tasks`, `src/Shared`, `tests/Tests.Users`, `tests/Tests.Tasks`
   - [x] 1.4 Create `JtlTask.WebApi` project using `dotnet new feproj -n JtlTask.WebApi` in `src/JtlTask.WebApi`
   - [x] 1.5 Create `JtlTask.Shared.Kernel` class library in `src/Shared/JtlTask.Shared.Kernel`
-  - [ ] 1.6 Create User module projects in `src/Users/`: `Domain/JtlTask.Users.Domain`, `Infrastructure/JtlTask.Users.Infrastructure`, `UseCases/JtlTask.Users.UseCases`, `Endpoints/JtlTask.Users.Endpoints`
-  - [ ] 1.7 Create Task module projects in `src/Tasks/`: `Domain/JtlTask.Tasks.Domain`, `Infrastructure/JtlTask.Tasks.Infrastructure`, `UseCases/JtlTask.Tasks.UseCases`, `Endpoints/JtlTask.Tasks.Endpoints`
+  - [x] 1.6 Create User module projects in `src/Users/`: `Domain/JtlTask.Users.Domain`, `Infrastructure/JtlTask.Users.Infrastructure`, `UseCases/JtlTask.Users.UseCases`, `Endpoints/JtlTask.Users.Endpoints`
+  - [x] 1.7 Create Task module projects in `src/Tasks/`: `Domain/JtlTask.Tasks.Domain`, `Infrastructure/JtlTask.Tasks.Infrastructure`, `UseCases/JtlTask.Tasks.UseCases`, `Endpoints/JtlTask.Tasks.Endpoints`
   - [ ] 1.8 Create test projects: `tests/Tests.Users/JtlTask.Tests.Users.csproj`, `tests/Tests.Tasks/JtlTask.Tests.Tasks.csproj` (xUnit)
   - [ ] 1.9 Add all projects to solution using `dotnet sln add`
   - [ ] 1.10 Configure project references following Clean Architecture rules (Domain → UseCases → Infrastructure → Endpoints → WebApi)
