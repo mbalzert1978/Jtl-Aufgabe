@@ -116,8 +116,8 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 1.1 Install FastEndpoints Template Pack: `dotnet new install FastEndpoints.TemplatePack`
   - [x] 1.2 Create solution file `JtlTask.sln` using `dotnet new sln -n JtlTask`
   - [x] 1.3 Create directory structure: `src/Users`, `src/Tasks`, `src/Shared`, `tests/Tests.Users`, `tests/Tests.Tasks`
-  - [ ] 1.4 Create `JtlTask.WebApi` project using `dotnet new feproj -n JtlTask.WebApi` in `src/JtlTask.WebApi`
-  - [ ] 1.5 Create `JtlTask.Shared.Kernel` class library in `src/Shared/JtlTask.Shared.Kernel`
+  - [x] 1.4 Create `JtlTask.WebApi` project using `dotnet new feproj -n JtlTask.WebApi` in `src/JtlTask.WebApi`
+  - [x] 1.5 Create `JtlTask.Shared.Kernel` class library in `src/Shared/JtlTask.Shared.Kernel`
   - [ ] 1.6 Create User module projects in `src/Users/`: `Domain/JtlTask.Users.Domain`, `Infrastructure/JtlTask.Users.Infrastructure`, `UseCases/JtlTask.Users.UseCases`, `Endpoints/JtlTask.Users.Endpoints`
   - [ ] 1.7 Create Task module projects in `src/Tasks/`: `Domain/JtlTask.Tasks.Domain`, `Infrastructure/JtlTask.Tasks.Infrastructure`, `UseCases/JtlTask.Tasks.UseCases`, `Endpoints/JtlTask.Tasks.Endpoints`
   - [ ] 1.8 Create test projects: `tests/Tests.Users/JtlTask.Tests.Users.csproj`, `tests/Tests.Tasks/JtlTask.Tests.Tasks.csproj` (xUnit)
