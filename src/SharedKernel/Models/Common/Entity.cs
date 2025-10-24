@@ -25,6 +25,9 @@ public abstract class Entity
 
         _domainEvents.Add(domainEvent);
 
-        Debug.Assert(_domainEvents.Contains(domainEvent), "Domain event was not added successfully.");
+        Debug.Assert(
+            _domainEvents.Contains(domainEvent),
+            "Domain event was not added successfully."
+        );
     }
 }
