@@ -16,26 +16,6 @@ internal sealed class RegisterUserMapper
     : Mapper<RegisterUserRequest, RegisterUserResponse, UserEntity>
 {
     /// <summary>
-    /// Converts a <see cref="RegisterUserRequest"/> to a <see cref="UserEntity"/>.
-    /// </summary>
-    /// <param name="request">The request to convert.</param>
-    /// <returns>A <see cref="UserEntity"/> representing the request data.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is null.</exception>
-    public override UserEntity ToEntity(RegisterUserRequest request)
-    {
-        ArgumentNullException.ThrowIfNull(request);
-
-        UserEntity entity = new(Guid.Empty, request.Username);
-
-        Debug.Assert(
-            entity.Username == request.Username,
-            "Mapped entity username must match request username."
-        );
-
-        return entity;
-    }
-
-    /// <summary>
     /// Converts a <see cref="UserEntity"/> to a <see cref="RegisterUserResponse"/>.
     /// </summary>
     /// <param name="entity">The entity to convert.</param>
