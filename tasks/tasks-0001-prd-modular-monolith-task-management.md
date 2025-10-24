@@ -84,8 +84,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 - `src/SharedKernel/Models/Results/Result{T, E}.cs` - Result monad implementation
 - `src/SharedKernel/Models/Unit.cs` - Unit type for void-like operations
 - `src/SharedKernel/Extensions/Results/` - Extension methods for Result (Map, Bind, Match, etc.) with sync and async support
-- `src/SharedKernel/Error.cs` - Error type for Result pattern
-- `src/SharedKernel/IEntity.cs` - Base entity interface
+- `src/SharedKernel/IEntity.cs` - Base entity interface with Id property
 - **Documentation**: [`.agent/docs/Result/result-monad-guide.md`](/.agent/docs/Result/result-monad-guide.md) - LLM-optimized Result Monad quick reference
 
 ### Tests
@@ -128,7 +127,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 1.9 Add all projects to solution using `dotnet sln add`
   - [x] 1.10 Configure project references following Clean Architecture rules: Domain (no deps) ← Application ← Infrastructure ← WebApi
   - [x] 1.11 Add provided Result monad implementation to SharedKernel
-  - [ ] 1.12 Add base interfaces/classes in SharedKernel (`IEntity.cs`)
+  - [x] 1.12 Add base interfaces/classes in SharedKernel (`Entity.cs`)
   - [ ] 1.13 Verify solution builds successfully with `dotnet build`
 
 - [ ] 2.0 Implement User Bounded Context - Domain, Infrastructure, and Application
