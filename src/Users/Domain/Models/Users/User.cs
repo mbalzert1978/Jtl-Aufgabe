@@ -8,6 +8,7 @@ using Monads.Results;
 using Monads.Results.Extensions.Sync;
 using SharedKernel.Abstractions;
 using SharedKernel.Models.Common;
+using Users.Domain;
 using static Monads.Results.ResultFactory;
 
 namespace Domain.Models.Users;
@@ -74,11 +75,11 @@ public static class UserFactory
     /// The username uniqueness check should be performed by the caller (repository layer).
     /// </remarks>
     /// <exception cref="ArgumentException">Thrown when <paramref name="username"/> is null.</exception>
-    public static Result<User, string> Create(string username)
+    public static Result<User, DomainError> Create(string username)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
 
-        Result<User, string> result = UsernameFactory
+        Result<User, DomainError> result = UsernameFactory
             .Create(username)
             .Map(name => new User(Guid.NewGuid(), name));
 

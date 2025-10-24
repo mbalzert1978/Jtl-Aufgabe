@@ -22,10 +22,10 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 
 ### User Bounded Context - Domain
 
-- `src/Users/Domain/Username.cs` - Username value object with factory method
-- `src/Users/Domain/User.cs` - User aggregate root entity with factory method
-- `src/Users/Domain/IUserRepository.cs` - User repository interface
-- `src/Users/Domain/DomainErrors.cs` - Domain-specific error definitions
+- `src/Users/Domain/Models/Users/ValueObjects/Username.cs` - Username value object with factory method
+- `src/Users/Domain/Models/Users/User.cs` - User aggregate root entity with factory method
+- `src/Users/Domain/Abstractions/IUserRepository.cs` - User repository interface returning Results
+- `src/Users/Domain/DomainError.cs` - Domain-specific error definitions (discriminated union with Generic variant)
 
 ### User Bounded Context - Infrastructure
 
@@ -135,7 +135,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 2.2 **Domain Layer**: Create `User` aggregate root with private constructor and static `Create` factory method
   - [x] 2.3 **Domain Layer**: Implement business rule validation in `User.Create` (business rules only, not format validation)
   - [x] 2.4 **Domain Layer**: Define `IUserRepository` interface with methods: `GetByIdAsync`, `ExistsByUsernameAsync`, `AddAsync`
-  - [ ] 2.5 **Domain Layer**: Create `DomainErrors.cs` with user-specific error definitions
+  - [x] 2.5 **Domain Layer**: Create `DomainErrors.cs` with user-specific error definitions
   - [ ] 2.6 **Infrastructure Layer**: Implement `InMemoryUserRepository` using `ConcurrentDictionary<Guid, User>`
   - [ ] 2.7 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
   - [ ] 2.8 **Application Layer**: Create `CreateUserCommand` record with Username property

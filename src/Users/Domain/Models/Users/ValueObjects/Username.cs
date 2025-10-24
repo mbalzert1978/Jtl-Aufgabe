@@ -4,6 +4,7 @@
 
 using System.Diagnostics;
 using Monads.Results;
+using Users.Domain;
 using static Monads.Results.ResultFactory;
 
 namespace Domain.Models.Users.ValueObjects;
@@ -50,16 +51,18 @@ public static class UsernameFactory
     /// This method performs business logic validation only.
     /// Format validation (length, allowed characters) should be done at the presentation layer.
     /// </remarks>
-    public static Result<Username, string> Create(string value)
+    public static Result<Username, DomainError> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            Result<Username, string> err = Failure<Username, string>(EmptyUsernameError);
+            Result<Username, DomainError> err = Failure<Username, DomainError>(
+                DomainErrorFactory.Generic(EmptyUsernameError)
+            );
             Debug.Assert(err.IsErr, "Expected error result");
             return err;
         }
 
-        Result<Username, string> ok = Success<Username, string>(new(value));
+        Result<Username, DomainError> ok = Success<Username, DomainError>(new(value));
         Debug.Assert(ok.IsOk, "Expected success result");
         return ok;
     }
