@@ -134,7 +134,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 2.1 **Domain Layer**: Create `Username` value object (business logic only - NO format validation)
   - [x] 2.2 **Domain Layer**: Create `User` aggregate root with private constructor and static `Create` factory method
   - [x] 2.3 **Domain Layer**: Implement business rule validation in `User.Create` (business rules only, not format validation)
-  - [ ] 2.4 **Domain Layer**: Define `IUserRepository` interface with methods: `GetByIdAsync`, `ExistsByUsernameAsync`, `AddAsync`
+  - [x] 2.4 **Domain Layer**: Define `IUserRepository` interface with methods: `GetByIdAsync`, `ExistsByUsernameAsync`, `AddAsync`
   - [ ] 2.5 **Domain Layer**: Create `DomainErrors.cs` with user-specific error definitions
   - [ ] 2.6 **Infrastructure Layer**: Implement `InMemoryUserRepository` using `ConcurrentDictionary<Guid, User>`
   - [ ] 2.7 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
