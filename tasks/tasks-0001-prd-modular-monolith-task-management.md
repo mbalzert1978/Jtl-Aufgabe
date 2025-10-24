@@ -115,7 +115,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 
 ## Tasks
 
-- [ ] 1.0 Setup Solution Structure and Foundation (src/Projects with Bounded Contexts)
+- [x] 1.0 Setup Solution Structure and Foundation (src/Projects with Bounded Contexts)
   - [x] 1.1 Install FastContracts Template Pack: `dotnet new install FastContracts.TemplatePack`
   - [x] 1.2 Create solution file `JtlTask.slnx` using `dotnet new sln -n JtlTask`
   - [x] 1.3 Create directory structure: `src/Users`, `src/Tasks`, `src/SharedKernel`, `tests/Tests.Users`, `tests/Tests.Tasks`, `tests/Test.JtlTask.WebApi`
@@ -128,7 +128,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 1.10 Configure project references following Clean Architecture rules: Domain (no deps) ← Application ← Infrastructure ← WebApi
   - [x] 1.11 Add provided Result monad implementation to SharedKernel
   - [x] 1.12 Add base interfaces/classes in SharedKernel (`Entity.cs`)
-  - [ ] 1.13 Verify solution builds successfully with `dotnet build`
+  - [x] 1.13 Verify solution builds successfully with `dotnet build`
 
 - [ ] 2.0 Implement User Bounded Context - Domain, Infrastructure, and Application
   - [ ] 2.1 **Domain Layer**: Create `Username` value object (business logic only - NO format validation)
