@@ -122,7 +122,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 1.6 Create User module projects in `src/Users/`: `Domain`, `Infrastructure`, `Application` (NO Contracts - that goes in WebApi)
   - [x] 1.7 Create Task module projects in `src/Tasks/`: `Domain`, `Infrastructure`, `Application` (NO Contracts - that goes in WebApi)
   - [x] 1.8 Create test projects: `tests/Tests.Users`, `tests/Tests.Tasks`, `tests/Test.JtlTask.WebApi` (xUnit)
-  - [ ] 1.9 Add all projects to solution using `dotnet sln add`
+  - [x] 1.9 Add all projects to solution using `dotnet sln add`
   - [ ] 1.10 Configure project references following Clean Architecture rules: Domain (no deps) ← Application ← Infrastructure ← WebApi
   - [ ] 1.11 Add provided Result monad implementation to SharedKernel
   - [ ] 1.12 Add base interfaces/classes in SharedKernel (`IEntity.cs`)
