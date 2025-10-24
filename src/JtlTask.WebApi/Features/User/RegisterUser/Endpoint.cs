@@ -91,6 +91,7 @@ internal sealed class Endpoint
             "Response username should not be empty."
         );
 
+        await PublishAsync(new UserRegisteredEvent(response.UserId), cancellation: ct);
         await Send.ResponseAsync(response, StatusCodes.Status201Created, ct);
     }
 
