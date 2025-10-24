@@ -104,10 +104,6 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 
 ### Notes
 
-- **Test-Driven Development (TDD)**: All tasks follow the Red → Green → Refactor workflow:
-  - 🔴 **RED**: Write the test FIRST (it should fail because implementation doesn't exist yet)
-  - 🟢 **GREEN**: Write minimal code to make the test pass
-  - 🔵 **REFACTOR**: Improve code quality without changing behavior
 - **Clean Architecture in Modular Monolith**: Each bounded context (Users, Tasks) follows Clean Architecture with layers: Domain → Application → Infrastructure. Presentation Layer (Endpoints, Validators, DTOs) is in `JtlTask.WebApi` organized by module.
 - **Module Structure**:
   - `src/Users/`, `src/Tasks/` contain: Domain, Application, Infrastructure
@@ -135,96 +131,82 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 1.12 Add base interfaces/classes in SharedKernel (`Entity.cs`)
   - [x] 1.13 Verify solution builds successfully with `dotnet build`
 
-- [ ] 2.0 Implement User Bounded Context - Domain, Infrastructure, and Application (TDD: Red → Green → Refactor)
+- [ ] 2.0 Implement User Bounded Context - Domain, Infrastructure, and Application
   - [x] 2.1 **Domain Layer**: Create `Username` value object (business logic only - NO format validation)
-  - [ ] 2.2 **🔴 RED - Domain Layer**: Write unit tests for `Username` value object (tests FIRST - should fail)
-  - [ ] 2.3 **🟢 GREEN - Domain Layer**: Implement `Username` value object to make tests pass
-  - [ ] 2.4 **🔵 REFACTOR - Domain Layer**: Refactor `Username` if needed (improve code quality)
-  - [ ] 2.5 **Domain Layer**: Create `DomainErrors.cs` with user-specific error definitions
-  - [ ] 2.6 **🔴 RED - Domain Layer**: Write unit tests for `User` entity creation (tests FIRST - should fail)
-  - [ ] 2.7 **🟢 GREEN - Domain Layer**: Create `User` aggregate root with private constructor and static `Create` factory method
-  - [ ] 2.8 **🟢 GREEN - Domain Layer**: Implement business rule validation in `User.Create` to make tests pass
-  - [ ] 2.9 **🔵 REFACTOR - Domain Layer**: Refactor `User` if needed (improve code quality)
-  - [ ] 2.10 **Domain Layer**: Define `IUserRepository` interface with methods: `GetByIdAsync`, `ExistsByUsernameAsync`, `AddAsync`
-  - [ ] 2.11 **Infrastructure Layer**: Implement `InMemoryUserRepository` using `ConcurrentDictionary<Guid, User>`
-  - [ ] 2.12 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
-  - [ ] 2.13 **Application Layer**: Create `CreateUserCommand` record with Username property
-  - [ ] 2.14 **🔴 RED - Application Layer**: Write unit tests for `CreateUserHandler` (success case, duplicate username - tests FIRST - should fail)
-  - [ ] 2.15 **🟢 GREEN - Application Layer**: Create `CreateUserHandler` implementing `ICommandHandler<CreateUserCommand, Result<User>>`
-  - [ ] 2.16 **🟢 GREEN - Application Layer**: Implement handler logic: check uniqueness via repository, create user, save to repository
-  - [ ] 2.17 **🔵 REFACTOR - Application Layer**: Refactor `CreateUserHandler` if needed
-  - [ ] 2.18 **Application Layer**: Create `GetUserByIdQuery` record with UserId property
-  - [ ] 2.19 **🔴 RED - Application Layer**: Write unit tests for `GetUserByIdHandler` (success case, user not found - tests FIRST)
-  - [ ] 2.20 **🟢 GREEN - Application Layer**: Create `GetUserByIdHandler` implementing `ICommandHandler<GetUserByIdQuery, Result<User>>`
-  - [ ] 2.21 **🔵 REFACTOR - Application Layer**: Refactor `GetUserByIdHandler` if needed
-  - [ ] 2.22 **Application Layer**: Create `UserExistsQuery` record with UserId property (public API for inter-module communication)
-  - [ ] 2.23 **🔴 RED - Application Layer**: Write unit tests for `UserExistsHandler` (tests FIRST)
-  - [ ] 2.24 **🟢 GREEN - Application Layer**: Create `UserExistsHandler` implementing `ICommandHandler<UserExistsQuery, Result<bool>>`
-  - [ ] 2.25 **🔵 REFACTOR - Application Layer**: Refactor `UserExistsHandler` if needed
-  - [ ] 2.26 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
+  - [ ] 2.2 **Domain Layer**: Write unit tests for `Username` value object
+  - [ ] 2.3 **Domain Layer**: Create `User` aggregate root with private constructor and static `Create` factory method
+  - [ ] 2.4 **Domain Layer**: Implement business rule validation in `User.Create` (business rules only, not format validation)
+  - [ ] 2.5 **Domain Layer**: Write unit tests for `User` entity creation
+  - [ ] 2.6 **Domain Layer**: Define `IUserRepository` interface with methods: `GetByIdAsync`, `ExistsByUsernameAsync`, `AddAsync`
+  - [ ] 2.7 **Domain Layer**: Create `DomainErrors.cs` with user-specific error definitions
+  - [ ] 2.8 **Infrastructure Layer**: Implement `InMemoryUserRepository` using `ConcurrentDictionary<Guid, User>`
+  - [ ] 2.9 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
+  - [ ] 2.10 **Application Layer**: Create `CreateUserCommand` record with Username property
+  - [ ] 2.11 **Application Layer**: Create `CreateUserHandler` implementing `ICommandHandler<CreateUserCommand, Result<User>>`
+  - [ ] 2.12 **Application Layer**: Implement handler logic: check uniqueness via repository, create user, save to repository
+  - [ ] 2.13 **Application Layer**: Write unit tests for `CreateUserHandler` (success case, duplicate username)
+  - [ ] 2.14 **Application Layer**: Create `GetUserByIdQuery` record with UserId property
+  - [ ] 2.15 **Application Layer**: Create `GetUserByIdHandler` implementing `ICommandHandler<GetUserByIdQuery, Result<User>>`
+  - [ ] 2.16 **Application Layer**: Write unit tests for `GetUserByIdHandler` (success case, user not found)
+  - [ ] 2.17 **Application Layer**: Create `UserExistsQuery` record with UserId property (public API for inter-module communication)
+  - [ ] 2.18 **Application Layer**: Create `UserExistsHandler` implementing `ICommandHandler<UserExistsQuery, Result<bool>>`
+  - [ ] 2.19 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
 
-- [ ] 3.0 Implement User Module - Presentation Layer in JtlTask.WebApi (TDD: Red → Green → Refactor)
-  - [ ] 3.1 **🔴 RED - Integration Tests**: Write test for CreateUserEndpoint (success case - test FIRST - should fail)
-  - [ ] 3.2 **🔴 RED - Integration Tests**: Write test for CreateUserEndpoint (validation failure - format - test FIRST)
-  - [ ] 3.3 **🔴 RED - Integration Tests**: Write test for CreateUserEndpoint (duplicate username - business rule - test FIRST)
-  - [ ] 3.4 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Users/Contracts/CreateUserRequest.cs` DTO record
-  - [ ] 3.5 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Users/Contracts/CreateUserResponse.cs` DTO record
-  - [ ] 3.6 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Users/Validators/CreateUserValidator.cs` inheriting from `Validator<CreateUserRequest>`
-  - [ ] 3.7 **🟢 GREEN - Presentation Layer**: Implement validation rules in CreateUserValidator: Username required, 3-50 chars, alphanumeric + underscore/hyphen
-  - [ ] 3.8 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Users/CreateUserEndpoint.cs` inheriting from `Endpoint<CreateUserRequest, CreateUserResponse>`
-  - [ ] 3.9 **🟢 GREEN - Presentation Layer**: Configure endpoint: POST /api/users, returns 201 Created or 400 Bad Request
-  - [ ] 3.10 **🟢 GREEN - Presentation Layer**: Implement endpoint handler: send CreateUserCommand to Application layer, map Result to HTTP response
-  - [ ] 3.11 **🔵 REFACTOR - Presentation Layer**: Refactor CreateUserEndpoint if needed
-  - [ ] 3.12 **🔴 RED - Integration Tests**: Write test for GetUserByIdEndpoint (success case - test FIRST)
-  - [ ] 3.13 **🔴 RED - Integration Tests**: Write test for GetUserByIdEndpoint (user not found - 404 - test FIRST)
-  - [ ] 3.14 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Users/Contracts/GetUserByIdResponse.cs` DTO record
-  - [ ] 3.15 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Users/GetUserByIdEndpoint.cs` inheriting from `Endpoint<EmptyRequest, GetUserByIdResponse>`
-  - [ ] 3.16 **🟢 GREEN - Presentation Layer**: Configure endpoint: GET /api/users/{id}, returns 200 OK or 404 Not Found
-  - [ ] 3.17 **🟢 GREEN - Presentation Layer**: Implement endpoint handler: send GetUserByIdQuery to Application layer, map Result to HTTP response
-  - [ ] 3.18 **🔵 REFACTOR - Presentation Layer**: Refactor GetUserByIdEndpoint if needed
+- [ ] 3.0 Implement User Module - Presentation Layer in JtlTask.WebApi
+  - [ ] 3.1 **Presentation Layer**: Create `src/JtlTask.WebApi/Users/Contracts/CreateUserRequest.cs` DTO record
+  - [ ] 3.2 **Presentation Layer**: Create `src/JtlTask.WebApi/Users/Contracts/CreateUserResponse.cs` DTO record
+  - [ ] 3.3 **Presentation Layer**: Create `src/JtlTask.WebApi/Users/Validators/CreateUserValidator.cs` inheriting from `Validator<CreateUserRequest>`
+  - [ ] 3.4 **Presentation Layer**: Implement validation rules in CreateUserValidator: Username required, 3-50 chars, alphanumeric + underscore/hyphen
+  - [ ] 3.5 **Presentation Layer**: Create `src/JtlTask.WebApi/Users/CreateUserEndpoint.cs` inheriting from `Endpoint<CreateUserRequest, CreateUserResponse>`
+  - [ ] 3.6 **Presentation Layer**: Configure endpoint: POST /api/users, returns 201 Created or 400 Bad Request
+  - [ ] 3.7 **Presentation Layer**: Implement endpoint handler: send CreateUserCommand to Application layer, map Result to HTTP response
+  - [ ] 3.8 **Presentation Layer**: Create `src/JtlTask.WebApi/Users/Contracts/GetUserByIdResponse.cs` DTO record
+  - [ ] 3.9 **Presentation Layer**: Create `src/JtlTask.WebApi/Users/GetUserByIdEndpoint.cs` inheriting from `Endpoint<EmptyRequest, GetUserByIdResponse>`
+  - [ ] 3.10 **Presentation Layer**: Configure endpoint: GET /api/users/{id}, returns 200 OK or 404 Not Found
+  - [ ] 3.11 **Presentation Layer**: Implement endpoint handler: send GetUserByIdQuery to Application layer, map Result to HTTP response
+  - [ ] 3.12 **Integration Tests**: Write test for CreateUserEndpoint in `tests/Test.JtlTask.WebApi/Users/CreateUserEndpointTests.cs` (success case)
+  - [ ] 3.13 **Integration Tests**: Write test for CreateUserEndpoint (validation failure - format)
+  - [ ] 3.14 **Integration Tests**: Write test for CreateUserEndpoint (duplicate username - business rule)
+  - [ ] 3.15 **Integration Tests**: Write test for GetUserByIdEndpoint (success case)
+  - [ ] 3.16 **Integration Tests**: Write test for GetUserByIdEndpoint (user not found - 404)
 
-- [ ] 4.0 Implement Task Bounded Context - Domain, Infrastructure, and Application (TDD: Red → Green → Refactor)
-  - [ ] 4.1 **Domain Layer**: Create `DomainErrors.cs` with task-specific error definitions
-  - [ ] 4.2 **🔴 RED - Domain Layer**: Write unit tests for `Task` entity creation (tests FIRST - should fail)
-  - [ ] 4.3 **🟢 GREEN - Domain Layer**: Create `Task` aggregate root with properties: Id, Name, AssigneeId
-  - [ ] 4.4 **🟢 GREEN - Domain Layer**: Implement static `Create` factory method to make tests pass
-  - [ ] 4.5 **🔵 REFACTOR - Domain Layer**: Refactor `Task` if needed (improve code quality)
-  - [ ] 4.6 **Domain Layer**: Define `ITaskRepository` interface with methods: `GetByAssigneeIdAsync`, `AddAsync`
-  - [ ] 4.7 **Infrastructure Layer**: Implement `InMemoryTaskRepository` using `ConcurrentDictionary<Guid, Task>` or `List<Task>`
-  - [ ] 4.8 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
-  - [ ] 4.9 **Application Layer**: Create `CreateTaskCommand` record with Name and AssigneeId properties
+- [ ] 4.0 Implement Task Bounded Context - Domain, Infrastructure, and Application
+  - [ ] 4.1 **Domain Layer**: Create `Task` aggregate root with properties: Id, Name, AssigneeId
+  - [ ] 4.2 **Domain Layer**: Implement static `Create` factory method (business logic only - NO format validation)
+  - [ ] 4.3 **Domain Layer**: Write unit tests for `Task` entity creation
+  - [ ] 4.4 **Domain Layer**: Define `ITaskRepository` interface with methods: `GetByAssigneeIdAsync`, `AddAsync`
+  - [ ] 4.5 **Domain Layer**: Create `DomainErrors.cs` with task-specific error definitions
+  - [ ] 4.6 **Infrastructure Layer**: Implement `InMemoryTaskRepository` using `ConcurrentDictionary<Guid, Task>` or `List<Task>`
+  - [ ] 4.7 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
+  - [ ] 4.8 **Application Layer**: Create `CreateTaskCommand` record with Name and AssigneeId properties
+  - [ ] 4.9 **Application Layer**: Create `CreateTaskHandler` implementing `ICommandHandler<CreateTaskCommand, Result<Task>>`
   - [ ] 4.10 **Application Layer**: Add project reference to Users.Application to access UserExistsQuery (inter-module communication via public API)
-  - [ ] 4.11 **🔴 RED - Application Layer**: Write unit tests for `CreateTaskHandler` (success case, assignee not found - tests FIRST)
-  - [ ] 4.12 **🟢 GREEN - Application Layer**: Create `CreateTaskHandler` implementing `ICommandHandler<CreateTaskCommand, Result<Task>>`
-  - [ ] 4.13 **🟢 GREEN - Application Layer**: Implement handler logic: use UserExistsQuery to verify assignee exists, create task, save to repository
-  - [ ] 4.14 **🔵 REFACTOR - Application Layer**: Refactor `CreateTaskHandler` if needed
-  - [ ] 4.15 **Application Layer**: Create `GetTasksByUserIdQuery` record with UserId property
-  - [ ] 4.16 **🔴 RED - Application Layer**: Write unit tests for `GetTasksByUserIdHandler` (success with tasks, success with empty list, user not found - tests FIRST)
-  - [ ] 4.17 **🟢 GREEN - Application Layer**: Create `GetTasksByUserIdHandler` implementing `ICommandHandler<GetTasksByUserIdQuery, Result<List<Task>>>`
-  - [ ] 4.18 **🟢 GREEN - Application Layer**: Implement handler logic: use UserExistsQuery to verify user exists, get tasks (return empty list if none)
-  - [ ] 4.19 **🔵 REFACTOR - Application Layer**: Refactor `GetTasksByUserIdHandler` if needed
-  - [ ] 4.20 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
+  - [ ] 4.11 **Application Layer**: Implement handler logic: use UserExistsQuery to verify assignee exists, create task, save to repository
+  - [ ] 4.12 **Application Layer**: Write unit tests for `CreateTaskHandler` (success case, assignee not found)
+  - [ ] 4.13 **Application Layer**: Create `GetTasksByUserIdQuery` record with UserId property
+  - [ ] 4.14 **Application Layer**: Create `GetTasksByUserIdHandler` implementing `ICommandHandler<GetTasksByUserIdQuery, Result<List<Task>>>`
+  - [ ] 4.15 **Application Layer**: Implement handler logic: use UserExistsQuery to verify user exists, get tasks (return empty list if none)
+  - [ ] 4.16 **Application Layer**: Write unit tests for `GetTasksByUserIdHandler` (success with tasks, success with empty list, user not found)
+  - [ ] 4.17 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
 
-- [ ] 5.0 Implement Task Module - Presentation Layer in JtlTask.WebApi (TDD: Red → Green → Refactor)
-  - [ ] 5.1 **🔴 RED - Integration Tests**: Write test for CreateTaskEndpoint (success case - test FIRST - should fail)
-  - [ ] 5.2 **🔴 RED - Integration Tests**: Write test for CreateTaskEndpoint (validation failure - format - test FIRST)
-  - [ ] 5.3 **🔴 RED - Integration Tests**: Write test for CreateTaskEndpoint (assignee not found - business rule - test FIRST)
-  - [ ] 5.4 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Contracts/CreateTaskRequest.cs` DTO record
-  - [ ] 5.5 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Contracts/CreateTaskResponse.cs` DTO record
-  - [ ] 5.6 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Validators/CreateTaskValidator.cs` inheriting from `Validator<CreateTaskRequest>`
-  - [ ] 5.7 **🟢 GREEN - Presentation Layer**: Implement validation rules in CreateTaskValidator: Name required (3-200 chars), AssigneeId required and valid GUID format
-  - [ ] 5.8 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/CreateTaskEndpoint.cs` inheriting from `Endpoint<CreateTaskRequest, CreateTaskResponse>`
-  - [ ] 5.9 **🟢 GREEN - Presentation Layer**: Configure endpoint: POST /api/tasks, returns 201 Created or 400 Bad Request
-  - [ ] 5.10 **🟢 GREEN - Presentation Layer**: Implement endpoint handler: send CreateTaskCommand to Application layer, map Result to HTTP response
-  - [ ] 5.11 **🔵 REFACTOR - Presentation Layer**: Refactor CreateTaskEndpoint if needed
-  - [ ] 5.12 **🔴 RED - Integration Tests**: Write test for GetTasksByUserIdEndpoint (success with tasks - test FIRST)
-  - [ ] 5.13 **🔴 RED - Integration Tests**: Write test for GetTasksByUserIdEndpoint (success with empty list - test FIRST)
-  - [ ] 5.14 **🔴 RED - Integration Tests**: Write test for GetTasksByUserIdEndpoint (user not found - 404 - test FIRST)
-  - [ ] 5.15 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Contracts/GetTasksByUserIdResponse.cs` DTO record with Tasks list
-  - [ ] 5.16 **🟢 GREEN - Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/GetTasksByUserIdEndpoint.cs` inheriting from `Endpoint<EmptyRequest, GetTasksByUserIdResponse>`
-  - [ ] 5.17 **🟢 GREEN - Presentation Layer**: Configure endpoint: GET /api/tasks/by-user/{userId}, returns 200 OK or 404 Not Found
-  - [ ] 5.18 **🟢 GREEN - Presentation Layer**: Implement endpoint handler: send GetTasksByUserIdQuery to Application layer, map Result to HTTP response
-  - [ ] 5.19 **🔵 REFACTOR - Presentation Layer**: Refactor GetTasksByUserIdEndpoint if needed
+- [ ] 5.0 Implement Task Module - Presentation Layer in JtlTask.WebApi
+  - [ ] 5.1 **Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Contracts/CreateTaskRequest.cs` DTO record
+  - [ ] 5.2 **Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Contracts/CreateTaskResponse.cs` DTO record
+  - [ ] 5.3 **Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Validators/CreateTaskValidator.cs` inheriting from `Validator<CreateTaskRequest>`
+  - [ ] 5.4 **Presentation Layer**: Implement validation rules in CreateTaskValidator: Name required (3-200 chars), AssigneeId required and valid GUID format
+  - [ ] 5.5 **Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/CreateTaskEndpoint.cs` inheriting from `Endpoint<CreateTaskRequest, CreateTaskResponse>`
+  - [ ] 5.6 **Presentation Layer**: Configure endpoint: POST /api/tasks, returns 201 Created or 400 Bad Request
+  - [ ] 5.7 **Presentation Layer**: Implement endpoint handler: send CreateTaskCommand to Application layer, map Result to HTTP response
+  - [ ] 5.8 **Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Contracts/GetTasksByUserIdResponse.cs` DTO record with Tasks list
+  - [ ] 5.9 **Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/GetTasksByUserIdEndpoint.cs` inheriting from `Endpoint<EmptyRequest, GetTasksByUserIdResponse>`
+  - [ ] 5.10 **Presentation Layer**: Configure endpoint: GET /api/tasks/by-user/{userId}, returns 200 OK or 404 Not Found
+  - [ ] 5.11 **Presentation Layer**: Implement endpoint handler: send GetTasksByUserIdQuery to Application layer, map Result to HTTP response
+  - [ ] 5.12 **Integration Tests**: Write test for CreateTaskEndpoint in `tests/Test.JtlTask.WebApi/Tasks/CreateTaskEndpointTests.cs` (success case)
+  - [ ] 5.13 **Integration Tests**: Write test for CreateTaskEndpoint (validation failure - format)
+  - [ ] 5.14 **Integration Tests**: Write test for CreateTaskEndpoint (assignee not found - business rule)
+  - [ ] 5.15 **Integration Tests**: Write test for GetTasksByUserIdEndpoint (success with tasks)
+  - [ ] 5.16 **Integration Tests**: Write test for GetTasksByUserIdEndpoint (success with empty list)
+  - [ ] 5.17 **Integration Tests**: Write test for GetTasksByUserIdEndpoint (user not found - 404)
 
 - [ ] 6.0 Configure Cross-Cutting Concerns and Application Host
   - [ ] 6.1 Configure FastContracts in `Program.cs` with `builder.Services.AddFastContracts()`
@@ -243,3 +225,4 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [ ] 6.14 Final verification: Check Clean Architecture dependencies (Domain ← Application ← Infrastructure ← WebApi)
   - [ ] 6.15 Final verification: Ensure modules are properly isolated (Tasks.Application can reference Users.Application, but NOT Domain/Infrastructure cross-references)
   - [ ] 6.16 Final code review: DDD patterns (Aggregates, Value Objects), CQRS implementation, Repository pattern, Result pattern usage
+
