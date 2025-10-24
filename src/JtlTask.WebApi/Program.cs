@@ -1,8 +1,13 @@
+using Application;
+
 WebApplicationBuilder bld = WebApplication.CreateBuilder(args);
 bld.Services.AddAuthenticationJwtBearer(s => s.SigningKey = bld.Configuration["Auth:JwtKey"])
     .AddAuthorization()
     .AddFastEndpoints(o => o.SourceGeneratorDiscoveredTypes = DiscoveredTypes.All)
     .SwaggerDocument();
+
+bld.Services.AddUserApplicationLayer();
+bld.Services.AddUserInfrastructureLayer();
 
 WebApplication app = bld.Build();
 app.UseAuthentication()
