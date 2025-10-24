@@ -133,24 +133,20 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 
 - [ ] 2.0 Implement User Bounded Context - Domain, Infrastructure, and Application
   - [x] 2.1 **Domain Layer**: Create `Username` value object (business logic only - NO format validation)
-  - [ ] 2.2 **Domain Layer**: Write unit tests for `Username` value object
-  - [ ] 2.3 **Domain Layer**: Create `User` aggregate root with private constructor and static `Create` factory method
-  - [ ] 2.4 **Domain Layer**: Implement business rule validation in `User.Create` (business rules only, not format validation)
-  - [ ] 2.5 **Domain Layer**: Write unit tests for `User` entity creation
-  - [ ] 2.6 **Domain Layer**: Define `IUserRepository` interface with methods: `GetByIdAsync`, `ExistsByUsernameAsync`, `AddAsync`
-  - [ ] 2.7 **Domain Layer**: Create `DomainErrors.cs` with user-specific error definitions
-  - [ ] 2.8 **Infrastructure Layer**: Implement `InMemoryUserRepository` using `ConcurrentDictionary<Guid, User>`
-  - [ ] 2.9 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
-  - [ ] 2.10 **Application Layer**: Create `CreateUserCommand` record with Username property
-  - [ ] 2.11 **Application Layer**: Create `CreateUserHandler` implementing `ICommandHandler<CreateUserCommand, Result<User>>`
-  - [ ] 2.12 **Application Layer**: Implement handler logic: check uniqueness via repository, create user, save to repository
-  - [ ] 2.13 **Application Layer**: Write unit tests for `CreateUserHandler` (success case, duplicate username)
-  - [ ] 2.14 **Application Layer**: Create `GetUserByIdQuery` record with UserId property
-  - [ ] 2.15 **Application Layer**: Create `GetUserByIdHandler` implementing `ICommandHandler<GetUserByIdQuery, Result<User>>`
-  - [ ] 2.16 **Application Layer**: Write unit tests for `GetUserByIdHandler` (success case, user not found)
-  - [ ] 2.17 **Application Layer**: Create `UserExistsQuery` record with UserId property (public API for inter-module communication)
-  - [ ] 2.18 **Application Layer**: Create `UserExistsHandler` implementing `ICommandHandler<UserExistsQuery, Result<bool>>`
-  - [ ] 2.19 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
+  - [ ] 2.2 **Domain Layer**: Create `User` aggregate root with private constructor and static `Create` factory method
+  - [ ] 2.3 **Domain Layer**: Implement business rule validation in `User.Create` (business rules only, not format validation)
+  - [ ] 2.4 **Domain Layer**: Define `IUserRepository` interface with methods: `GetByIdAsync`, `ExistsByUsernameAsync`, `AddAsync`
+  - [ ] 2.5 **Domain Layer**: Create `DomainErrors.cs` with user-specific error definitions
+  - [ ] 2.6 **Infrastructure Layer**: Implement `InMemoryUserRepository` using `ConcurrentDictionary<Guid, User>`
+  - [ ] 2.7 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
+  - [ ] 2.8 **Application Layer**: Create `CreateUserCommand` record with Username property
+  - [ ] 2.9 **Application Layer**: Create `CreateUserHandler` implementing `ICommandHandler<CreateUserCommand, Result<User>>`
+  - [ ] 2.10 **Application Layer**: Implement handler logic: check uniqueness via repository, create user, save to repository
+  - [ ] 2.11 **Application Layer**: Create `GetUserByIdQuery` record with UserId property
+  - [ ] 2.12 **Application Layer**: Create `GetUserByIdHandler` implementing `ICommandHandler<GetUserByIdQuery, Result<User>>`
+  - [ ] 2.13 **Application Layer**: Create `UserExistsQuery` record with UserId property (public API for inter-module communication)
+  - [ ] 2.14 **Application Layer**: Create `UserExistsHandler` implementing `ICommandHandler<UserExistsQuery, Result<bool>>`
+  - [ ] 2.15 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
 
 - [ ] 3.0 Implement User Module - Presentation Layer in JtlTask.WebApi
   - [ ] 3.1 **Presentation Layer**: Create `src/JtlTask.WebApi/Users/Contracts/CreateUserRequest.cs` DTO record
