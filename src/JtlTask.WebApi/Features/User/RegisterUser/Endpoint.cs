@@ -5,7 +5,6 @@
 using System.Diagnostics;
 using System.Net;
 using FastEndpoints;
-using JtlTask.WebApi.Features.User.RegisterUser;
 using Monads.Results;
 using Monads.Results.Extensions.Async;
 using SharedKernel.Abstractions;
