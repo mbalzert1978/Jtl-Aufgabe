@@ -22,6 +22,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 
 ### User Bounded Context - Domain
 
+- `src/Users/Domain/Username.cs` - Username value object with factory method
 - `src/Users/Domain/User.cs` - User aggregate root entity
 - `src/Users/Domain/Username.cs` - Username value object
 - `src/Users/Domain/IUserRepository.cs` - User repository interface
@@ -131,7 +132,7 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 1.13 Verify solution builds successfully with `dotnet build`
 
 - [ ] 2.0 Implement User Bounded Context - Domain, Infrastructure, and Application
-  - [ ] 2.1 **Domain Layer**: Create `Username` value object (business logic only - NO format validation)
+  - [x] 2.1 **Domain Layer**: Create `Username` value object (business logic only - NO format validation)
   - [ ] 2.2 **Domain Layer**: Write unit tests for `Username` value object
   - [ ] 2.3 **Domain Layer**: Create `User` aggregate root with private constructor and static `Create` factory method
   - [ ] 2.4 **Domain Layer**: Implement business rule validation in `User.Create` (business rules only, not format validation)
