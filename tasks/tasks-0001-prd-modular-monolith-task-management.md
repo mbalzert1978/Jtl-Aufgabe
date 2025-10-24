@@ -119,8 +119,8 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 1.4 Create `JtlTask.WebApi` project using `dotnet new feproj -n JtlTask.WebApi` in `src/JtlTask.WebApi`
   - [x] 1.5 Create `JtlTask.Shared.Kernel` class library in `src/Shared/JtlTask.Shared.Kernel`
   - [x] 1.6 Create User module projects in `src/Users/`: `Domain/Domain`, `Infrastructure/Infrastructure`, `Application/Application`, `Contracts/Contracts`
-  - [] 1.7 Create Task module projects in `src/Tasks/`: `Domain/JtlTask.Tasks.Domain`, `Infrastructure/JtlTask.Tasks.Infrastructure`, `Application/JtlTask.Tasks.Application`, `Contracts/JtlTask.Tasks.Contracts`
-  - [] 1.8 Create test projects: `tests/Tests.Users/JtlTask.Tests.Users.csproj`, `tests/Tests.Tasks/JtlTask.Tests.Tasks.csproj` (xUnit)
+  - [x] 1.7 Create Task module projects in `src/Tasks/`: `Domain/JtlTask.Tasks.Domain`, `Infrastructure/JtlTask.Tasks.Infrastructure`, `Application/JtlTask.Tasks.Application`, `Contracts/JtlTask.Tasks.Contracts`
+  - [ ] 1.8 Create test projects: `tests/Tests.Users/JtlTask.Tests.Users.csproj`, `tests/Tests.Tasks/JtlTask.Tests.Tasks.csproj` (xUnit)
   - [ ] 1.9 Add all projects to solution using `dotnet sln add`
   - [ ] 1.10 Configure project references following Clean Architecture rules (all dependencies point inwards)
   - [ ] 1.11 Add provided Result monad implementation to Shared.Kernel (will be provided by user)
