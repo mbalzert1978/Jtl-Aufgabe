@@ -7,16 +7,12 @@
   <Folder Name="/src/">
     <Project Path="src/JtlTask.WebApi/JtlTask.WebApi.csproj" />
     <Project Path="src/SharedKernel/SharedKernel.csproj" />
-  </Folder>
-  <Folder Name="/src/Tasks/">
-    <Project Path="src/Tasks/Application/Application.csproj" />
-    <Project Path="src/Tasks/Domain/Domain.csproj" />
-    <Project Path="src/Tasks/Infrastructure/Infrastructure.csproj" />
-  </Folder>
-  <Folder Name="/src/Users/">
-    <Project Path="src/Users/Application/Application.csproj" />
-    <Project Path="src/Users/Domain/Domain.csproj" />
-    <Project Path="src/Users/Infrastructure/Infrastructure.csproj" />
+    <Project Path="src/Tasks.Application/Tasks.Application.csproj" />
+    <Project Path="src/Tasks.Domain/Tasks.Domain.csproj" />
+    <Project Path="src/Tasks.Infrastructure/Tasks.Infrastructure.csproj" />
+    <Project Path="src/Users.Application/Users.Application.csproj" />
+    <Project Path="src/Users.Domain/Users.Domain.csproj" />
+    <Project Path="src/Users.Infrastructure/Users.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Test.JtlTask.WebApi/Test.JtlTask.WebApi.csproj" />
