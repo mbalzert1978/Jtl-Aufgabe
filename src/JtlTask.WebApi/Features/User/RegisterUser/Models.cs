@@ -22,6 +22,12 @@ internal sealed record RegisterUserRequest(string Username);
 internal sealed record RegisterUserResponse(Guid UserId, string Username);
 
 /// <summary>
+/// Event published when a user is successfully registered.
+/// </summary>
+/// <param name="UserId">The unique identifier of the registered user.</param>
+internal sealed record UserRegisteredEvent(Guid UserId) : IEvent;
+
+/// <summary>
 /// Validator for <see cref="RegisterUserRequest"/>.
 /// </summary>
 internal sealed class RegisterUserRequestValidator : Validator<RegisterUserRequest>
