@@ -13,13 +13,13 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 - `src/Users/Infrastructure/Infrastructure.csproj` - User infrastructure project
 - `src/Users/Application/Application.csproj` - User use cases project
 - `src/Users/Contracts/Contracts.csproj` - User contracts project
-- `src/Tasks/Domain/JtlTask.Tasks.Domain.csproj` - Task domain project
-- `src/Tasks/Infrastructure/JtlTask.Tasks.Infrastructure.csproj` - Task infrastructure project
-- `src/Tasks/Application/JtlTask.Tasks.Application.csproj` - Task use cases project
-- `src/Tasks/Contracts/JtlTask.Tasks.Contracts.csproj` - Task contracts project
-- `src/Shared/JtlTask.Shared.Kernel/JtlTask.Shared.Kernel.csproj` - Shared kernel (Result types, base classes)
-- `tests/Tests.Users/JtlTask.Tests.Users.csproj` - User module tests
-- `tests/Tests.Tasks/JtlTask.Tests.Tasks.csproj` - Task module tests
+- `src/Tasks/Domain/Domain.csproj` - Task domain project
+- `src/Tasks/Infrastructure/Infrastructure.csproj` - Task infrastructure project
+- `src/Tasks/Application/Application.csproj` - Task use cases project
+- `src/Tasks/Contracts/Contracts.csproj` - Task contracts project
+- `src/SharedKernel/SharedKernel.csproj` - Shared kernel (Result types, base classes)
+- `tests/Tests.Users/Tests.Users.csproj` - User module tests
+- `tests/Tests.Tasks/Tests.Tasks.csproj` - Task module tests
 
 ### User Bounded Context - Domain
 
@@ -84,9 +84,9 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 
 ### Shared Kernel
 
-- `src/Shared/JtlTask.Shared.Kernel/Result.cs` - Result monad implementation
-- `src/Shared/JtlTask.Shared.Kernel/Error.cs` - Error type for Result pattern
-- `src/Shared/JtlTask.Shared.Kernel/IEntity.cs` - Base entity interface
+- `src/SharedKernel/JtlTask.Shared.Kernel/Result.cs` - Result monad implementation
+- `src/SharedKernel/JtlTask.Shared.Kernel/Error.cs` - Error type for Result pattern
+- `src/SharedKernel/JtlTask.Shared.Kernel/IEntity.cs` - Base entity interface
 
 ### Tests
 
@@ -115,12 +115,12 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 - [ ] 1.0 Setup Solution Structure and Foundation (src/Projects with Bounded Contexts)
   - [x] 1.1 Install FastContracts Template Pack: `dotnet new install FastContracts.TemplatePack`
   - [x] 1.2 Create solution file `JtlTask.sln` using `dotnet new sln -n JtlTask`
-  - [x] 1.3 Create directory structure: `src/Users`, `src/Tasks`, `src/Shared`, `tests/Tests.Users`, `tests/Tests.Tasks`
+  - [x] 1.3 Create directory structure: `src/Users`, `src/Tasks`, `src/SharedKernel`, `tests/Tests.Users`, `tests/Tests.Tasks`
   - [x] 1.4 Create `JtlTask.WebApi` project using `dotnet new feproj -n JtlTask.WebApi` in `src/JtlTask.WebApi`
-  - [x] 1.5 Create `JtlTask.Shared.Kernel` class library in `src/Shared/JtlTask.Shared.Kernel`
+  - [x] 1.5 Create `JtlTask.Shared.Kernel` class library in `src/SharedKernel/JtlTask.Shared.Kernel`
   - [x] 1.6 Create User module projects in `src/Users/`: `Domain/Domain`, `Infrastructure/Infrastructure`, `Application/Application`, `Contracts/Contracts`
-  - [x] 1.7 Create Task module projects in `src/Tasks/`: `Domain/JtlTask.Tasks.Domain`, `Infrastructure/JtlTask.Tasks.Infrastructure`, `Application/JtlTask.Tasks.Application`, `Contracts/JtlTask.Tasks.Contracts`
-  - [ ] 1.8 Create test projects: `tests/Tests.Users/JtlTask.Tests.Users.csproj`, `tests/Tests.Tasks/JtlTask.Tests.Tasks.csproj` (xUnit)
+  - [x] 1.7 Create Task module projects in `src/Tasks/`: `Domain/Domain`, `Infrastructure/Infrastructure`, `Application/Application`, `Contracts/Contracts`
+  - [x] 1.8 Create test projects: `tests/Tests.Users/Tests.Users.csproj`, `tests/Tests.Tasks/Tests.Tasks.csproj` (xUnit)
   - [ ] 1.9 Add all projects to solution using `dotnet sln add`
   - [ ] 1.10 Configure project references following Clean Architecture rules (all dependencies point inwards)
   - [ ] 1.11 Add provided Result monad implementation to Shared.Kernel (will be provided by user)
