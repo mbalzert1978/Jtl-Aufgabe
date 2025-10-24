@@ -6,7 +6,7 @@ using System.Diagnostics;
 using Monads.Results;
 using static Monads.Results.ResultFactory;
 
-namespace Users.Domain;
+namespace Domain.Models.Users.ValueObjects;
 
 /// <summary>
 /// Represents a username value object in the domain model.

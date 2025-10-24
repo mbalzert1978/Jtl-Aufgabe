@@ -3,13 +3,14 @@
 // </copyright>
 
 using System.Diagnostics;
+using Domain.Models.Users.ValueObjects;
 using Monads.Results;
 using Monads.Results.Extensions.Sync;
 using SharedKernel.Abstractions;
 using SharedKernel.Models.Common;
 using static Monads.Results.ResultFactory;
 
-namespace Users.Domain;
+namespace Domain.Models.Users;
 
 /// <summary>
 /// Represents a user aggregate root in the domain model.
