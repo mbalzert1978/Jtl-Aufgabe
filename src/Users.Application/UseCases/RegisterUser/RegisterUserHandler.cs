@@ -19,21 +19,27 @@ namespace Users.Application.UseCases.RegisterUser;
 internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserEntity>
 {
     private readonly IUserRepository _userRepository;
+    private readonly TimeProvider _timeProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RegisterUserCommandHandler"/> class.
     /// </summary>
     /// <param name="userRepository">The repository for user persistence operations.</param>
+    /// <param name="timeProvider">The time provider for event timestamps.</param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="userRepository"/> is null.</exception>
-    public RegisterUserCommandHandler(IUserRepository userRepository)
+    public RegisterUserCommandHandler(IUserRepository userRepository, TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(userRepository);
+        ArgumentNullException.ThrowIfNull(timeProvider);
+
         _userRepository = userRepository;
+        _timeProvider = timeProvider;
 
         Debug.Assert(
             _userRepository == userRepository,
             "UserRepository instance was not set correctly."
         );
+        Debug.Assert(_timeProvider == timeProvider, "TimeProvider instance was not set correctly.");
     }
 
     /// <summary>
@@ -49,8 +55,7 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
     {
         Debug.Assert(command is not null, "Command must not be null.");
 
-        return await UserFactory
-            .Create(command.Username)
+        return await User.Create(command.Username, _timeProvider)
             .BindAsync(user =>
                 _userRepository
                     .AddAsync(user, cancellationToken)
