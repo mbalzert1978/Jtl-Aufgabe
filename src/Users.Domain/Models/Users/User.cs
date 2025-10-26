@@ -31,20 +31,27 @@ internal sealed class User : Entity, IAggregateRoot
     public Username Username { get; private set; }
 
     /// <summary>
+    /// Gets the collection of task IDs associated with the user.
+    /// </summary>
+    public IEnumerable<Guid> Tasks { get; private set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="User"/> class.
     /// </summary>
     /// <param name="id">The unique identifier for the user.</param>
     /// <param name="username">The username value object.</param>
+    /// <param name="tasks">The collection of task IDs associated with the user.</param>
     /// <remarks>
     /// This constructor is internal to enforce the use of the factory method while allowing test access.
     /// </remarks>
-    private User(Guid id, Username username)
+    private User(Guid id, Username username, IEnumerable<Guid> tasks)
     {
         Debug.Assert(id != Guid.Empty, "User ID cannot be empty.");
         Debug.Assert(username is not null, "Username cannot be null.");
 
         Id = id;
         Username = username;
+        Tasks = tasks;
 
         Debug.Assert(Id == id, "User ID was not set correctly.");
         Debug.Assert(Username == username, "Username was not set correctly.");
@@ -71,7 +78,7 @@ internal sealed class User : Entity, IAggregateRoot
             .Create(username)
             .Map(name =>
             {
-                User user = new(Guid.NewGuid(), name);
+                User user = new(Guid.NewGuid(), name, []);
                 user.Raise(new UserCreatedEvent(user.Id, timeProvider.GetUtcNow()));
                 return user;
             });
@@ -86,13 +93,14 @@ internal sealed class User : Entity, IAggregateRoot
     /// </summary>
     /// <param name="id">The unique identifier of the user.</param>
     /// <param name="username">The username string.</param>
+    /// <param name="tasks">The collection of task IDs associated with the user.</param>
     /// <returns>A <see cref="User"/> instance.</returns>
     /// <exception cref="ArgumentException">Thrown when <paramref name="id"/> is empty.</exception>
-    public static User Rehydrate(Guid id, string username)
+    public static User Rehydrate(Guid id, string username, IEnumerable<Guid> tasks)
     {
         if (id == Guid.Empty)
             throw new ArgumentException("User ID cannot be empty.");
 
-        return new User(id, new Username(username));
+        return new(id, new(username), tasks);
     }
 }

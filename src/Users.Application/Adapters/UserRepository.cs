@@ -29,7 +29,11 @@ internal sealed class UserRepository : IUserRepository
     {
         try
         {
-            UserEntity entity = new(user.Id, user.Username.Value);
+            UserEntity entity = new(
+                user.Id,
+                user.Username.Value,
+                user.Tasks.Select(t => new UserTaskReference(t))
+            );
             Debug.Assert(entity.UserId == user.Id, "UserEntity ID does not match");
 
             await _database.AddAsync(entity, cancellationToken).ConfigureAwait(false);
@@ -53,7 +57,9 @@ internal sealed class UserRepository : IUserRepository
                 u.UserId == id
             ) switch
             {
-                UserEntity e => Success<User, DomainError>(User.Rehydrate(e.UserId, e.Username)),
+                UserEntity e => Success<User, DomainError>(
+                    User.Rehydrate(e.UserId, e.Username, e.Tasks.Select(t => t.TaskId))
+                ),
                 _ => Failure<User, DomainError>(UserNotFound(id)),
             };
         }
