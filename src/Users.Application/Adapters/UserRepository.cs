@@ -16,6 +16,7 @@ internal sealed class UserRepository : IUserRepository
     public UserRepository(IDatabase database)
     {
         ArgumentNullException.ThrowIfNull(database);
+
         _database = database;
 
         Debug.Assert(_database == database, "Database instance was not set correctly.");
@@ -31,14 +32,14 @@ internal sealed class UserRepository : IUserRepository
             UserEntity entity = new(user.Id, user.Username.Value);
             Debug.Assert(entity.UserId == user.Id, "UserEntity ID does not match");
 
-            await _database.AddAsync(entity, cancellationToken);
-            return Success<Unit, DomainError>(default);
+            await _database.AddAsync(entity, cancellationToken).ConfigureAwait(false);
         }
         catch (Exception exc)
         {
             DomainError error = DatabaseError(exc);
             return Failure<Unit, DomainError>(error);
         }
+        return Success<Unit, DomainError>(default);
     }
 
     public async Task<Result<User, DomainError>> GetByIdAsync(
@@ -52,9 +53,7 @@ internal sealed class UserRepository : IUserRepository
                 u.UserId == id
             ) switch
             {
-                UserEntity e => Success<User, DomainError>(
-                    UserFactory.Rehydrate(e.UserId, e.Username)
-                ),
+                UserEntity e => Success<User, DomainError>(User.Rehydrate(e.UserId, e.Username)),
                 _ => Failure<User, DomainError>(UserNotFound(id)),
             };
         }
