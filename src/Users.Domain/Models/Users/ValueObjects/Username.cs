@@ -20,19 +20,7 @@ namespace Users.Domain.Models.Users.ValueObjects;
 /// Business logic validation only - format validation is handled at the presentation layer.
 /// Use the <see cref="UsernameFactory.Create"/> method to create instances.
 /// </remarks>
-internal sealed record Username(string Value)
-{
-    /// <summary>
-    /// Gets the username string value.
-    /// </summary>
-    /// <value>
-    /// A non-null, non-empty username string.
-    /// </value>
-    public string Value { get; } = Value ?? throw new ArgumentNullException(nameof(Value));
-
-    /// <inheritdoc/>
-    public override string ToString() => Value;
-}
+internal sealed record Username(string Value);
 
 /// <summary>
 /// Factory class for creating <see cref="Username"/> instances with validation.
