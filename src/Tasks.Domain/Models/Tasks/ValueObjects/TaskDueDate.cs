@@ -26,17 +26,16 @@ internal static class TaskDueDateFactory
     /// <param name="timeProvider">The time provider for getting the current time.</param>
     /// <returns>A result containing the task due date or a domain error.</returns>
     public static Result<TaskDueDate, DomainError> Create(
-        DateTimeOffset value,
+        DateTimeOffset? value,
         TimeProvider timeProvider
     )
     {
         Debug.Assert(timeProvider is not null, "Time provider cannot be null.");
 
-        if (value == default)
-        {
-            DomainError error = DomainErrorFactory.Generic("Due date cannot be the default value.");
-            return Failure<TaskDueDate, DomainError>(error);
-        }
+        if (!value.HasValue)
+            return Success<TaskDueDate, DomainError>(new TaskDueDate(DateTimeOffset.MaxValue));
+
+        Debug.Assert(value.HasValue, "Due date value must have a value here.");
 
         DateTimeOffset now = timeProvider.GetUtcNow();
 
@@ -48,7 +47,7 @@ internal static class TaskDueDateFactory
 
         Debug.Assert(value > now, "Due date must be after current time.");
 
-        TaskDueDate dueDate = new(value);
+        TaskDueDate dueDate = new(value.Value);
         return Success<TaskDueDate, DomainError>(dueDate);
     }
 }
