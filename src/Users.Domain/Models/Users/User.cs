@@ -20,7 +20,6 @@ namespace Users.Domain.Models.Users;
 /// </summary>
 /// <remarks>
 /// This is an aggregate root following Domain-Driven Design principles.
-/// Use the <see cref="UserFactory.Create"/> method to create instances.
 /// </remarks>
 internal sealed class User : Entity, IAggregateRoot
 {
@@ -40,7 +39,7 @@ internal sealed class User : Entity, IAggregateRoot
     /// <remarks>
     /// This constructor is internal to enforce the use of the factory method while allowing test access.
     /// </remarks>
-    internal User(Guid id, Username username)
+    private User(Guid id, Username username)
     {
         Debug.Assert(id != Guid.Empty, "User ID cannot be empty.");
         Debug.Assert(username is not null, "Username cannot be null.");
@@ -50,26 +49,13 @@ internal sealed class User : Entity, IAggregateRoot
 
         Debug.Assert(Id == id, "User ID was not set correctly.");
         Debug.Assert(Username == username, "Username was not set correctly.");
-
-        Raise(new UserCreatedDomainEvent(Id));
     }
 
-    /// <summary>
-    /// Gets the string representation of the user.
-    /// </summary>
-    /// <returns>A string representation containing the user's ID and username.</returns>
-    public override string ToString() => $"User(Id: {Id}, Username: {Username})";
-}
-
-/// <summary>
-/// Factory class for creating <see cref="User"/> instances with validation.
-/// </summary>
-internal static class UserFactory
-{
     /// <summary>
     /// Creates a new <see cref="User"/> instance after validating business rules.
     /// </summary>
     /// <param name="username">The username value object for the user.</param>
+    /// <param name="timeProvider">The time provider for event timestamps.</param>
     /// <returns>
     /// A <see cref="Result{T, E}"/> containing either a valid <see cref="User"/> or an error message.
     /// </returns>
@@ -78,13 +64,18 @@ internal static class UserFactory
     /// The username uniqueness check should be performed by the caller (repository layer).
     /// </remarks>
     /// <exception cref="ArgumentException">Thrown when <paramref name="username"/> is null.</exception>
-    public static Result<User, DomainError> Create(string username)
+    public static Result<User, DomainError> Create(string username, TimeProvider timeProvider)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
 
         Result<User, DomainError> result = UsernameFactory
             .Create(username)
-            .Map(name => new User(Guid.NewGuid(), name));
+            .Map(name =>
+            {
+                User user = new(Guid.NewGuid(), name);
+                user.Raise(new UserCreatedEvent(user.Id, timeProvider.GetUtcNow()));
+                return user;
+            });
 
         Debug.Assert(result is not null, "Result from UserFactory.Create is null.");
 
