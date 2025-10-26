@@ -18,6 +18,12 @@ namespace SharedKernel.Models.Common;
 internal abstract record DomainError;
 
 /// <summary>
+/// Represents a generic domain error with a message. TODO: dev only remove later
+/// </summary>
+/// <param name="Message"></param>
+internal sealed record GenericDomainError(string Message) : DomainError;
+
+/// <summary>
 /// Represents an error when a user with the specified ID was not found.
 /// </summary>
 /// <param name="UserId">The ID of the user that was not found.</param>
@@ -68,4 +74,13 @@ internal static class DomainErrorFactory
     /// <returns>A <see cref="Common.UserNotFound"/> instance.</returns>
     /// <exception cref="ArgumentException">Thrown when <paramref name="userId"/> is empty.</exception>
     public static DomainError UserNotFound(Guid userId) => new UserNotFound(userId);
+
+    public static DomainError Generic(string message)
+    {
+        Debug.Assert(
+            !string.IsNullOrWhiteSpace(message),
+            "Error message cannot be null or whitespace."
+        );
+        return new GenericDomainError(message);
+    }
 }
