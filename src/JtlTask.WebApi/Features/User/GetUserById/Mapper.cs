@@ -19,7 +19,11 @@ internal sealed class GetUserByIdMapper
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        GetUserByIdResponse response = new(entity.UserId, entity.Username);
+        GetUserByIdResponse response = new(
+            entity.UserId,
+            entity.Username,
+            entity.Tasks.Select(t => t.TaskId)
+        );
 
         Debug.Assert(response is not null, "Response creation must not return null.");
         Debug.Assert(
