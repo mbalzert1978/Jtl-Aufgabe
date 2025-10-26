@@ -11,4 +11,4 @@ namespace SharedKernel.Abstractions;
 /// Aggregate roots are the entry points for accessing a cluster of related entities and value objects,
 /// ensuring consistency boundaries within the domain model.
 /// </summary>
-public interface IAggregateRoot;
+internal interface IAggregateRoot;

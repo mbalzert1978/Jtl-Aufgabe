@@ -10,7 +10,7 @@ namespace SharedKernel.Models.Common;
 /// <summary>
 /// Base class for domain entities that provides identity and domain event support.
 /// </summary>
-public abstract class Entity
+internal abstract class Entity
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 

@@ -9,4 +9,4 @@ namespace SharedKernel.Abstractions;
 /// Domain events represent significant occurrences within the domain that domain experts care about.
 /// They are used to capture and communicate state changes within aggregates.
 /// </summary>
-public interface IDomainEvent;
+internal interface IDomainEvent;
