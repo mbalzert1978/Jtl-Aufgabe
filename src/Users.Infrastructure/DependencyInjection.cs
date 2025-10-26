@@ -12,6 +12,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddUserInfrastructureLayer(this IServiceCollection services)
     {
+        services.AddSingleton(TimeProvider.System);
         services.AddDbContext<UsersDbContext>(opt => opt.UseInMemoryDatabase("UsersDb"));
         services.AddScoped<IDatabase, UsersDbContext>(provider =>
             provider.GetRequiredService<UsersDbContext>()
