@@ -50,7 +50,6 @@ public sealed class UserEntity
         UserId = userId;
         Username = username;
         Tasks = tasks;
-
     }
 }
 

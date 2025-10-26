@@ -27,7 +27,10 @@ public static class DependencyInjection
         Debug.Assert(services is not null, "Service provider must not be null.");
 
         using AsyncServiceScope scope = services.CreateAsyncScope();
-        Debug.Assert(scope.ServiceProvider is not null, "Scoped service provider must not be null.");
+        Debug.Assert(
+            scope.ServiceProvider is not null,
+            "Scoped service provider must not be null."
+        );
 
         UsersDbContext dbContext = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
         Debug.Assert(dbContext is not null, "UsersDbContext must not be null.");

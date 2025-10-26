@@ -29,7 +29,8 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 
 ### User Bounded Context - Infrastructure
 
-- `src/Users/Infrastructure/Persistence/InMemoryUserRepository.cs` - In-memory user repository implementation
+- `src/Users/Infrastructure/Persistence/UsersDbContext.cs` - EF Core DbContext for Users module
+- `src/Users/Infrastructure/Persistence/InMemoryUserRepository.cs` - EF Core in-memory user repository implementation
 - `src/Users/Infrastructure/DependencyInjection.cs` - Infrastructure DI registration
 
 ### User Bounded Context - Application
@@ -59,7 +60,8 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
 
 ### Task Bounded Context - Infrastructure
 
-- `src/Tasks/Infrastructure/Persistence/InMemoryTaskRepository.cs` - In-memory task repository implementation
+- `src/Tasks/Infrastructure/Persistence/TasksDbContext.cs` - EF Core DbContext for Tasks module
+- `src/Tasks/Infrastructure/Persistence/InMemoryTaskRepository.cs` - EF Core in-memory task repository implementation
 - `src/Tasks/Infrastructure/DependencyInjection.cs` - Infrastructure DI registration
 
 ### Task Bounded Context - Application
@@ -136,16 +138,18 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [x] 2.3 **Domain Layer**: Implement business rule validation in `User.Create` (business rules only, not format validation)
   - [x] 2.4 **Domain Layer**: Define `IUserRepository` interface with methods: `GetByIdAsync`, `ExistsByUsernameAsync`, `AddAsync`
   - [x] 2.5 **Domain Layer**: Create `DomainErrors.cs` with user-specific error definitions
-  - [ ] 2.6 **Infrastructure Layer**: Implement `InMemoryUserRepository` using `ConcurrentDictionary<Guid, User>`
-  - [ ] 2.7 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
-  - [ ] 2.8 **Application Layer**: Create `CreateUserCommand` record with Username property
-  - [ ] 2.9 **Application Layer**: Create `CreateUserHandler` implementing `ICommandHandler<CreateUserCommand, Result<User>>`
-  - [ ] 2.10 **Application Layer**: Implement handler logic: check uniqueness via repository, create user, save to repository
-  - [ ] 2.11 **Application Layer**: Create `GetUserByIdQuery` record with UserId property
-  - [ ] 2.12 **Application Layer**: Create `GetUserByIdHandler` implementing `ICommandHandler<GetUserByIdQuery, Result<User>>`
-  - [ ] 2.13 **Application Layer**: Create `UserExistsQuery` record with UserId property (public API for inter-module communication)
-  - [ ] 2.14 **Application Layer**: Create `UserExistsHandler` implementing `ICommandHandler<UserExistsQuery, Result<bool>>`
-  - [ ] 2.15 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
+  - [x] 2.6 **Infrastructure Layer**: Implement `UsersDbContext` with EF Core and configure User entity
+  - [x] 2.7 **Infrastructure Layer**: Implement `InMemoryUserRepository` using EF Core InMemory database
+  - [ ] 2.8 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register DbContext and repository
+  - [ ] 2.9 **Application Layer**: Create `CreateUserCommand` record with Username property
+  - [ ] 2.9 **Application Layer**: Create `CreateUserCommand` record with Username property
+  - [ ] 2.10 **Application Layer**: Create `CreateUserHandler` implementing `ICommandHandler<CreateUserCommand, Result<User>>`
+  - [ ] 2.11 **Application Layer**: Implement handler logic: check uniqueness via repository, create user, save to repository
+  - [ ] 2.12 **Application Layer**: Create `GetUserByIdQuery` record with UserId property
+  - [ ] 2.13 **Application Layer**: Create `GetUserByIdHandler` implementing `ICommandHandler<GetUserByIdQuery, Result<User>>`
+  - [ ] 2.14 **Application Layer**: Create `UserExistsQuery` record with UserId property (public API for inter-module communication)
+  - [ ] 2.15 **Application Layer**: Create `UserExistsHandler` implementing `ICommandHandler<UserExistsQuery, Result<bool>>`
+  - [ ] 2.16 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
 
 - [ ] 3.0 Implement User Module - Presentation Layer in JtlTask.WebApi
   - [ ] 3.1 **Presentation Layer**: Create `src/JtlTask.WebApi/Users/Contracts/CreateUserRequest.cs` DTO record
@@ -171,18 +175,19 @@ Generated from: `0001-prd-modular-monolith-task-management.md`
   - [ ] 4.3 **Domain Layer**: Write unit tests for `Task` entity creation
   - [ ] 4.4 **Domain Layer**: Define `ITaskRepository` interface with methods: `GetByAssigneeIdAsync`, `AddAsync`
   - [ ] 4.5 **Domain Layer**: Create `DomainErrors.cs` with task-specific error definitions
-  - [ ] 4.6 **Infrastructure Layer**: Implement `InMemoryTaskRepository` using `ConcurrentDictionary<Guid, Task>` or `List<Task>`
-  - [ ] 4.7 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register repository
-  - [ ] 4.8 **Application Layer**: Create `CreateTaskCommand` record with Name and AssigneeId properties
-  - [ ] 4.9 **Application Layer**: Create `CreateTaskHandler` implementing `ICommandHandler<CreateTaskCommand, Result<Task>>`
-  - [ ] 4.10 **Application Layer**: Add project reference to Users.Application to access UserExistsQuery (inter-module communication via public API)
-  - [ ] 4.11 **Application Layer**: Implement handler logic: use UserExistsQuery to verify assignee exists, create task, save to repository
-  - [ ] 4.12 **Application Layer**: Write unit tests for `CreateTaskHandler` (success case, assignee not found)
-  - [ ] 4.13 **Application Layer**: Create `GetTasksByUserIdQuery` record with UserId property
-  - [ ] 4.14 **Application Layer**: Create `GetTasksByUserIdHandler` implementing `ICommandHandler<GetTasksByUserIdQuery, Result<List<Task>>>`
-  - [ ] 4.15 **Application Layer**: Implement handler logic: use UserExistsQuery to verify user exists, get tasks (return empty list if none)
-  - [ ] 4.16 **Application Layer**: Write unit tests for `GetTasksByUserIdHandler` (success with tasks, success with empty list, user not found)
-  - [ ] 4.17 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
+  - [ ] 4.6 **Infrastructure Layer**: Implement `TasksDbContext` with EF Core and configure Task entity
+  - [ ] 4.7 **Infrastructure Layer**: Implement `InMemoryTaskRepository` using EF Core InMemory database
+  - [ ] 4.8 **Infrastructure Layer**: Create `DependencyInjection.cs` extension method to register DbContext and repository
+  - [ ] 4.9 **Application Layer**: Create `CreateTaskCommand` record with Name and AssigneeId properties
+  - [ ] 4.10 **Application Layer**: Create `CreateTaskHandler` implementing `ICommandHandler<CreateTaskCommand, Result<Task>>`
+  - [ ] 4.11 **Application Layer**: Add project reference to Users.Application to access UserExistsQuery (inter-module communication via public API)
+  - [ ] 4.12 **Application Layer**: Implement handler logic: use UserExistsQuery to verify assignee exists, create task, save to repository
+  - [ ] 4.13 **Application Layer**: Write unit tests for `CreateTaskHandler` (success case, assignee not found)
+  - [ ] 4.14 **Application Layer**: Create `GetTasksByUserIdQuery` record with UserId property
+  - [ ] 4.15 **Application Layer**: Create `GetTasksByUserIdHandler` implementing `ICommandHandler<GetTasksByUserIdQuery, Result<List<Task>>>`
+  - [ ] 4.16 **Application Layer**: Implement handler logic: use UserExistsQuery to verify user exists, get tasks (return empty list if none)
+  - [ ] 4.17 **Application Layer**: Write unit tests for `GetTasksByUserIdHandler` (success with tasks, success with empty list, user not found)
+  - [ ] 4.18 **Application Layer**: Create `DependencyInjection.cs` to register command handlers
 
 - [ ] 5.0 Implement Task Module - Presentation Layer in JtlTask.WebApi
   - [ ] 5.1 **Presentation Layer**: Create `src/JtlTask.WebApi/Tasks/Contracts/CreateTaskRequest.cs` DTO record
