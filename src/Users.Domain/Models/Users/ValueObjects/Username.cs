@@ -4,9 +4,9 @@
 
 using System.Diagnostics;
 using Monads.Results;
-using Users.Domain;
+using SharedKernel.Models.Common;
 using static Monads.Results.ResultFactory;
-using static Users.Domain.DomainErrorFactory;
+using static SharedKernel.Models.Common.DomainErrorFactory;
 
 namespace Users.Domain.Models.Users.ValueObjects;
 

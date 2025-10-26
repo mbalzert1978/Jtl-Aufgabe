@@ -7,10 +7,9 @@ using Monads.Results;
 using Monads.Results.Extensions.Sync;
 using SharedKernel.Abstractions;
 using SharedKernel.Models.Common;
-using Users.Domain;
 using Users.Domain.Models.Users.ValueObjects;
 using static Monads.Results.ResultFactory;
-using static Users.Domain.DomainErrorFactory;
+using static SharedKernel.Models.Common.DomainErrorFactory;
 
 namespace Users.Domain.Models.Users;
 

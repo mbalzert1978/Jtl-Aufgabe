@@ -3,6 +3,7 @@
 // </copyright>
 
 using SharedKernel.Abstractions;
+using SharedKernel.Models.Common;
 
 namespace Users.Application.Adapters;
 
@@ -67,15 +68,15 @@ internal static class ApplicationErrorFactory
     /// <param name="error">The domain error to convert.</param>
     /// <returns>An <see cref="IError"/> representing the application-level error.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="error"/> is null.</exception>
-    public static IError FromDomainError(Domain.DomainError error)
+    public static IError FromDomainError(DomainError error)
     {
         ArgumentNullException.ThrowIfNull(error);
 
         return error switch
         {
-            Domain.UserNotFound err => new NotFoundError(err.UserId),
-            Domain.EmptyUserName => new EmptyUserName(),
-            Domain.DatabaseError<Exception> err => new DatabaseError(err.Exception),
+            UserNotFound err => new NotFoundError(err.UserId),
+            SharedKernel.Models.Common.EmptyUserName => new EmptyUserName(),
+            DatabaseError<Exception> err => new DatabaseError(err.Exception),
             _ => new InternalError(UnknownErrorMessage),
         };
     }

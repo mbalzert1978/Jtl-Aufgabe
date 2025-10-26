@@ -5,7 +5,7 @@
 using System.Diagnostics;
 using SharedKernel.Abstractions;
 
-namespace Users.Domain;
+namespace SharedKernel.Models.Common;
 
 /// <summary>
 /// Represents domain-specific errors in the Users bounded context.
@@ -44,7 +44,7 @@ internal static class DomainErrorFactory
     /// <summary>
     /// Creates a <see cref="DomainError"/> representing an empty username validation error.
     /// </summary>
-    /// <returns>A <see cref="Domain.EmptyUserName"/> instance.</returns>
+    /// <returns>A <see cref="Common.EmptyUserName"/> instance.</returns>
     public static DomainError EmptyUserName() => new EmptyUserName();
 
     /// <summary>
@@ -65,7 +65,7 @@ internal static class DomainErrorFactory
     /// Creates a <see cref="DomainError"/> representing a user not found error.
     /// </summary>
     /// <param name="userId">The ID of the user that was not found.</param>
-    /// <returns>A <see cref="Domain.UserNotFound"/> instance.</returns>
+    /// <returns>A <see cref="Common.UserNotFound"/> instance.</returns>
     /// <exception cref="ArgumentException">Thrown when <paramref name="userId"/> is empty.</exception>
     public static DomainError UserNotFound(Guid userId) => new UserNotFound(userId);
 }

@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using Monads.Results;
 using SharedKernel.Abstractions;
-using Users.Domain;
+using SharedKernel.Models.Common;
 using Users.Domain.Abstractions;
 using Users.Domain.Models.Users;
 using static Monads.Results.ResultFactory;
-using static Users.Domain.DomainErrorFactory;
+using static SharedKernel.Models.Common.DomainErrorFactory;
 
 namespace Users.Application.Adapters;
 

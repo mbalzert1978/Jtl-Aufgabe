@@ -4,7 +4,7 @@
 
 using Monads.Results;
 using SharedKernel.Models;
-using Users.Domain;
+using SharedKernel.Models.Common;
 using Users.Domain.Models.Users;
 
 namespace Users.Domain.Abstractions;
