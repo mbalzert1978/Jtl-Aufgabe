@@ -26,4 +26,6 @@ app.UseAuthentication()
         c.Errors.UseProblemDetails();
     })
     .UseSwaggerGen();
+
+await app.Services.EnsureDatabaseCreated();
 await app.RunAsync();
