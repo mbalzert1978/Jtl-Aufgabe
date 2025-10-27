@@ -28,16 +28,18 @@ internal static class DescriptionFactory
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            DomainError error = DomainErrorFactory.Generic(
-                "Task description cannot be empty or whitespace."
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(Description),
+                "Description cannot be null, empty, or whitespace."
             );
             return Failure<Description, DomainError>(error);
         }
 
         if (value.Length > 4096)
         {
-            DomainError error = DomainErrorFactory.Generic(
-                "Task description cannot exceed 4096 characters."
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(Description),
+                "Description cannot exceed 4096 characters."
             );
             return Failure<Description, DomainError>(error);
         }
@@ -61,11 +63,6 @@ internal static class DescriptionFactory
     public static Description Rehydrate(string value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(value);
-
-        Debug.Assert(
-            !string.IsNullOrWhiteSpace(value),
-            "Rehydrated description must not be empty."
-        );
         return new(value);
     }
 }

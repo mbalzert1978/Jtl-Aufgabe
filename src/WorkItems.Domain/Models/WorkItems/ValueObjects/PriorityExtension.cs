@@ -50,7 +50,7 @@ internal static class PriorityExtension
     /// Converts a string representation of priority to a <see cref="Priority"/> enum value wrapped in a result.
     /// </summary>
     /// <param name="priority">The string representation of the priority.</param>
-    /// <returns>A result containing the corresponding <see cref="Priority"/> enum value or a
+    /// <returns>A result containing the corresponding <see cref="Priority"/> enum value or a domain error.</returns>
     public static Result<Priority, DomainError> TryIntoPriority(this string priority)
     {
         try
@@ -59,24 +59,11 @@ internal static class PriorityExtension
         }
         catch (UnreachableException)
         {
-            DomainError error = DomainErrorFactory.Generic("Invalid priority value.");
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(Priority),
+                $"Invalid task priority: '{priority}'."
+            );
             return Failure<Priority, DomainError>(error);
         }
-    }
-
-    /// <summary>
-    /// Validates whether the specified priority is a valid enum value.
-    /// </summary>
-    /// <param name="priority">The priority to validate.</param>
-    /// <returns>A result containing the validated priority or a domain error.</returns>
-    public static Result<Priority, DomainError> Validate(this Priority priority)
-    {
-        if (!Enum.IsDefined(typeof(Priority), priority))
-        {
-            DomainError error = DomainErrorFactory.Generic($"Invalid task priority: {priority}.");
-            return Failure<Priority, DomainError>(error);
-        }
-
-        return Success<Priority, DomainError>(priority);
     }
 }

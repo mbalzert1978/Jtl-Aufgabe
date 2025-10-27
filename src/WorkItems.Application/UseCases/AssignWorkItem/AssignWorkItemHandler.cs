@@ -7,6 +7,7 @@ using Mediator;
 using Monads.Results;
 using Monads.Results.Extensions.Async;
 using SharedKernel.Abstractions;
+using SharedKernel.Models;
 using WorkItems.Application.Adapters;
 using WorkItems.Domain.Abstractions;
 using WorkItems.Domain.Models.WorkItems;

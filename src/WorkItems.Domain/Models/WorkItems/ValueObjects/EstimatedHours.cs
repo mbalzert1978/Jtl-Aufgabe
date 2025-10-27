@@ -28,7 +28,10 @@ internal static class EstimatedHoursFactory
     {
         if (value < 0)
         {
-            DomainError error = DomainErrorFactory.Generic("Estimated hours cannot be negative.");
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(EstimatedHours),
+                "Estimated hours cannot be negative."
+            );
             return Failure<EstimatedHours, DomainError>(error);
         }
 

@@ -28,7 +28,10 @@ internal static class AssigneeIdFactory
     {
         if (value == Guid.Empty)
         {
-            DomainError error = DomainErrorFactory.Generic("Assignee ID cannot be empty.");
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(AssigneeId),
+                "Assignee ID cannot be an empty GUID."
+            );
             return Failure<AssigneeId, DomainError>(error);
         }
 
@@ -47,8 +50,6 @@ internal static class AssigneeIdFactory
     public static AssigneeId Rehydrate(Guid value)
     {
         ArgumentOutOfRangeException.ThrowIfEqual(value, Guid.Empty);
-
-        Debug.Assert(value != Guid.Empty, "Assignee ID must not be empty.");
         return new(value);
     }
 }

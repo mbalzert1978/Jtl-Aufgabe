@@ -4,6 +4,7 @@
 
 using System.Diagnostics;
 using Monads.Results;
+using Monads.Results.Extensions.Sync;
 using SharedKernel.Models.Common;
 using WorkItems.Domain.Models.WorkItems.ValueObjects;
 using static Monads.Results.ResultFactory;
@@ -67,6 +68,27 @@ internal static class StatusExtensions
     public static bool AllowsTransition(this Status current) => !current.IsTerminal();
 
     /// <summary>
+    /// Converts a string representation of status to a <see cref="Status"/> enum value wrapped in a result.
+    /// </summary>
+    /// <param name="status">The string representation of the status.</param>
+    /// <returns>A result containing the corresponding <see cref="Status"/> enum value or a domain error.</returns>
+    public static Result<Status, DomainError> TryIntoStatus(this string status)
+    {
+        try
+        {
+            return Success<Status, DomainError>(status.IntoStatus());
+        }
+        catch (UnreachableException)
+        {
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(Status),
+                $"Invalid task status: '{status}'."
+            );
+            return Failure<Status, DomainError>(error);
+        }
+    }
+
+    /// <summary>
     /// Validates whether a transition from the current status to a new status is allowed.
     /// </summary>
     /// <param name="current">The current task status.</param>
@@ -74,25 +96,26 @@ internal static class StatusExtensions
     /// <returns>A result indicating success or a domain error.</returns>
     public static Result<Status, DomainError> ValidateTransition(
         this Status current,
-        Status targetStatus
-    )
-    {
-        Debug.Assert(Enum.IsDefined(current), "Current status must be a valid WorkItemStatus.");
+        string targetStatus
+    ) =>
+        targetStatus
+            .TryIntoStatus()
+            .Bind(target =>
+            {
+                if (current.IsTerminal())
+                {
+                    DomainError error = DomainErrorFactory.Validation(
+                        nameof(Status),
+                        $"Cannot transition from terminal status '{current}'."
+                    );
+                    return Failure<Status, DomainError>(error);
+                }
 
-        if (!current.AllowsTransition())
-        {
-            DomainError error = DomainErrorFactory.Generic(
-                "Cannot change status of a completed or cancelled task."
-            );
-            return Failure<Status, DomainError>(error);
-        }
+                Debug.Assert(
+                    !current.IsTerminal(),
+                    "Current status must not be terminal for a valid transition."
+                );
 
-        if (!Enum.IsDefined(targetStatus))
-        {
-            DomainError error = DomainErrorFactory.Generic("Invalid task status.");
-            return Failure<Status, DomainError>(error);
-        }
-
-        return Success<Status, DomainError>(targetStatus);
-    }
+                return Success<Status, DomainError>(target);
+            });
 }

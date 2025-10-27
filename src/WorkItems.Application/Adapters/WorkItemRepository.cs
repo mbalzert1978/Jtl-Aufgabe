@@ -75,11 +75,12 @@ internal sealed class WorkItemRepository : IWorkItemRepository
     {
         try
         {
-            WorkItemEntity? entity =
-                _database.Query<WorkItemEntity>().FirstOrDefault(w => w.Id == id);
+            WorkItemEntity? entity = _database
+                .Query<WorkItemEntity>()
+                .FirstOrDefault(w => w.Id == id);
 
             if (entity is null)
-                return Failure<WorkItem, DomainError>(Generic($"Work item with ID {id} not found."));
+                return Failure<WorkItem, DomainError>(NotFound(id, typeof(WorkItemEntity)));
 
             Debug.Assert(entity.Id == id, "Retrieved entity ID does not match requested ID.");
 

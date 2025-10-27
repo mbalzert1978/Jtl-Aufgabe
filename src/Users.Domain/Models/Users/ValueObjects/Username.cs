@@ -42,9 +42,11 @@ internal static class UsernameFactory
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            Result<Username, DomainError> err = Failure<Username, DomainError>(EmptyUserName());
-            Debug.Assert(err.IsErr, "Expected error result");
-            return err;
+            DomainError error = Validation(
+                nameof(Username),
+                "Username cannot be null, empty, or whitespace."
+            );
+            return Failure<Username, DomainError>(error);
         }
 
         Result<Username, DomainError> ok = Success<Username, DomainError>(new(value));

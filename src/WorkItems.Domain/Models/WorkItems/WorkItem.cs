@@ -173,7 +173,7 @@ internal sealed class WorkItem : Entity, IAggregateRoot
     /// </summary>
     /// <param name="status">The new status.</param>
     /// <param name="timeProvider">The time provider for getting the current time.</param>
-    public Result<Unit, DomainError> UpdateStatus(Status status, TimeProvider timeProvider) =>
+    public Result<Unit, DomainError> UpdateStatus(string status, TimeProvider timeProvider) =>
         Status
             .ValidateTransition(status)
             .Map(newStatus =>
@@ -196,9 +196,9 @@ internal sealed class WorkItem : Entity, IAggregateRoot
     /// Updates the task priority.
     /// </summary>
     /// <param name="priority">The new priority level.</param>
-    public Result<Unit, DomainError> UpdatePriority(Priority priority) =>
+    public Result<Unit, DomainError> UpdatePriority(string priority) =>
         priority
-            .Validate()
+            .TryIntoPriority()
             .Map(newPriority =>
             {
                 Priority = newPriority;

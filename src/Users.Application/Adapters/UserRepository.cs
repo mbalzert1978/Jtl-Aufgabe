@@ -58,7 +58,7 @@ internal sealed class UserRepository : IUserRepository
             UserEntity? entity = _database.Query<UserEntity>().FirstOrDefault(u => u.UserId == id);
 
             if (entity is null)
-                return Failure<User, DomainError>(UserNotFound(id));
+                return Failure<User, DomainError>(NotFound(id, typeof(UserEntity)));
 
             Debug.Assert(entity.UserId == id, "Retrieved entity ID does not match requested ID.");
             Debug.Assert(entity.Tasks is not null, "Tasks collection must not be null.");

@@ -41,7 +41,10 @@ internal static class DueDateFactory
 
         if (value <= now)
         {
-            DomainError error = DomainErrorFactory.Generic("Due date must be in the future.");
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(DueDate),
+                "Due date must be in the future."
+            );
             return Failure<DueDate, DomainError>(error);
         }
 
@@ -59,9 +62,7 @@ internal static class DueDateFactory
     public static DueDate Rehydrate(DateTimeOffset? value)
     {
         if (!value.HasValue)
-            return new DueDate(DateTimeOffset.MaxValue);
-
-        Debug.Assert(value.HasValue, "Due date value must have a value here.");
-        return new DueDate(value.Value);
+            return new(DateTimeOffset.MaxValue);
+        return new(value.Value);
     }
 }

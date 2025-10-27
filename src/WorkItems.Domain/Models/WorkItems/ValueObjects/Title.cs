@@ -28,16 +28,18 @@ internal static class TitleFactory
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            DomainError error = DomainErrorFactory.Generic(
-                "Task title cannot be empty or whitespace."
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(Title),
+                "Title cannot be empty or whitespace."
             );
             return Failure<Title, DomainError>(error);
         }
 
         if (value.Length > 100)
         {
-            DomainError error = DomainErrorFactory.Generic(
-                "Task title cannot exceed 100 characters."
+            DomainError error = DomainErrorFactory.Validation(
+                nameof(Title),
+                "Title cannot exceed 100 characters."
             );
             return Failure<Title, DomainError>(error);
         }
@@ -58,8 +60,6 @@ internal static class TitleFactory
     public static Title Rehydrate(string value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(value);
-
-        Debug.Assert(!string.IsNullOrWhiteSpace(value), "Title must not be null or whitespace.");
         return new(value);
     }
 }
