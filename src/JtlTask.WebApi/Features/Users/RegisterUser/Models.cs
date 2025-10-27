@@ -32,6 +32,7 @@ internal sealed record UserRegisteredEvent(Guid UserId) : IEvent;
 /// </summary>
 internal sealed class RegisterUserRequestValidator : Validator<RegisterUserRequest>
 {
+    private const int MinUsernameLength = 3;
     private const int MaxUsernameLength = 200;
 
     /// <summary>
@@ -41,6 +42,10 @@ internal sealed class RegisterUserRequestValidator : Validator<RegisterUserReque
         RuleFor(x => x.Username)
             .NotEmpty()
             .WithMessage("Username is required.")
+            .MinimumLength(MinUsernameLength)
+            .WithMessage($"Username must be at least {MinUsernameLength} characters long.")
             .MaximumLength(MaxUsernameLength)
-            .WithMessage($"Username must be less than {MaxUsernameLength} characters long.");
+            .WithMessage($"Username must be less than {MaxUsernameLength} characters long.")
+            .Matches(@"^[a-zA-Z0-9_-]+$")
+            .WithMessage("Username may only contain letters, numbers, underscores and hyphens.");
 }
