@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Mediator;
+using Microsoft.Extensions.DependencyInjection;
 using SharedKernel;
 using SharedKernel.Abstractions;
 using Users.Application.Adapters;
@@ -12,10 +13,9 @@ public static class DependencyInjection
     public static IServiceCollection AddUserApplicationLayer(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<
-            ICommandHandler<RegisterUserCommand, UserEntity>,
-            RegisterUserCommandHandler
-        >();
+        services.AddScoped<IMediator, Mediator.Mediator>();
+        // csharpier-ignore
+        services.AddScoped<ICommandHandler<RegisterUserCommand, UserEntity>, RegisterUserCommandHandler>();
         return services;
     }
 }
