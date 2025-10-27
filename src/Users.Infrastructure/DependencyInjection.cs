@@ -14,7 +14,9 @@ public static class DependencyInjection
     public static IServiceCollection AddUserInfrastructureLayer(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
-        services.AddDbContext<UsersDbContext>(opt => opt.UseSqlite("Data Source=.users.db"));
+        services.AddDbContext<UsersDbContext>(opt =>
+            opt.UseSqlite("Data Source=/app/data/.users.db")
+        );
         services.AddScoped<IUsersDatabase>(p => p.GetRequiredService<UsersDbContext>());
         return services;
     }
