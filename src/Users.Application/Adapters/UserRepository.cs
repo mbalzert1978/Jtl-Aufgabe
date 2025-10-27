@@ -51,17 +51,27 @@ internal sealed class UserRepository : IUserRepository
         CancellationToken cancellationToken = default
     )
     {
+        Debug.Assert(id != Guid.Empty, "User ID must not be empty.");
+
         try
         {
-            return (await _database.GetAsync<UserEntity>(cancellationToken)).FirstOrDefault(u =>
-                u.UserId == id
-            ) switch
-            {
-                UserEntity e => Success<User, DomainError>(
-                    User.Rehydrate(e.UserId, e.Username, e.Tasks.Select(t => t.TaskId))
-                ),
-                _ => Failure<User, DomainError>(UserNotFound(id)),
-            };
+            UserEntity? entity = _database.Query<UserEntity>().FirstOrDefault(u => u.UserId == id);
+
+            if (entity is null)
+                return Failure<User, DomainError>(UserNotFound(id));
+
+            Debug.Assert(entity.UserId == id, "Retrieved entity ID does not match requested ID.");
+            Debug.Assert(entity.Tasks is not null, "Tasks collection must not be null.");
+
+            var user = User.Rehydrate(
+                entity.UserId,
+                entity.Username,
+                entity.Tasks.Select(t => t.TaskId)
+            );
+
+            Debug.Assert(user.Id == id, "Rehydrated user ID does not match.");
+
+            return Success<User, DomainError>(user);
         }
         catch (Exception exc)
         {
