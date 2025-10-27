@@ -2,7 +2,7 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-namespace SharedKernel.Abstractions;
+namespace Mediator;
 
 /// <summary>
 /// Represents a command in the CQRS pattern that produces a response.

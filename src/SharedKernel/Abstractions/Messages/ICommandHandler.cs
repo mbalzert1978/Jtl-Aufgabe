@@ -3,9 +3,9 @@
 // </copyright>
 
 using Monads.Results;
-using SharedKernel;
+using SharedKernel.Abstractions;
 
-namespace SharedKernel.Abstractions;
+namespace Mediator;
 
 /// <summary>
 /// Defines a handler for processing commands in the CQRS pattern.
