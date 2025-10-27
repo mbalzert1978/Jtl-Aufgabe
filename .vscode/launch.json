@@ -25,9 +25,34 @@
             }
         },
         {
+            "name": "Docker Compose: Launch",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "docker-compose",
+            "runtimeArgs": [
+                "up",
+                "--build"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "postDebugTask": "docker-compose-down",
+            "serverReadyAction": {
+                "pattern": "jtltask-web-api.*Now listening on:\\s+(http://[^:]+:\\d+)",
+                "uriFormat": "http://localhost:5050/swagger",
+                "action": "openExternally"
+            }
+        },
+        {
             "name": "Attach to JtlTask.WebApi",
             "type": "coreclr",
             "request": "attach"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Docker Compose: Full",
+            "configurations": ["Docker Compose: Launch"],
+            "stopAll": true
         }
     ]
 }

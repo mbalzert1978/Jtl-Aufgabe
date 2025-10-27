@@ -9,9 +9,15 @@
                 "build",
                 "${workspaceFolder}/src/JtlTask.WebApi/JtlTask.WebApi.csproj",
                 "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+                "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "docker-compose-down",
+            "type": "shell",
+            "command": "docker-compose down",
+            "problemMatcher": []
         }
     ]
 }
