@@ -31,7 +31,7 @@ public class GetUserByIdTests(App app) : TestBase<App>
     public async Task GetUserById_WhenUserExists_ShouldReturnOkWithUserData()
     {
         // Arrange: First create a user
-        string username = "testuser_getbyid";
+        string username = "testUser_getById";
         (HttpResponseMessage? createRsp, RegisterUserResponse? createRes) =
             await app.Client.POSTAsync<
                 RegisterUserEndpoint,
