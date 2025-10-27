@@ -27,3 +27,13 @@ public interface IDatabase
     Task AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
         where TEntity : class;
 }
+
+/// <summary>
+/// Represents the database operations specific to user entities.
+/// </summary>
+public interface IUsersDatabase : IDatabase;
+
+/// <summary>
+/// Represents the database operations specific to work item entities.
+/// </summary>
+public interface IWorkItemsDatabase : IDatabase;
