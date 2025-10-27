@@ -22,7 +22,8 @@ bld.Services.AddWorkItemApplicationLayer();
 bld.Services.AddWorkItemInfrastructureLayer();
 
 WebApplication app = bld.Build();
-app.UseAuthentication()
+app.UseDefaultExceptionHandler()
+    .UseAuthentication()
     .UseAuthorization()
     .UseFastEndpoints(c =>
     {
