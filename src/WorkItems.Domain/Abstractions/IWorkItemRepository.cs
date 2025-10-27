@@ -19,7 +19,6 @@ internal interface IWorkItemRepository
     /// Retrieves a work item by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the work item to retrieve.</param>
-    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A result containing the work item if found, or a domain error if the work item does not exist or an error occurred.
     /// </returns>
@@ -27,10 +26,7 @@ internal interface IWorkItemRepository
     /// Returns a <see cref="DomainError"/> with type 'NotFound' if no work item with the specified identifier exists.
     /// Returns a <see cref="DomainError"/> with type 'Database' if a database operation fails.
     /// </remarks>
-    Task<Result<WorkItem, DomainError>> GetByIdAsync(
-        Guid id,
-        CancellationToken cancellationToken = default
-    );
+    Result<WorkItem, DomainError> GetById(Guid id);
 
     /// <summary>
     /// Adds a new work item to the repository.

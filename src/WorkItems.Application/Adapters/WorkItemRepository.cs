@@ -68,10 +68,7 @@ internal sealed class WorkItemRepository : IWorkItemRepository
     }
 
     /// <inheritdoc/>
-    public async Task<Result<WorkItem, DomainError>> GetByIdAsync(
-        Guid id,
-        CancellationToken cancellationToken = default
-    )
+    public Result<WorkItem, DomainError> GetById(Guid id)
     {
         try
         {

@@ -20,18 +20,14 @@ namespace Users.Domain.Abstractions;
 internal interface IUserRepository
 {
     /// <summary>
-    /// Retrieves a user by their unique identifier asynchronously.
+    /// Retrieves a user by their unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the user to retrieve.</param>
-    /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
     /// <returns>
     /// A task that represents the asynchronous operation. The task result contains
     /// a <see cref="Result{TSuccess, TError}"/> with the user if found; otherwise, an error.
     /// </returns>
-    Task<Result<User, DomainError>> GetByIdAsync(
-        Guid id,
-        CancellationToken cancellationToken = default
-    );
+    Result<User, DomainError> GetById(Guid id);
 
     /// <summary>
     /// Adds a new user to the repository asynchronously.

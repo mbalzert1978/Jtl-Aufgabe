@@ -42,10 +42,7 @@ internal sealed class UserRepository : IUserRepository
         return Success<Unit, DomainError>(default);
     }
 
-    public async Task<Result<User, DomainError>> GetByIdAsync(
-        Guid id,
-        CancellationToken cancellationToken = default
-    )
+    public Result<User, DomainError> GetById(Guid id)
     {
         Debug.Assert(id != Guid.Empty, "User ID must not be empty.");
 
