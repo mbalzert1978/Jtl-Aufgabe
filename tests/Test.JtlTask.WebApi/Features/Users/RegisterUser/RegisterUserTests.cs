@@ -14,143 +14,128 @@ public class RegisterUserTests(App app) : TestBase<App>
     [Fact, Priority(1)]
     public async Task RegisterUser_WhenUsernameIsEmpty_ShouldReturnBadRequest()
     {
-        (HttpResponseMessage? rsp, ProblemDetails? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            ProblemDetails
-        >(new(string.Empty));
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder.New(app).WithEmptyUsername();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        res.Errors.ShouldNotBeEmpty();
-        res.Errors.Any(e => e.Name == "username").ShouldBeTrue();
+        TestResult<ProblemDetails> result = await builder.ExecuteProblemAsync();
+
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        result.Result.Errors.ShouldNotBeEmpty();
+        result.Result.Errors.Any(e => e.Name == "username").ShouldBeTrue();
     }
 
     [Fact, Priority(2)]
     public async Task RegisterUser_WhenUsernameTooShort_ShouldReturnBadRequest()
     {
-        (HttpResponseMessage? rsp, ProblemDetails? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            ProblemDetails
-        >(new("ab"));
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder.New(app).WithUsernameTooShort();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        res.Errors.ShouldNotBeEmpty();
-        res.Errors.Any(e => e.Name == "username").ShouldBeTrue();
+        TestResult<ProblemDetails> result = await builder.ExecuteProblemAsync();
+
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        result.Result.Errors.ShouldNotBeEmpty();
+        result.Result.Errors.Any(e => e.Name == "username").ShouldBeTrue();
     }
 
     [Fact, Priority(3)]
     public async Task RegisterUser_WhenUsernameTooLong_ShouldReturnBadRequest()
     {
-        string longUsername = new('a', 201);
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder.New(app).WithUsernameTooLong();
 
-        (HttpResponseMessage? rsp, ProblemDetails? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            ProblemDetails
-        >(new(longUsername));
+        TestResult<ProblemDetails> result = await builder.ExecuteProblemAsync();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        res.Errors.ShouldNotBeEmpty();
-        res.Errors.Any(e => e.Name == "username").ShouldBeTrue();
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        result.Result.Errors.ShouldNotBeEmpty();
+        result.Result.Errors.Any(e => e.Name == "username").ShouldBeTrue();
     }
 
     [Fact, Priority(4)]
     public async Task RegisterUser_WhenUsernameContainsInvalidCharacters_ShouldReturnBadRequest()
     {
-        (HttpResponseMessage? rsp, ProblemDetails? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            ProblemDetails
-        >(new("user@name!"));
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder
+            .New(app)
+            .WithInvalidCharacters();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        res.Errors.ShouldNotBeEmpty();
-        res.Errors.Any(e => e.Name == "username").ShouldBeTrue();
+        TestResult<ProblemDetails> result = await builder.ExecuteProblemAsync();
+
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        result.Result.Errors.ShouldNotBeEmpty();
+        result.Result.Errors.Any(e => e.Name == "username").ShouldBeTrue();
     }
 
     [Fact, Priority(5)]
     public async Task RegisterUser_WhenValidUsername_ShouldReturnCreatedWithUserData()
     {
         string username = "validUser123";
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder
+            .New(app)
+            .WithValidUser(username);
 
-        (HttpResponseMessage? rsp, RegisterUserResponse? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            RegisterUserResponse
-        >(new(username));
+        TestResult<RegisterUserResponse> result = await builder.ExecuteAsync();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.Created);
-        res.ShouldNotBeNull();
-        res.UserId.ShouldNotBe(Guid.Empty);
-        res.Username.ShouldBe(username);
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        result.Result.ShouldNotBeNull();
+        result.Result.UserId.ShouldNotBe(Guid.Empty);
+        result.Result.Username.ShouldBe(username);
     }
 
     [Fact, Priority(6)]
     public async Task RegisterUser_WhenValidUsernameWithUnderscores_ShouldReturnCreated()
     {
         string username = "valid_user_123";
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder
+            .New(app)
+            .WithValidUser(username);
 
-        (HttpResponseMessage? rsp, RegisterUserResponse? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            RegisterUserResponse
-        >(new(username));
+        TestResult<RegisterUserResponse> result = await builder.ExecuteAsync();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.Created);
-        res.ShouldNotBeNull();
-        res.UserId.ShouldNotBe(Guid.Empty);
-        res.Username.ShouldBe(username);
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        result.Result.ShouldNotBeNull();
+        result.Result.UserId.ShouldNotBe(Guid.Empty);
+        result.Result.Username.ShouldBe(username);
     }
 
     [Fact, Priority(7)]
     public async Task RegisterUser_WhenValidUsernameWithHyphens_ShouldReturnCreated()
     {
         string username = "valid-user-456";
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder
+            .New(app)
+            .WithValidUser(username);
 
-        (HttpResponseMessage? rsp, RegisterUserResponse? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            RegisterUserResponse
-        >(new(username));
+        TestResult<RegisterUserResponse> result = await builder.ExecuteAsync();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.Created);
-        res.ShouldNotBeNull();
-        res.UserId.ShouldNotBe(Guid.Empty);
-        res.Username.ShouldBe(username);
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        result.Result.ShouldNotBeNull();
+        result.Result.UserId.ShouldNotBe(Guid.Empty);
+        result.Result.Username.ShouldBe(username);
     }
 
     [Fact, Priority(8)]
     public async Task RegisterUser_WhenMinimumLengthUsername_ShouldReturnCreated()
     {
-        string username = "abc";
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder
+            .New(app)
+            .WithMinimumLengthUsername();
 
-        (HttpResponseMessage? rsp, RegisterUserResponse? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            RegisterUserResponse
-        >(new(username));
+        TestResult<RegisterUserResponse> result = await builder.ExecuteAsync();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.Created);
-        res.ShouldNotBeNull();
-        res.UserId.ShouldNotBe(Guid.Empty);
-        res.Username.ShouldBe(username);
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        result.Result.ShouldNotBeNull();
+        result.Result.UserId.ShouldNotBe(Guid.Empty);
+        result.Result.Username.Length.ShouldBe(3);
     }
 
     [Fact, Priority(9)]
     public async Task RegisterUser_WhenMaximumLengthUsername_ShouldReturnCreated()
     {
-        string username = new('a', 200);
+        RegisterUserTestsBuilder builder = RegisterUserTestsBuilder
+            .New(app)
+            .WithMaximumLengthUsername();
 
-        (HttpResponseMessage? rsp, RegisterUserResponse? res) = await app.Client.POSTAsync<
-            Endpoint,
-            RegisterUserRequest,
-            RegisterUserResponse
-        >(new(username));
+        TestResult<RegisterUserResponse> result = await builder.ExecuteAsync();
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.Created);
-        res.ShouldNotBeNull();
-        res.UserId.ShouldNotBe(Guid.Empty);
-        res.Username.ShouldBe(username);
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        result.Result.ShouldNotBeNull();
+        result.Result.UserId.ShouldNotBe(Guid.Empty);
+        result.Result.Username.Length.ShouldBe(200);
     }
 }
