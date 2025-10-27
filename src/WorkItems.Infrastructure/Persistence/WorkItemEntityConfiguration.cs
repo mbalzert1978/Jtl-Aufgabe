@@ -37,11 +37,11 @@ internal sealed class WorkItemEntityConfiguration : IEntityTypeConfiguration<Wor
 
         builder.Property(e => e.EstimatedHours).IsRequired();
 
-        builder.Property(e => e.DueDate).IsRequired(false);
+        builder.Property(e => e.DueDate);
 
-        builder.Property(e => e.CompletedAt).IsRequired(false);
+        builder.Property(e => e.CompletedAt);
 
-        builder.Property(e => e.ParentTaskId).IsRequired(false);
+        builder.Property(e => e.ParentTaskId);
 
         builder.OwnsMany(
             e => e.Tags,

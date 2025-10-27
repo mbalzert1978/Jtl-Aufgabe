@@ -60,7 +60,7 @@ public sealed class WorkItemEntity
     /// <summary>
     /// Gets or sets the tags associated with this task.
     /// </summary>
-    public IEnumerable<WorkItemTag> Tags { get; set; }
+    public ICollection<WorkItemTag> Tags { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the parent task if this is a subtask.
@@ -96,7 +96,7 @@ public sealed class WorkItemEntity
         DateTimeOffset? dueDate,
         DateTimeOffset? completedAt,
         int estimatedHours,
-        IEnumerable<WorkItemTag> tags,
+        ICollection<WorkItemTag> tags,
         Guid parentTaskId
     )
     {

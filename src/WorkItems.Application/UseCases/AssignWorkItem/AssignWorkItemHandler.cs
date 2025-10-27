@@ -82,7 +82,7 @@ internal sealed class AssignWorkItemHandler : ICommandHandler<AssignWorkItemComm
                         workItem.DueDate?.Value,
                         workItem.CompletedAt,
                         workItem.EstimatedHours.Value,
-                        workItem.Tags.Value.Select(tag => new WorkItemTag(tag)),
+                        [.. workItem.Tags.Value.Select(tag => new WorkItemTag(tag))],
                         workItem.ParentTaskId
                     ))
             )
