@@ -16,7 +16,7 @@ namespace WorkItems.Infrastructure.Persistence;
 /// This context manages the persistence of work item aggregates using Entity Framework Core.
 /// Configured to use an in-memory database for development and testing purposes.
 /// </remarks>
-public sealed class WorkItemsDbContext : DbContext, IDatabase
+public sealed class WorkItemsDbContext : DbContext, IWorkItemsDatabase
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="WorkItemsDbContext"/> class.

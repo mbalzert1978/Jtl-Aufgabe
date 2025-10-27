@@ -18,14 +18,14 @@ namespace WorkItems.Application.Adapters;
 /// </summary>
 internal sealed class WorkItemRepository : IWorkItemRepository
 {
-    private readonly IDatabase _database;
+    private readonly IWorkItemsDatabase _database;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WorkItemRepository"/> class.
     /// </summary>
     /// <param name="database">The database instance.</param>
     /// <exception cref="ArgumentNullException">Thrown when database is null.</exception>
-    public WorkItemRepository(IDatabase database)
+    public WorkItemRepository(IWorkItemsDatabase database)
     {
         ArgumentNullException.ThrowIfNull(database);
 
@@ -52,7 +52,7 @@ internal sealed class WorkItemRepository : IWorkItemRepository
                 workItem.DueDate?.Value,
                 workItem.CompletedAt,
                 workItem.EstimatedHours.Value,
-                workItem.Tags.Value.Select(tag => new WorkItemTag(tag)),
+                [.. workItem.Tags.Value.Select(tag => new WorkItemTag(tag))],
                 workItem.ParentTaskId
             );
             Debug.Assert(entity.Id == workItem.Id, "WorkItemEntity ID does not match");
