@@ -18,12 +18,6 @@ namespace SharedKernel.Models.Common;
 internal abstract record DomainError;
 
 /// <summary>
-/// Represents a generic domain error with a message. TODO: dev only remove later
-/// </summary>
-/// <param name="Message"></param>
-internal sealed record GenericDomainError(string Message) : DomainError;
-
-/// <summary>
 /// Represents an error when a user with the specified ID was not found.
 /// </summary>
 /// <param name="Id">The ID of the user that was not found.</param>
@@ -31,9 +25,9 @@ internal sealed record GenericDomainError(string Message) : DomainError;
 internal sealed record NotFound(Guid Id, Type Type) : DomainError;
 
 /// <summary>
-/// Represents a validation error when a username is empty or whitespace.
+/// Represents a validation error.
 /// </summary>
-internal sealed record EmptyUserName : DomainError;
+internal sealed record Validation(string Field, string Detail) : DomainError;
 
 /// <summary>
 /// Represents a database error that occurred during an operation.
@@ -49,10 +43,19 @@ internal sealed record DatabaseError<TException>(TException Exception) : DomainE
 internal static class DomainErrorFactory
 {
     /// <summary>
-    /// Creates a <see cref="DomainError"/> representing an empty username validation error.
+    /// Creates a <see cref="DomainError"/> representing a user not found error.
     /// </summary>
-    /// <returns>A <see cref="Common.EmptyUserName"/> instance.</returns>
-    public static DomainError EmptyUserName() => new EmptyUserName();
+    /// <param name="id">The ID of the user that was not found.</param>
+    /// <param name="type">The type of the entity that was not found.</param>
+    public static DomainError NotFound(Guid id, Type type) => new NotFound(id, type);
+
+    /// <summary>
+    /// Creates a <see cref="DomainError"/> representing a validation error.
+    /// </summary>
+    /// <param name="Field">The name of the field that failed validation.</param>
+    /// <param name="Detail">The detail of the validation error.</param>
+    public static DomainError Validation(string Field, string Detail) =>
+        new Validation(Field, Detail);
 
     /// <summary>
     /// Creates a <see cref="DomainError"/> representing a database error.
@@ -66,22 +69,5 @@ internal static class DomainErrorFactory
         ArgumentNullException.ThrowIfNull(exception);
 
         return new DatabaseError<TException>(exception);
-    }
-
-    /// <summary>
-    /// Creates a <see cref="DomainError"/> representing a user not found error.
-    /// </summary>
-    /// <param name="id">The ID of the user that was not found.</param>
-    /// <param name="type">The type of the entity that was not found.</param>
-    public static DomainError NotFound(Guid id, Type type) =>
-        new NotFound(id, type);
-
-    public static DomainError Generic(string message)
-    {
-        Debug.Assert(
-            !string.IsNullOrWhiteSpace(message),
-            "Error message cannot be null or whitespace."
-        );
-        return new GenericDomainError(message);
     }
 }
