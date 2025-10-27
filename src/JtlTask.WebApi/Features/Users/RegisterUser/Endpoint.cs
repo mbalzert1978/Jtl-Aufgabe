@@ -118,11 +118,6 @@ internal sealed class Endpoint
 
         switch (error.ErrorType)
         {
-            case ErrorType.NotFound:
-                AddError(error.Message);
-                await Send.ErrorsAsync(StatusCodes.Status404NotFound, ct);
-                break;
-
             case ErrorType.Validation:
                 AddError(error.Message);
                 await Send.ErrorsAsync(StatusCodes.Status400BadRequest, ct);
