@@ -113,9 +113,9 @@ JtlTask.slnx
 │   └── WorkItems.Infrastructure/          # WorkItems bounded context - Infrastructure
 │
 ├── tests/
-│   ├── Test.JtlTask.WebApi/              # Integration tests
-│   ├── Tests.Users/                       # Users module unit tests
-│   └── Tests.WorkItems/                   # WorkItems module unit tests
+│   ├── Test.JtlTask.WebApi/               # End to End tests
+│   ├── Tests.Users/                       # Users module architecture and unit tests
+│   └── Tests.WorkItems/                   # WorkItems module architecture and unit tests
 │
 ├── data/                                  # SQLite databases (persistent volume)
 │   ├── users.db
