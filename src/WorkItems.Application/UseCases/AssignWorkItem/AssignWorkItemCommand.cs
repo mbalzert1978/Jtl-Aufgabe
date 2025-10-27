@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using Mediator;
 using WorkItems.Application.Adapters;
 
-namespace WorkItems.Application.UseCases.AssignTask;
+namespace WorkItems.Application.UseCases.AssignWorkItem;
 
 /// <summary>
 /// Command to assign a WorkItem to an assignee.
