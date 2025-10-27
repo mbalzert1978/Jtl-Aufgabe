@@ -58,9 +58,9 @@ public sealed class WorkItemEntity
     public int EstimatedHours { get; set; }
 
     /// <summary>
-    /// Gets or sets the tags associated with this task as a comma-separated string.
+    /// Gets or sets the tags associated with this task.
     /// </summary>
-    public IEnumerable<string> Tags { get; set; }
+    public IEnumerable<WorkItemTag> Tags { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the parent task if this is a subtask.
@@ -84,7 +84,7 @@ public sealed class WorkItemEntity
     /// <param name="dueDate">The due date.</param>
     /// <param name="completedAt">The completion date.</param>
     /// <param name="estimatedHours">The estimated hours.</param>
-    /// <param name="tags">The tags as comma-separated string.</param>
+    /// <param name="tags">The tags collection.</param>
     /// <param name="parentTaskId">The parent task identifier.</param>
     public WorkItemEntity(
         Guid id,
@@ -96,7 +96,7 @@ public sealed class WorkItemEntity
         DateTimeOffset? dueDate,
         DateTimeOffset? completedAt,
         int estimatedHours,
-        IEnumerable<string> tags,
+        IEnumerable<WorkItemTag> tags,
         Guid parentTaskId
     )
     {
