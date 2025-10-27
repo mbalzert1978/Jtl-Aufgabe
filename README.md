@@ -13,31 +13,74 @@ The project emphasizes architectural quality, maintainability, and testability t
 
 ## 🏗️ Architecture
 
-### Layered Architecture
+### Layered Architecture (Clean Architecture)
 
 ```bash
 ┌─────────────────────────────────────────────────────────────┐
 │                    Presentation Layer                       │
 │              (JtlTask.WebApi - FastEndpoints)               │
+│                                                             │
+│  • Endpoints (HTTP)                                         │
+│  • Request/Response DTOs                                    │
+│  • Validators (FluentValidation)                            │
 └─────────────────────────────────────────────────────────────┘
-                              ↓
+        │                                          │
+        │ depends on                               │ depends on
+        ↓                                          ↓
+┌──────────────────────────────┐    ┌──────────────────────────────┐
+│    Application Layer         │    │   Infrastructure Layer       │
+│  (*.Application)             │    │  (*.Infrastructure)          │
+│                              │    │                              │
+│  • Command Handlers          │    │  • EF Core DbContext         │
+│  • Query Handlers            │    │  • Repository Implementations│
+│  • DTOs/Adapters             │    │  • External Services         │
+└──────────────────────────────┘    └──────────────────────────────┘
+        │                                          │
+        │ depends on                               │ depends on
+        ↓                                          ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                   Application Layer                         │
-│        (*.Application - Commands, Queries, Handlers)        │
-└─────────────────────────────────────────────────────────────┘
-                              ↓
-┌─────────────────────────────────────────────────────────────┐
-│                   Domain Layer                              │
-│      (*.Domain - Entities, Value Objects, Repositories)     │
-└─────────────────────────────────────────────────────────────┘
-                              ↓
-┌─────────────────────────────────────────────────────────────┐
-│                 Infrastructure Layer                        │
-│        (*.Infrastructure - DbContext, Repositories)         │
+│                      Domain Layer                           │
+│                    (*.Domain - Core)                        │
+│                                                             │
+│  • Entities & Aggregates                                    │
+│  • Value Objects                                            │
+│  • Domain Services                                          │
+│  • Repository Interfaces                                    │
+│  • Business Rules                                           │
+│                                                             │
+│  ⚠️  NO dependencies on outer layers                        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Dependency Flow:** `WebApi → Infrastructure → Application → Domain`
+**Dependency Rule (The Dependency Inversion Principle):**
+
+- **Domain Layer**: No dependencies → Application core
+- **Application Layer**: Depends on Domain
+- **Infrastructure Layer**: Depends on Domain (implements Repository interfaces)
+- **Presentation Layer**: Depends on Application + Infrastructure (for DI registration)
+
+**Why Infrastructure is not "below" Domain:**
+
+1. **Domain defines interfaces** (`IUserRepository`)
+2. **Infrastructure implements them** (`UserRepository : IUserRepository`)
+3. **Dependency direction**: Infrastructure → Domain (not the other way!)
+4. **Dependency Injection**: Presentation Layer registers Infrastructure implementations for Domain interfaces
+
+**Runtime call flow** (different from dependency direction):
+
+```bash
+HTTP Request
+    ↓
+Presentation (Endpoint)
+    ↓
+Application (Handler)
+    ↓
+Domain (Business Logic)
+    ↓
+Infrastructure (Repository) ← via Interface abstraction
+    ↓
+Database
+```
 
 ### Bounded Contexts (Modules)
 
@@ -581,10 +624,10 @@ docker volume ls
 docker volume inspect jtltask-data
 
 # Backup database
-docker cp jtltask-web-api:/app/data/users.db ./backup/
+docker cp jtltask-webapi:/app/data/users.db ./backup/
 
 # Restore database
-docker cp ./backup/users.db jtltask-web-api:/app/data/
+docker cp ./backup/users.db jtltask-webapi:/app/data/
 ```
 
 ---
