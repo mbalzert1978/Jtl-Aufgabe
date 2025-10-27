@@ -5,6 +5,8 @@ global using JtlTask.WebApi;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Test.JtlTask.WebApi")]
+[assembly: InternalsVisibleTo("Tests.Users")]
+[assembly: InternalsVisibleTo("Tests.WorkItems")]
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
     "Style",
