@@ -3,11 +3,11 @@
 // </copyright>
 
 using System.Diagnostics;
+using Mediator;
 using Monads.Results;
 using Monads.Results.Extensions.Async;
 using SharedKernel.Abstractions;
 using Users.Application.Adapters;
-using Users.Domain;
 using Users.Domain.Abstractions;
 using Users.Domain.Models.Users;
 

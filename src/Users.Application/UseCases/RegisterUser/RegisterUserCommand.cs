@@ -2,8 +2,8 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
+using Mediator;
 using Monads.Results;
-using SharedKernel.Abstractions;
 using Users.Application.Adapters;
 
 namespace Users.Application.UseCases.RegisterUser;
