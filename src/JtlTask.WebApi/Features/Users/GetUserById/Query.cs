@@ -5,7 +5,7 @@
 using System.Diagnostics;
 using Users.Application.Adapters;
 
-namespace JtlTask.WebApi.Features.User.GetUserById;
+namespace JtlTask.WebApi.Features.Users.GetUserById;
 
 /// <summary>
 /// Represents a query to retrieve a user by their unique identifier.

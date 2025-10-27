@@ -2,7 +2,7 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-namespace JtlTask.WebApi.Features.User.GetUserById;
+namespace JtlTask.WebApi.Features.Users.GetUserById;
 
 /// <summary>
 /// Request to get a user by their unique identifier.

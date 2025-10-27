@@ -7,7 +7,7 @@ using FastEndpoints;
 using JtlTask.WebApi.Features.User.RegisterUser;
 using Users.Application.Adapters;
 
-namespace JtlTask.WebApi.Features.User.GetUserById;
+namespace JtlTask.WebApi.Features.Users.GetUserById;
 
 /// <summary>
 /// Maps between <see cref="RegisterUserRequest"/>, <see cref="RegisterUserResponse"/>, and <see cref="UserEntity"/>.

@@ -6,7 +6,7 @@ using System.Diagnostics;
 using Users.Application.Adapters;
 using Users.Infrastructure.Persistence;
 
-namespace JtlTask.WebApi.Features.User.GetUserById;
+namespace JtlTask.WebApi.Features.Users.GetUserById;
 
 /// <summary>
 /// Handles the execution of register user commands by delegating to the application layer.

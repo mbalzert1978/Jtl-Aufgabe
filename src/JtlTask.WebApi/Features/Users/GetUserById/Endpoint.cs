@@ -7,7 +7,7 @@ using System.Net;
 using FastEndpoints;
 using Users.Application.Adapters;
 
-namespace JtlTask.WebApi.Features.User.GetUserById;
+namespace JtlTask.WebApi.Features.Users.GetUserById;
 
 /// <summary>
 /// Endpoint for registering a new user in the system.
