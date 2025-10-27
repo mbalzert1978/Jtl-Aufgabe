@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Time.Testing;
 
 namespace Test.JtlTask.WebApi;
 
@@ -17,7 +19,10 @@ public class App : AppFixture<Program>
 
     protected override void ConfigureServices(IServiceCollection s)
     {
-        // do service configuration here
+        s.RemoveAll<TimeProvider>();
+
+        FakeTimeProvider provider = new(new(2025, 10, 27, 12, 0, 0, TimeSpan.Zero));
+        s.AddSingleton<TimeProvider>(provider);
     }
 
     protected override ValueTask TearDownAsync()
