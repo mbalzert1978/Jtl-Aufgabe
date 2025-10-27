@@ -75,27 +75,29 @@ internal sealed class WorkItemRepository : IWorkItemRepository
     {
         try
         {
-            return (await _database.GetAsync<WorkItemEntity>(cancellationToken)).FirstOrDefault(w =>
-                w.Id == id
-            ) switch
-            {
-                WorkItemEntity e => Success<WorkItem, DomainError>(
-                    WorkItem.Rehydrate(
-                        e.Id,
-                        e.AssigneeId,
-                        e.Title,
-                        e.Description,
-                        e.Status,
-                        e.Priority,
-                        e.DueDate,
-                        e.CompletedAt,
-                        e.EstimatedHours,
-                        e.Tags,
-                        e.ParentTaskId
-                    )
-                ),
-                _ => Failure<WorkItem, DomainError>(Generic("Work item not found.")),
-            };
+            WorkItemEntity? entity =
+                _database.Query<WorkItemEntity>().FirstOrDefault(w => w.Id == id);
+
+            if (entity is null)
+                return Failure<WorkItem, DomainError>(Generic($"Work item with ID {id} not found."));
+
+            Debug.Assert(entity.Id == id, "Retrieved entity ID does not match requested ID.");
+
+            var workItem = WorkItem.Rehydrate(
+                entity.Id,
+                entity.AssigneeId,
+                entity.Title,
+                entity.Description,
+                entity.Status,
+                entity.Priority,
+                entity.DueDate,
+                entity.CompletedAt,
+                entity.EstimatedHours,
+                entity.Tags,
+                entity.ParentTaskId
+            );
+
+            return Success<WorkItem, DomainError>(workItem);
         }
         catch (Exception exc)
         {
