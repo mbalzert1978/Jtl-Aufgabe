@@ -52,7 +52,7 @@ internal sealed class WorkItemRepository : IWorkItemRepository
                 workItem.DueDate?.Value,
                 workItem.CompletedAt,
                 workItem.EstimatedHours.Value,
-                workItem.Tags.Value,
+                workItem.Tags.Value.Select(tag => new WorkItemTag(tag)),
                 workItem.ParentTaskId
             );
             Debug.Assert(entity.Id == workItem.Id, "WorkItemEntity ID does not match");
@@ -94,7 +94,7 @@ internal sealed class WorkItemRepository : IWorkItemRepository
                 entity.DueDate,
                 entity.CompletedAt,
                 entity.EstimatedHours,
-                entity.Tags,
+                entity.Tags.Select(t => t.Name),
                 entity.ParentTaskId
             );
 
