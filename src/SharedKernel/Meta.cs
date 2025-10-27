@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Tasks.Application")]
-[assembly: InternalsVisibleTo("Tasks.Domain")]
+[assembly: InternalsVisibleTo("WorkItems.Application")]
+[assembly: InternalsVisibleTo("WorkItems.Domain")]
 [assembly: InternalsVisibleTo("Users.Application")]
 [assembly: InternalsVisibleTo("Users.Domain")]
