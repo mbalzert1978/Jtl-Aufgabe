@@ -70,6 +70,7 @@ internal sealed record WorkItemAssignedEvent(Guid WorkItemId, Guid AssigneeId) :
 /// </summary>
 internal sealed class AssignWorkItemRequestValidator : Validator<AssignWorkItemRequest>
 {
+    private const int MinTitleLength = 3;
     private const int MaxTitleLength = 200;
     private const int MaxDescriptionLength = 4096;
     private const int MaxPriorityLength = 50;
@@ -77,7 +78,7 @@ internal sealed class AssignWorkItemRequestValidator : Validator<AssignWorkItemR
     /// <summary>
     /// Initializes a new instance of the <see cref="AssignWorkItemRequestValidator"/> class.
     /// </summary>
-    public AssignWorkItemRequestValidator()
+    public AssignWorkItemRequestValidator(TimeProvider timeProvider)
     {
         RuleFor(x => x.UserId)
             .NotEmpty()
@@ -88,6 +89,8 @@ internal sealed class AssignWorkItemRequestValidator : Validator<AssignWorkItemR
         RuleFor(x => x.Title)
             .NotEmpty()
             .WithMessage("Title is required.")
+            .MinimumLength(MinTitleLength)
+            .WithMessage($"Title must be at least {MinTitleLength} characters long.")
             .MaximumLength(MaxTitleLength)
             .WithMessage($"Title must be less than {MaxTitleLength} characters long.");
 
@@ -108,7 +111,7 @@ internal sealed class AssignWorkItemRequestValidator : Validator<AssignWorkItemR
             .WithMessage("EstimatedHours must not be negative.");
 
         RuleFor(x => x.DueDate)
-            .GreaterThan(DateTimeOffset.UtcNow)
+            .GreaterThan(timeProvider.GetUtcNow())
             .When(x => x.DueDate.HasValue)
             .WithMessage("DueDate must be in the future.");
     }
