@@ -35,21 +35,12 @@ public sealed class UsersDbContext : DbContext, IDatabase
     public DbSet<UserEntity> Users { get; set; }
 
     /// <summary>
-    /// Retrieves all entities of the specified type from the database.
+    /// Retrieves a queryable collection of entities of the specified type.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity to retrieve.</typeparam>
-    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
-    /// <returns>A collection of entities of the specified type.</returns>
-    public async Task<IEnumerable<TEntity>> GetAsync<TEntity>(
-        CancellationToken cancellationToken = default
-    )
-        where TEntity : class
-    {
-        List<TEntity> result = await Set<TEntity>().ToListAsync(cancellationToken);
-        Debug.Assert(result is not null, "Query result must not be null.");
-
-        return result;
-    }
+    /// <returns>An <see cref="IQueryable{T}"/> of the specified entity type.</returns>
+    public IQueryable<TEntity> Query<TEntity>()
+        where TEntity : class => Set<TEntity>();
 
     /// <summary>
     /// Adds an entity to the database.
@@ -63,7 +54,7 @@ public sealed class UsersDbContext : DbContext, IDatabase
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        Set<TEntity>().Add(entity);
+        await Set<TEntity>().AddAsync(entity);
 
         int rowsAffected = await SaveChangesAsync(cancellationToken);
         Debug.Assert(rowsAffected > 0, "Entity must have been persisted to the database.");
