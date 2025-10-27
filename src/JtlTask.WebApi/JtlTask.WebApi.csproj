@@ -13,8 +13,9 @@
     <PackageReference Include="FastEndpoints.Swagger" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../Tasks.Application/Tasks.Application.csproj" />
     <ProjectReference Include="../Users.Application/Users.Application.csproj" />
     <ProjectReference Include="../Users.Infrastructure/Users.Infrastructure.csproj" />
+    <ProjectReference Include="../WorkItems.Application/WorkItems.Application.csproj" />
+    <ProjectReference Include="../WorkItems.Infrastructure/WorkItems.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

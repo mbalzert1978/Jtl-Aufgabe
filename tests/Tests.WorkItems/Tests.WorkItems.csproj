@@ -14,8 +14,8 @@
     />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../../src/Tasks.Application/Tasks.Application.csproj" />
-    <ProjectReference Include="../../src/Tasks.Domain/Tasks.Domain.csproj" />
-    <ProjectReference Include="../../src/Tasks.Infrastructure/Tasks.Infrastructure.csproj" />
+    <ProjectReference Include="../../src/WorkItems.Application/WorkItems.Application.csproj" />
+    <ProjectReference Include="../../src/WorkItems.Domain/WorkItems.Domain.csproj" />
+    <ProjectReference Include="../../src/WorkItems.Infrastructure/WorkItems.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

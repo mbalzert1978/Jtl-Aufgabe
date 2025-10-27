@@ -16,7 +16,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Test.JtlTask.WebApi/Test.JtlTask.WebApi.csproj" />
-    <Project Path="tests/Tests.Tasks/Tests.Tasks.csproj" />
     <Project Path="tests/Tests.Users/Tests.Users.csproj" />
+    <Project Path="tests/Tests.WorkItems/Tests.WorkItems.csproj" />
   </Folder>
 </Solution>
