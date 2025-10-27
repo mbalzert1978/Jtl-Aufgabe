@@ -27,7 +27,6 @@ internal sealed class RegisterUserMapper
 
         RegisterUserResponse response = new(entity.UserId, entity.Username);
 
-        Debug.Assert(response is not null, "Response creation must not return null.");
         Debug.Assert(
             response.UserId == entity.UserId,
             "Mapped response ID must match entity UserId."
