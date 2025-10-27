@@ -11,7 +11,7 @@ namespace JtlTask.WebApi.Features.WorkItems.AssignWorkItem;
 /// <summary>
 /// Represents a request to assign a new work item to a user.
 /// </summary>
-/// <param name="AssigneeId">The unique identifier of the user to assign the work item to.</param>
+/// <param name="UserId">The unique identifier of the user to assign the work item to.</param>
 /// <param name="Title">The title of the work item.</param>
 /// <param name="Description">The detailed description of the work item.</param>
 /// <param name="Priority">The priority level of the work item.</param>
@@ -20,7 +20,7 @@ namespace JtlTask.WebApi.Features.WorkItems.AssignWorkItem;
 /// <param name="ParentTaskId">The optional identifier of the parent task if this is a subtask.</param>
 /// <param name="Tags">The optional collection of tags associated with the work item.</param>
 internal sealed record AssignWorkItemRequest(
-    Guid AssigneeId,
+    Guid UserId,
     string Title,
     string Description,
     string Priority,
@@ -79,7 +79,7 @@ internal sealed class AssignWorkItemRequestValidator : Validator<AssignWorkItemR
     /// </summary>
     public AssignWorkItemRequestValidator()
     {
-        RuleFor(x => x.AssigneeId)
+        RuleFor(x => x.UserId)
             .NotEmpty()
             .WithMessage("AssigneeId is required.")
             .NotEqual(Guid.Empty)

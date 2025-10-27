@@ -41,7 +41,7 @@ internal sealed class Endpoint
         Debug.Assert(Config is not null, "Config must be initialized.");
 
         AllowAnonymous();
-        Post("api/v1/users/{assigneeId:guid}/workitems");
+        Post("api/v1/users/{userId:guid}/workitems");
 
         Summary(s =>
         {
@@ -73,7 +73,7 @@ internal sealed class Endpoint
         ArgumentNullException.ThrowIfNull(req);
 
         AssignWorkItemCommand cmd = new(
-            req.AssigneeId,
+            req.UserId,
             req.Title,
             req.EstimatedHours,
             req.ParentTaskId ?? Guid.Empty,
@@ -83,7 +83,7 @@ internal sealed class Endpoint
             req.Tags
         );
 
-        Debug.Assert(cmd.AssigneeId == req.AssigneeId, "Command AssigneeId must match request.");
+        Debug.Assert(cmd.AssigneeId == req.UserId, "Command AssigneeId must match request.");
         Debug.Assert(cmd.Title == req.Title, "Command Title must match request.");
         Debug.Assert(
             cmd.EstimatedHours == req.EstimatedHours,
