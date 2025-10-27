@@ -5,9 +5,13 @@
 using System.Diagnostics;
 using System.Net;
 using FastEndpoints;
+using Mediator;
 using Monads.Results;
 using Monads.Results.Extensions.Async;
+using Monads.Results.Extensions.Sync;
 using SharedKernel.Abstractions;
+using Users.Application.Adapters;
+using Users.Application.UseCases.RegisterUser;
 
 namespace JtlTask.WebApi.Features.User.RegisterUser;
 
@@ -18,6 +22,16 @@ internal sealed class Endpoint
     : Endpoint<RegisterUserRequest, RegisterUserResponse, RegisterUserMapper>
 {
     private const string InternalServerError = "An internal server error occurred.";
+    private readonly IMediator _mediator;
+
+    public Endpoint(IMediator mediator)
+    {
+        ArgumentNullException.ThrowIfNull(mediator);
+
+        _mediator = mediator;
+
+        Debug.Assert(_mediator == mediator, "Mediator assignment must be successful.");
+    }
 
     /// <summary>
     /// Configures the endpoint routing, security, and documentation.
@@ -58,20 +72,17 @@ internal sealed class Endpoint
     {
         ArgumentNullException.ThrowIfNull(req);
 
-        RegisterUserCommand command = new(req.Username);
+        RegisterUserCommand cmd = new(req.Username);
+        Debug.Assert(cmd.Username == req.Username, "Command username must match request.");
+        // csharpier-ignore
+        Result<UserEntity, IError> result =
+            await _mediator.SendAsync<RegisterUserCommand, UserEntity>(cmd, ct);
 
-        Debug.Assert(command is not null, "Command creation must not return null.");
-        Debug.Assert(
-            command.Username == req.Username,
-            "Command username must match request username."
-        );
-
-        await command
-            .ExecuteAsync(ct)
-            .MapAsync(Map.FromEntity)
-            .MatchAsync(
-                onOk: r => SendSuccessResponseAsync(r, ct),
-                onErr: err => HandleErrorAsync(err, ct)
+        await result
+            .Map(Map.FromEntity)
+            .Match(
+                response => SendSuccessResponseAsync(response, ct),
+                error => HandleErrorAsync(error, ct)
             );
     }
 
