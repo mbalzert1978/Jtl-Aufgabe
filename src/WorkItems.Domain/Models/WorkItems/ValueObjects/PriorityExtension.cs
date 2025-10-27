@@ -47,6 +47,24 @@ internal static class PriorityExtension
         };
 
     /// <summary>
+    /// Converts a string representation of priority to a <see cref="Priority"/> enum value wrapped in a result.
+    /// </summary>
+    /// <param name="priority">The string representation of the priority.</param>
+    /// <returns>A result containing the corresponding <see cref="Priority"/> enum value or a
+    public static Result<Priority, DomainError> TryIntoPriority(this string priority)
+    {
+        try
+        {
+            return Success<Priority, DomainError>(priority.IntoPriority());
+        }
+        catch (UnreachableException)
+        {
+            DomainError error = DomainErrorFactory.Generic("Invalid priority value.");
+            return Failure<Priority, DomainError>(error);
+        }
+    }
+
+    /// <summary>
     /// Validates whether the specified priority is a valid enum value.
     /// </summary>
     /// <param name="priority">The priority to validate.</param>
