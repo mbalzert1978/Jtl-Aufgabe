@@ -58,14 +58,8 @@ internal sealed class Endpoint
 
         GetWorkItemsByAssigneeIdQuery query = new(req.UserId);
 
-        switch (await query.ExecuteAsync(ct))
-        {
-            case IEnumerable<WorkItemEntity> workItems:
-                await Send.OkAsync(Map.FromEntity(workItems), ct);
-                break;
-            default:
-                await Send.NotFoundAsync(ct);
-                return;
-        }
+        IEnumerable<WorkItemEntity> workItems = await query.ExecuteAsync(ct).ConfigureAwait(false);
+
+        await Send.OkAsync(Map.FromEntity(workItems), ct).ConfigureAwait(false);
     }
 }
