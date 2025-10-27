@@ -108,7 +108,7 @@ internal sealed class WorkItem : Entity, IAggregateRoot
         Guid assigneeId,
         string title,
         string description,
-        Priority priority,
+        string priority,
         int estimatedHours,
         DateTimeOffset? dueDate,
         Guid parentTaskId,
@@ -132,19 +132,23 @@ internal sealed class WorkItem : Entity, IAggregateRoot
                                     .Bind(estimatedHours =>
                                         DueDateFactory
                                             .Create(dueDate, timeProvider)
-                                            .Map(dueDate => new WorkItem(
-                                                Guid.NewGuid(),
-                                                id,
-                                                title,
-                                                description,
-                                                Status.Todo,
-                                                priority,
-                                                dueDate,
-                                                null,
-                                                estimatedHours,
-                                                TagsFactory.Create(tags),
-                                                parentTaskId
-                                            ))
+                                            .Bind(dueDate =>
+                                                priority
+                                                    .TryIntoPriority()
+                                                    .Map(priority => new WorkItem(
+                                                        Guid.NewGuid(),
+                                                        id,
+                                                        title,
+                                                        description,
+                                                        Status.Todo,
+                                                        priority,
+                                                        dueDate,
+                                                        null,
+                                                        estimatedHours,
+                                                        TagsFactory.Create(tags),
+                                                        parentTaskId
+                                                    ))
+                                            )
                                     )
                             )
                     )
