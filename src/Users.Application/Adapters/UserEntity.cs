@@ -23,11 +23,6 @@ public sealed class UserEntity
     public string Username { get; set; }
 
     /// <summary>
-    /// Gets or sets the collection of task references associated with the user.
-    /// </summary>
-    public IEnumerable<UserTaskReference> Tasks { get; set; }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="UserEntity"/> class.
     /// Required by EF Core for materialization.
     /// </summary>
@@ -38,8 +33,7 @@ public sealed class UserEntity
     /// </summary>
     /// <param name="userId">The unique identifier of the user.</param>
     /// <param name="username">The username.</param>
-    /// <param name="tasks">The collection of task references associated with the user.</param>
-    public UserEntity(Guid userId, string username, IEnumerable<UserTaskReference> tasks)
+    public UserEntity(Guid userId, string username)
     {
         Debug.Assert(userId != Guid.Empty, $"{nameof(userId)} must not be empty.");
         Debug.Assert(
@@ -49,33 +43,5 @@ public sealed class UserEntity
 
         UserId = userId;
         Username = username;
-        Tasks = tasks;
-    }
-}
-
-/// <summary>
-/// Database model representing a reference from a user to a task in another database.
-/// </summary>
-public sealed class UserTaskReference
-{
-    /// <summary>
-    /// Gets or sets the task identifier.
-    /// </summary>
-    public Guid TaskId { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UserTaskReference"/> class.
-    /// Required by EF Core for materialization.
-    /// </summary>
-    private UserTaskReference() { }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UserTaskReference"/> class.
-    /// </summary>
-    /// <param name="taskId">The task identifier.</param>
-    public UserTaskReference(Guid taskId)
-    {
-        Debug.Assert(taskId != Guid.Empty, $"{nameof(taskId)} must not be empty.");
-        TaskId = taskId;
     }
 }

@@ -29,11 +29,7 @@ internal sealed class UserRepository : IUserRepository
     {
         try
         {
-            UserEntity entity = new(
-                user.Id,
-                user.Username.Value,
-                user.Tasks.Select(t => new UserTaskReference(t))
-            );
+            UserEntity entity = new(user.Id, user.Username.Value);
             Debug.Assert(entity.UserId == user.Id, "UserEntity ID does not match");
 
             await _database.AddAsync(entity, cancellationToken).ConfigureAwait(false);
@@ -61,13 +57,8 @@ internal sealed class UserRepository : IUserRepository
                 return Failure<User, DomainError>(NotFound(id, typeof(UserEntity)));
 
             Debug.Assert(entity.UserId == id, "Retrieved entity ID does not match requested ID.");
-            Debug.Assert(entity.Tasks is not null, "Tasks collection must not be null.");
 
-            var user = User.Rehydrate(
-                entity.UserId,
-                entity.Username,
-                entity.Tasks.Select(t => t.TaskId)
-            );
+            var user = User.Rehydrate(entity.UserId, entity.Username);
 
             Debug.Assert(user.Id == id, "Rehydrated user ID does not match.");
 

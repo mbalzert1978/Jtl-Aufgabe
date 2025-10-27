@@ -26,23 +26,5 @@ internal sealed class UserEntityConfiguration : IEntityTypeConfiguration<UserEnt
         builder.Property(e => e.UserId).IsRequired().ValueGeneratedNever();
 
         builder.Property(e => e.Username).IsRequired().HasMaxLength(200);
-
-        builder.OwnsMany(
-            e => e.Tasks,
-            tasksBuilder =>
-            {
-                Debug.Assert(tasksBuilder is not null, $"{nameof(tasksBuilder)} must not be null.");
-
-                tasksBuilder.ToTable("UserTasks");
-
-                tasksBuilder.WithOwner().HasForeignKey("UserId");
-
-                tasksBuilder.Property(t => t.TaskId).IsRequired().HasColumnName("TaskId");
-
-                tasksBuilder.HasKey("UserId", nameof(UserTaskReference.TaskId));
-
-                tasksBuilder.HasIndex(nameof(UserTaskReference.TaskId));
-            }
-        );
     }
 }

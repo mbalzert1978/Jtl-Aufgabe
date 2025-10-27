@@ -60,11 +60,7 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
             .BindAsync(user =>
                 _userRepository
                     .AddAsync(user, cancellationToken)
-                    .MapAsync(_ => new UserEntity(
-                        user.Id,
-                        user.Username.Value,
-                        user.Tasks.Select(t => new UserTaskReference(t))
-                    ))
+                    .MapAsync(_ => new UserEntity(user.Id, user.Username.Value))
             )
             .MapErrAsync(ApplicationErrorFactory.FromDomainError);
     }

@@ -15,5 +15,4 @@ internal sealed record GetUserByIdRequest(Guid UserId);
 /// </summary>
 /// <param name="UserId">The unique identifier of the user.</param>
 /// <param name="Username">The username of the user.</param>
-/// <param name="Tasks">The collection of task IDs associated with the user.</param>
-internal sealed record GetUserByIdResponse(Guid UserId, string Username, IEnumerable<Guid> Tasks);
+internal sealed record GetUserByIdResponse(Guid UserId, string Username);
