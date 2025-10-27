@@ -1,0 +1,36 @@
+services:
+  web-api:
+    image: ${DOCKER_REGISTRY-}jtltask-webapi
+    container_name: jtltask-web-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5050:8080"
+    volumes:
+      # Persist SQLite databases
+      - jtltask-data:/app/data
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      # Remove HTTPS configuration for containerized deployment
+      - ASPNETCORE_URLS=http://+:8080
+    restart: unless-stopped
+    networks:
+      - jtltask-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.5'
+
+volumes:
+  jtltask-data:
+    driver: local
+
+networks:
+  jtltask-network:
+    driver: bridge
