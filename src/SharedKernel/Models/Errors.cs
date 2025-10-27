@@ -5,31 +5,29 @@
 using SharedKernel.Abstractions;
 using SharedKernel.Models.Common;
 
-namespace Users.Application.Adapters;
+namespace SharedKernel.Models;
 
 /// <summary>
 /// Represents an error when a resource was not found.
 /// </summary>
 /// <param name="Id">The identifier of the not found resource.</param>
-public sealed record NotFoundError(Guid Id) : IError
+/// <param name="Type">The type of the entity that was not found.</param>
+public sealed record NotFoundError(Guid Id, Type Type) : IError
 {
     /// <inheritdoc/>
-    public string Message => $"Resource with ID '{Id}' was not found.";
+    public string Message => $"Resource '{Type}' with ID '{Id}' was not found.";
 
     /// <inheritdoc/>
-    public ErrorType Type => ErrorType.NotFound;
+    public ErrorType ErrorType => ErrorType.NotFound;
 }
 
 /// <summary>
 /// Represents a validation error.
 /// </summary>
-public sealed record EmptyUserName : IError
+public sealed record ValidationError(string Message) : IError
 {
     /// <inheritdoc/>
-    public string Message => "Username cannot be empty or whitespace.";
-
-    /// <inheritdoc/>
-    public ErrorType Type => ErrorType.Validation;
+    public ErrorType ErrorType => ErrorType.Validation;
 }
 
 /// <summary>
@@ -39,7 +37,7 @@ public sealed record EmptyUserName : IError
 public sealed record InternalError(string Message) : IError
 {
     /// <inheritdoc/>
-    public ErrorType Type => ErrorType.Internal;
+    public ErrorType ErrorType => ErrorType.Internal;
 }
 
 /// <summary>
@@ -52,7 +50,7 @@ public sealed record DatabaseError(Exception Exception) : IError
     public string Message => $"A database error occurred: {Exception.Message}";
 
     /// <inheritdoc/>
-    public ErrorType Type => ErrorType.Internal;
+    public ErrorType ErrorType => ErrorType.Internal;
 }
 
 /// <summary>
@@ -74,8 +72,8 @@ internal static class ApplicationErrorFactory
 
         return error switch
         {
-            UserNotFound err => new NotFoundError(err.UserId),
-            SharedKernel.Models.Common.EmptyUserName => new EmptyUserName(),
+            NotFound err => new NotFoundError(err.Id, err.Type),
+            Validation err => new ValidationError($"{err.Field}: {err.Detail}"),
             DatabaseError<Exception> err => new DatabaseError(err.Exception),
             _ => new InternalError(UnknownErrorMessage),
         };
