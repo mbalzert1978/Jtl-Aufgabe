@@ -53,9 +53,13 @@ internal sealed class WorkItemEntityConfiguration : IEntityTypeConfiguration<Wor
 
                 tagsBuilder.WithOwner().HasForeignKey("WorkItemId");
 
+                tagsBuilder.Property<int>("Id").ValueGeneratedOnAdd();
+
+                tagsBuilder.HasKey("Id");
+
                 tagsBuilder.Property(t => t.Name).IsRequired().HasColumnName("Name");
 
-                tagsBuilder.HasKey("WorkItemId", nameof(WorkItemTag.Name));
+                tagsBuilder.HasIndex("WorkItemId", nameof(WorkItemTag.Name)).IsUnique();
 
                 tagsBuilder.HasIndex(nameof(WorkItemTag.Name));
             }
