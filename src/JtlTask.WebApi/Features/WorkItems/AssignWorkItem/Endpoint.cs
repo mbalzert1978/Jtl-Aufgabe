@@ -41,7 +41,7 @@ internal sealed class Endpoint
         Debug.Assert(Config is not null, "Config must be initialized.");
 
         AllowAnonymous();
-        Post("api/v1/users/{assigneeId}/workitems");
+        Post("api/v1/users/{assigneeId:guid}/workitems");
 
         Summary(s =>
         {
