@@ -15,6 +15,7 @@
     />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="../../src/JtlTask.WebApi/JtlTask.WebApi.csproj" />
     <ProjectReference Include="../../src/Users.Application/Users.Application.csproj" />
     <ProjectReference Include="../../src/Users.Domain/Users.Domain.csproj" />
     <ProjectReference Include="../../src/Users.Infrastructure/Users.Infrastructure.csproj" />
