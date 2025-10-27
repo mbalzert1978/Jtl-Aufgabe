@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
-namespace Tests.SayHello;
+namespace Test.JtlTask.WebApi;
 
 public class App : AppFixture<Program>
 {
@@ -17,7 +17,7 @@ public class App : AppFixture<Program>
 
     protected override void ConfigureServices(IServiceCollection s)
     {
-        // do test service registration here
+        // do service configuration here
     }
 
     protected override ValueTask TearDownAsync()
