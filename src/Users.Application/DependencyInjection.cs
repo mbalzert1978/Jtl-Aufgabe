@@ -13,7 +13,6 @@ public static class DependencyInjection
     public static IServiceCollection AddUserApplicationLayer(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IMediator, Mediator.Mediator>();
         // csharpier-ignore
         services.AddScoped<ICommandHandler<RegisterUserCommand, UserEntity>, RegisterUserCommandHandler>();
         return services;
