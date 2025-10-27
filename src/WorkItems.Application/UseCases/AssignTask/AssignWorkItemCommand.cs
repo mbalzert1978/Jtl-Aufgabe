@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Collections.Immutable;
-using SharedKernel.Abstractions;
+using Mediator;
 using WorkItems.Application.Adapters;
 
 namespace WorkItems.Application.UseCases.AssignTask;
