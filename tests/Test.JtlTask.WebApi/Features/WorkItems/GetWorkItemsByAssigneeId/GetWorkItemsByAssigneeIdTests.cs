@@ -2,12 +2,7 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-using JtlTask.WebApi.Features.User.RegisterUser;
-using JtlTask.WebApi.Features.WorkItems.AssignWorkItem;
 using JtlTask.WebApi.Features.WorkItems.GetWorkItemsByAssigneeId;
-using AssignWorkItemEndpoint = JtlTask.WebApi.Features.WorkItems.AssignWorkItem.Endpoint;
-using GetWorkItemsByAssigneeIdEndpoint = JtlTask.WebApi.Features.WorkItems.GetWorkItemsByAssigneeId.Endpoint;
-using RegisterUserEndpoint = JtlTask.WebApi.Features.User.RegisterUser.Endpoint;
 
 namespace Test.JtlTask.WebApi.Features.WorkItems.GetWorkItemsByAssigneeId;
 
@@ -21,73 +16,52 @@ public class GetWorkItemsByAssigneeIdTests(App app) : TestBase<App>
     {
         var nonExistentUserId = Guid.NewGuid();
 
-        (HttpResponseMessage? rsp, IEnumerable<GetWorkItemsByAssigneeIdResponse>? res) =
-            await app.Client.GETAsync<
-                GetWorkItemsByAssigneeIdEndpoint,
-                GetWorkItemsByAssigneeIdRequest,
-                IEnumerable<GetWorkItemsByAssigneeIdResponse>
-            >(new(nonExistentUserId));
+        GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
+            .New(app)
+            .ForAssignee(nonExistentUserId);
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.OK);
-        res.ShouldNotBeNull();
-        res.ShouldBeEmpty();
+        TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result =
+            await builder.ExecuteWithoutWorkItemsAsync();
+
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        result.Result.ShouldNotBeNull();
+        result.Result.ShouldBeEmpty();
     }
 
     [Fact, Priority(2)]
     public async Task GetWorkItemsByAssigneeId_WhenUserHasNoWorkItems_ShouldReturnEmptyList()
     {
-        // Arrange: Use a random assignee ID without creating work items
         var assigneeId = Guid.NewGuid();
 
-        // Act: Get work items for assignee
-        (HttpResponseMessage? rsp, IEnumerable<GetWorkItemsByAssigneeIdResponse>? res) =
-            await app.Client.GETAsync<
-                GetWorkItemsByAssigneeIdEndpoint,
-                GetWorkItemsByAssigneeIdRequest,
-                IEnumerable<GetWorkItemsByAssigneeIdResponse>
-            >(new(assigneeId));
+        GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
+            .New(app)
+            .ForAssignee(assigneeId);
 
-        // Assert
-        rsp.StatusCode.ShouldBe(HttpStatusCode.OK);
-        res.ShouldNotBeNull();
-        res.ShouldBeEmpty();
+        TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result =
+            await builder.ExecuteWithoutWorkItemsAsync();
+
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        result.Result.ShouldNotBeNull();
+        result.Result.ShouldBeEmpty();
     }
 
     [Fact, Priority(3)]
     public async Task GetWorkItemsByAssigneeId_WhenUserHasOneWorkItem_ShouldReturnOneItem()
     {
-        // Arrange: Create work item for a specific assignee
         var assigneeId = Guid.NewGuid();
 
-        (_, AssignWorkItemResponse? workItemRes) = await app.Client.POSTAsync<
-            AssignWorkItemEndpoint,
-            AssignWorkItemRequest,
-            AssignWorkItemResponse
-        >(
-            new(
-                UserId: assigneeId,
-                Title: "Single work item",
-                Description: "This is the only work item",
-                Priority: "High",
-                EstimatedHours: 5
-            )
-        );
+        GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
+            .New(app)
+            .ForAssignee(assigneeId)
+            .WithWorkItem(assigneeId, "Single work item", "This is the only work item", "High", 5);
 
-        workItemRes.ShouldNotBeNull();
+        TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result =
+            await builder.ExecuteAsync();
 
-        // Act: Get work items for assignee
-        (HttpResponseMessage? rsp, IEnumerable<GetWorkItemsByAssigneeIdResponse>? res) =
-            await app.Client.GETAsync<
-                GetWorkItemsByAssigneeIdEndpoint,
-                GetWorkItemsByAssigneeIdRequest,
-                IEnumerable<GetWorkItemsByAssigneeIdResponse>
-            >(new(assigneeId));
-
-        // Assert
-        rsp.StatusCode.ShouldBe(HttpStatusCode.OK);
-        res.ShouldNotBeNull();
-        res.Count().ShouldBe(1);
-        GetWorkItemsByAssigneeIdResponse workItem = res.First();
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        result.Result.ShouldNotBeNull();
+        result.Result.Count().ShouldBe(1);
+        GetWorkItemsByAssigneeIdResponse workItem = result.Result.First();
         workItem.AssigneeId.ShouldBe(assigneeId);
         workItem.Title.ShouldBe("Single work item");
     }
@@ -95,70 +69,29 @@ public class GetWorkItemsByAssigneeIdTests(App app) : TestBase<App>
     [Fact, Priority(4)]
     public async Task GetWorkItemsByAssigneeId_WhenUserHasMultipleWorkItems_ShouldReturnAllItems()
     {
-        // Arrange: Assign multiple work items to a specific assignee
         var assigneeId = Guid.NewGuid();
 
-        // Assign first work item
-        await app.Client.POSTAsync<
-            AssignWorkItemEndpoint,
-            AssignWorkItemRequest,
-            AssignWorkItemResponse
-        >(
-            new(
-                UserId: assigneeId,
-                Title: "First work item",
-                Description: "Description of first item",
-                Priority: "High",
-                EstimatedHours: 5
+        GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
+            .New(app)
+            .ForAssignee(assigneeId)
+            .WithWorkItem(assigneeId, "First work item", "Description of first item", "High", 5)
+            .WithWorkItem(assigneeId, "Second work item", "Description of second item", "Normal", 3)
+            .WithWorkItem(assigneeId, "Third work item", "Description of third item", "Low", 8);
+
+        TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result =
+            await builder.ExecuteAsync();
+
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        result.Result.ShouldNotBeNull();
+        result.Result.Count().ShouldBe(3);
+        result.Result.All(wi => wi.AssigneeId == assigneeId).ShouldBeTrue();
+        result
+            .Result.All(wi =>
+                wi.Title is "First work item" or "Second work item" or "Third work item"
             )
-        );
-
-        // Assign second work item
-        await app.Client.POSTAsync<
-            AssignWorkItemEndpoint,
-            AssignWorkItemRequest,
-            AssignWorkItemResponse
-        >(
-            new(
-                UserId: assigneeId,
-                Title: "Second work item",
-                Description: "Description of second item",
-                Priority: "Normal",
-                EstimatedHours: 3
-            )
-        );
-
-        // Assign third work item
-        await app.Client.POSTAsync<
-            AssignWorkItemEndpoint,
-            AssignWorkItemRequest,
-            AssignWorkItemResponse
-        >(
-            new(
-                UserId: assigneeId,
-                Title: "Third work item",
-                Description: "Description of third item",
-                Priority: "Low",
-                EstimatedHours: 8
-            )
-        );
-
-        // Act: Get work items for assignee
-        (HttpResponseMessage? rsp, IEnumerable<GetWorkItemsByAssigneeIdResponse>? res) =
-            await app.Client.GETAsync<
-                GetWorkItemsByAssigneeIdEndpoint,
-                GetWorkItemsByAssigneeIdRequest,
-                IEnumerable<GetWorkItemsByAssigneeIdResponse>
-            >(new(assigneeId));
-
-        // Assert
-        rsp.StatusCode.ShouldBe(HttpStatusCode.OK);
-        res.ShouldNotBeNull();
-        res.Count().ShouldBe(3);
-        res.All(wi => wi.AssigneeId == assigneeId).ShouldBeTrue();
-        res.All(wi => wi.Title is "First work item" or "Second work item" or "Third work item")
             .ShouldBeTrue();
-        res.All(wi =>
+        result
+            .Result.All(wi =>
                 wi.Description
                     is "Description of first item"
                         or "Description of second item"
@@ -170,117 +103,59 @@ public class GetWorkItemsByAssigneeIdTests(App app) : TestBase<App>
     [Fact, Priority(5)]
     public async Task GetWorkItemsByAssigneeId_WhenMultipleUsersHaveWorkItems_ShouldReturnOnlyUserItems()
     {
-        // Arrange: Assign work items to two different assignees
         var assigneeId1 = Guid.NewGuid();
         var assigneeId2 = Guid.NewGuid();
 
-        // Assign work items to assignee 1
-        await app.Client.POSTAsync<
-            AssignWorkItemEndpoint,
-            AssignWorkItemRequest,
-            AssignWorkItemResponse
-        >(
-            new(
-                UserId: assigneeId1,
-                Title: "User 1 - Item 1",
-                Description: "First item for user 1",
-                Priority: "High",
-                EstimatedHours: 5
-            )
-        );
+        GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
+            .New(app)
+            .ForAssignee(assigneeId1)
+            .WithWorkItem(assigneeId1, "User 1 - Item 1", "First item for user 1", "High", 5)
+            .WithWorkItem(assigneeId1, "User 1 - Item 2", "Second item for user 1", "Normal", 3)
+            .WithWorkItem(assigneeId2, "User 2 - Item 1", "First item for user 2", "Low", 4);
 
-        await app.Client.POSTAsync<
-            AssignWorkItemEndpoint,
-            AssignWorkItemRequest,
-            AssignWorkItemResponse
-        >(
-            new(
-                UserId: assigneeId1,
-                Title: "User 1 - Item 2",
-                Description: "Second item for user 1",
-                Priority: "Normal",
-                EstimatedHours: 3
-            )
-        );
+        TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result =
+            await builder.ExecuteAsync();
 
-        // Assign work items to assignee 2
-        await app.Client.POSTAsync<
-            AssignWorkItemEndpoint,
-            AssignWorkItemRequest,
-            AssignWorkItemResponse
-        >(
-            new(
-                UserId: assigneeId2,
-                Title: "User 2 - Item 1",
-                Description: "First item for user 2",
-                Priority: "Low",
-                EstimatedHours: 4
-            )
-        );
-
-        // Act: Get work items for assignee 1
-        (HttpResponseMessage? rsp, IEnumerable<GetWorkItemsByAssigneeIdResponse>? res) =
-            await app.Client.GETAsync<
-                GetWorkItemsByAssigneeIdEndpoint,
-                GetWorkItemsByAssigneeIdRequest,
-                IEnumerable<GetWorkItemsByAssigneeIdResponse>
-            >(new(assigneeId1));
-
-        // Assert
-        rsp.StatusCode.ShouldBe(HttpStatusCode.OK);
-        res.ShouldNotBeNull();
-        res.Count().ShouldBe(2);
-        // All returned items must belong to assignee 1
-        res.All(wi => wi.AssigneeId == assigneeId1).ShouldBeTrue();
-        // Should not contain assignee 2's items
-        res.Any(wi => wi.AssigneeId == assigneeId2).ShouldBeFalse();
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        result.Result.ShouldNotBeNull();
+        result.Result.Count().ShouldBe(2);
+        result.Result.All(wi => wi.AssigneeId == assigneeId1).ShouldBeTrue();
+        result.Result.Any(wi => wi.AssigneeId == assigneeId2).ShouldBeFalse();
     }
 
     [Fact, Priority(6)]
     public async Task GetWorkItemsByAssigneeId_WhenCalledMultipleTimes_ShouldReturnConsistentData()
     {
-        // Arrange: Assign a work item to a specific assignee
         var assigneeId = Guid.NewGuid();
 
-        (_, AssignWorkItemResponse? workItem) = await app.Client.POSTAsync<
-            AssignWorkItemEndpoint,
-            AssignWorkItemRequest,
-            AssignWorkItemResponse
-        >(
-            new(
-                UserId: assigneeId,
-                Title: "Consistent work item",
-                Description: "This should be consistent",
-                Priority: "High",
-                EstimatedHours: 5
-            )
-        );
+        GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
+            .New(app)
+            .ForAssignee(assigneeId)
+            .WithWorkItem(
+                assigneeId,
+                "Consistent work item",
+                "This should be consistent",
+                "High",
+                5
+            );
 
-        workItem.ShouldNotBeNull();
+        TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result1 =
+            await builder.ExecuteAsync();
 
-        // Act: Call the endpoint multiple times
-        (HttpResponseMessage? rsp1, IEnumerable<GetWorkItemsByAssigneeIdResponse>? res1) =
-            await app.Client.GETAsync<
-                GetWorkItemsByAssigneeIdEndpoint,
-                GetWorkItemsByAssigneeIdRequest,
-                IEnumerable<GetWorkItemsByAssigneeIdResponse>
-            >(new(assigneeId));
+        GetWorkItemsByAssigneeIdTestsBuilder builder2 = GetWorkItemsByAssigneeIdTestsBuilder
+            .New(app)
+            .ForAssignee(assigneeId);
 
-        (HttpResponseMessage? rsp2, IEnumerable<GetWorkItemsByAssigneeIdResponse>? res2) =
-            await app.Client.GETAsync<
-                GetWorkItemsByAssigneeIdEndpoint,
-                GetWorkItemsByAssigneeIdRequest,
-                IEnumerable<GetWorkItemsByAssigneeIdResponse>
-            >(new(assigneeId));
+        TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result2 =
+            await builder2.ExecuteWithoutWorkItemsAsync();
 
-        // Assert: Both calls should return the same data
-        rsp1.StatusCode.ShouldBe(HttpStatusCode.OK);
-        rsp2.StatusCode.ShouldBe(HttpStatusCode.OK);
-        res1.ShouldNotBeNull();
-        res2.ShouldNotBeNull();
-        res1.Count().ShouldBe(res2.Count());
-        res1.First().Id.ShouldBe(res2.First().Id);
-        res1.First().Title.ShouldBe(res2.First().Title);
+        result1.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        result2.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        result1.Result.ShouldNotBeNull();
+        result2.Result.ShouldNotBeNull();
+        result1.Result.Count().ShouldBe(result2.Result.Count());
+        result1.Result.First().Id.ShouldBe(result2.Result.First().Id);
+        result1.Result.First().Title.ShouldBe(result2.Result.First().Title);
     }
 
     [Fact, Priority(7)]
@@ -288,15 +163,15 @@ public class GetWorkItemsByAssigneeIdTests(App app) : TestBase<App>
     {
         Guid emptyGuid = Guid.Empty;
 
-        (HttpResponseMessage? rsp, IEnumerable<GetWorkItemsByAssigneeIdResponse>? res) =
-            await app.Client.GETAsync<
-                GetWorkItemsByAssigneeIdEndpoint,
-                GetWorkItemsByAssigneeIdRequest,
-                IEnumerable<GetWorkItemsByAssigneeIdResponse>
-            >(new(emptyGuid));
+        GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
+            .New(app)
+            .ForAssignee(emptyGuid);
 
-        rsp.StatusCode.ShouldBe(HttpStatusCode.OK);
-        res.ShouldNotBeNull();
-        res.ShouldBeEmpty();
+        TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result =
+            await builder.ExecuteWithoutWorkItemsAsync();
+
+        result.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        result.Result.ShouldNotBeNull();
+        result.Result.ShouldBeEmpty();
     }
 }
