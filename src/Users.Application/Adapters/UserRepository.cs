@@ -11,9 +11,9 @@ namespace Users.Application.Adapters;
 
 internal sealed class UserRepository : IUserRepository
 {
-    private readonly IDatabase _database;
+    private readonly IUsersDatabase _database;
 
-    public UserRepository(IDatabase database)
+    public UserRepository(IUsersDatabase database)
     {
         ArgumentNullException.ThrowIfNull(database);
 

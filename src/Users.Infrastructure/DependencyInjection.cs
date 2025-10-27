@@ -15,11 +15,11 @@ public static class DependencyInjection
     {
         services.AddSingleton(TimeProvider.System);
         services.AddDbContext<UsersDbContext>(opt => opt.UseSqlite("Data Source=.users.db"));
-        services.AddScoped<IDatabase, UsersDbContext>(p => p.GetRequiredService<UsersDbContext>());
+        services.AddScoped<IUsersDatabase>(p => p.GetRequiredService<UsersDbContext>());
         return services;
     }
 
-    public static async Task EnsureDatabaseCreated(
+    public static async Task EnsureUsersDatabaseCreated(
         this IServiceProvider services,
         CancellationToken ct = default
     )

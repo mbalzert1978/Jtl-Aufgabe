@@ -16,7 +16,7 @@ namespace Users.Infrastructure.Persistence;
 /// This context manages the persistence of user aggregates using Entity Framework Core.
 /// Configured to use an in-memory database for development and testing purposes.
 /// </remarks>
-public sealed class UsersDbContext : DbContext, IDatabase
+public sealed class UsersDbContext : DbContext, IUsersDatabase
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="UsersDbContext"/> class.
