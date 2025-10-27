@@ -26,8 +26,9 @@ internal sealed record GenericDomainError(string Message) : DomainError;
 /// <summary>
 /// Represents an error when a user with the specified ID was not found.
 /// </summary>
-/// <param name="UserId">The ID of the user that was not found.</param>
-internal sealed record UserNotFound(Guid UserId) : DomainError;
+/// <param name="Id">The ID of the user that was not found.</param>
+/// <param name="Type">The entity that was not found.</param>
+internal sealed record NotFound(Guid Id, Type Type) : DomainError;
 
 /// <summary>
 /// Represents a validation error when a username is empty or whitespace.
@@ -70,10 +71,10 @@ internal static class DomainErrorFactory
     /// <summary>
     /// Creates a <see cref="DomainError"/> representing a user not found error.
     /// </summary>
-    /// <param name="userId">The ID of the user that was not found.</param>
-    /// <returns>A <see cref="Common.UserNotFound"/> instance.</returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="userId"/> is empty.</exception>
-    public static DomainError UserNotFound(Guid userId) => new UserNotFound(userId);
+    /// <param name="id">The ID of the user that was not found.</param>
+    /// <param name="type">The type of the entity that was not found.</param>
+    public static DomainError NotFound(Guid id, Type type) =>
+        new NotFound(id, type);
 
     public static DomainError Generic(string message)
     {
