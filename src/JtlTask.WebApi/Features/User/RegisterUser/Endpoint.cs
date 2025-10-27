@@ -116,7 +116,7 @@ internal sealed class Endpoint
         Debug.Assert(error is not null, "Error cannot be null.");
         Debug.Assert(!string.IsNullOrWhiteSpace(error.Message), "Error message cannot be empty.");
 
-        switch (error.Type)
+        switch (error.ErrorType)
         {
             case ErrorType.NotFound:
                 AddError(error.Message);

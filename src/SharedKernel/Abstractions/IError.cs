@@ -33,7 +33,7 @@ public interface IError
     /// <summary>
     /// Gets the type of the error.
     /// </summary>
-    ErrorType Type { get; }
+    ErrorType ErrorType { get; }
 
     /// <summary>
     /// Gets the human-readable error message.
