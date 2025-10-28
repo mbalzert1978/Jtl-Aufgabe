@@ -39,6 +39,9 @@ public static class DependencyInjection
             scope.ServiceProvider.GetRequiredService<WorkItemsDbContext>();
         Debug.Assert(dbContext is not null, "UsersDbContext must not be null.");
 
-        await dbContext.Database.EnsureCreatedAsync(ct).ConfigureAwait(false);
+        bool canConnect = await dbContext.Database.CanConnectAsync(ct).ConfigureAwait(false);
+
+        if (!canConnect)
+            await dbContext.Database.EnsureCreatedAsync(ct).ConfigureAwait(false);
     }
 }

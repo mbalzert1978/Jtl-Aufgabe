@@ -11,10 +11,15 @@ namespace Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddUserInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddUserInfrastructureLayer(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         services.AddSingleton(TimeProvider.System);
-        services.AddDbContext<UsersDbContext>(opt => opt.UseSqlite(configuration.GetConnectionString("UsersDatabase")));
+        services.AddDbContext<UsersDbContext>(opt =>
+            opt.UseSqlite(configuration.GetConnectionString("UsersDatabase"))
+        );
         services.AddScoped<IUsersDatabase>(p => p.GetRequiredService<UsersDbContext>());
         services.AddScoped<IUserService, UserService>();
         return services;
@@ -36,6 +41,9 @@ public static class DependencyInjection
         UsersDbContext dbContext = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
         Debug.Assert(dbContext is not null, "UsersDbContext must not be null.");
 
-        await dbContext.Database.EnsureCreatedAsync(ct).ConfigureAwait(false);
+        bool canConnect = await dbContext.Database.CanConnectAsync(ct).ConfigureAwait(false);
+
+        if (!canConnect)
+            await dbContext.Database.EnsureCreatedAsync(ct).ConfigureAwait(false);
     }
 }
