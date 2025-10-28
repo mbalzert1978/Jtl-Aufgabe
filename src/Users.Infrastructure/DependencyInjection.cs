@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel;
 using SharedKernel.Abstractions;
+using Users.Application.Adapters;
 using Users.Domain.Abstractions;
 using Users.Infrastructure.Persistence;
 using Users.Infrastructure.Services;
@@ -14,9 +15,7 @@ public static class DependencyInjection
     public static IServiceCollection AddUserInfrastructureLayer(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
-        services.AddDbContext<UsersDbContext>(opt =>
-            opt.UseSqlite("Data Source=/app/data/.users.db")
-        );
+        services.AddDbContext<UsersDbContext>(opt => opt.UseSqlite("Data Source=.users.db"));
         services.AddScoped<IUsersDatabase>(p => p.GetRequiredService<UsersDbContext>());
         services.AddScoped<IUserService, UserService>();
         return services;
