@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel;
 using SharedKernel.Abstractions;
 using WorkItems.Infrastructure.Persistence;
 
@@ -10,12 +10,13 @@ namespace Application;
 public static class DependencyInjection
 {
     public static IServiceCollection AddWorkItemInfrastructureLayer(
-        this IServiceCollection services
+        this IServiceCollection services,
+        IConfiguration configuration
     )
     {
         services.AddSingleton(TimeProvider.System);
         services.AddDbContext<WorkItemsDbContext>(opt =>
-            opt.UseSqlite("Data Source=.workItems.db")
+            opt.UseSqlite(configuration.GetConnectionString("WorkItemsDatabase"))
         );
         services.AddScoped<IWorkItemsDatabase>(p => p.GetRequiredService<WorkItemsDbContext>());
         return services;

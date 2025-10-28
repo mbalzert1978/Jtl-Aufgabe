@@ -3,7 +3,6 @@
 // </copyright>
 
 using Application;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using SharedKernel;
 
 WebApplicationBuilder bld = WebApplication.CreateBuilder(args);
@@ -17,9 +16,9 @@ bld.Services.AddAuthenticationJwtBearer(s => s.SigningKey = bld.Configuration["A
 
 bld.Services.AddMediator();
 bld.Services.AddUserApplicationLayer();
-bld.Services.AddUserInfrastructureLayer();
+bld.Services.AddUserInfrastructureLayer(bld.Configuration);
 bld.Services.AddWorkItemApplicationLayer();
-bld.Services.AddWorkItemInfrastructureLayer();
+bld.Services.AddWorkItemInfrastructureLayer(bld.Configuration);
 
 WebApplication app = bld.Build();
 app.UseDefaultExceptionHandler()
