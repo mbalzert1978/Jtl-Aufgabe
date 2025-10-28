@@ -3,6 +3,8 @@
 // </copyright>
 
 using Microsoft.EntityFrameworkCore;
+using Monads.Results;
+using SharedKernel.Abstractions;
 using Shouldly;
 using Users.Application.Adapters;
 using Users.Application.Adapters.ExistenceServiceTestApi;
@@ -36,10 +38,13 @@ public sealed class UserExistenceServiceTests
             .Build();
 
         // Act
-        bool exists = await existenceService.ExistsAsync(userId, CancellationToken.None);
+        Result<Unit, IError> exists = await existenceService.VerifyUserExistsAsync(
+            userId,
+            TestContext.Current.CancellationToken
+        );
 
         // Assert
-        exists.ShouldBeTrue();
+        exists.IsOk.ShouldBeTrue();
     }
 
     [Fact]
@@ -50,9 +55,12 @@ public sealed class UserExistenceServiceTests
         IUserExistenceService existenceService = UserExistenceServiceTestApiBuilder.New().Build();
 
         // Act
-        bool exists = await existenceService.ExistsAsync(userId, CancellationToken.None);
+        Result<Unit, IError> exists = await existenceService.VerifyUserExistsAsync(
+            userId,
+            TestContext.Current.CancellationToken
+        );
 
         // Assert
-        exists.ShouldBeFalse();
+        exists.IsErr.ShouldBeTrue();
     }
 }

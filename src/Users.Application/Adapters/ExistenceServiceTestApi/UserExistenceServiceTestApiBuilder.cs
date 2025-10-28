@@ -4,7 +4,6 @@
 
 using System.Diagnostics;
 using SharedKernel.Abstractions;
-using Users.Domain.Abstractions;
 
 namespace Users.Application.Adapters.ExistenceServiceTestApi;
 
@@ -61,7 +60,6 @@ internal sealed class UserExistenceServiceTestApiBuilder
 
         IUserService userService = new FakeUserService(_repository);
         UserExistenceService existenceService = new(userService);
-        Debug.Assert(existenceService is not null, "ExistenceService should be created correctly");
 
         return existenceService;
     }

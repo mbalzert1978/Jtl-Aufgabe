@@ -7,7 +7,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Monads.Results;
 using SharedKernel.Abstractions;
+using SharedKernel.Models;
 
 namespace Users.Application.Adapters.ExistenceServiceTestApi;
 
@@ -43,6 +45,8 @@ internal sealed class FakeUserService : IUserService
             cancellationToken.ThrowIfCancellationRequested();
 
         bool exists = _database.Query<UserEntity>().Any(u => u.UserId == userId);
+        Debug.Assert(exists || !exists, "exists should be a valid boolean");
+
         return Task.FromResult(exists);
     }
 }
