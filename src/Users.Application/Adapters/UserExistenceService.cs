@@ -3,8 +3,13 @@
 // </copyright>
 
 using System.Diagnostics;
+using Monads.Results;
 using SharedKernel.Abstractions;
-using Users.Domain.Abstractions;
+using SharedKernel.Models;
+using SharedKernel.Models.Common;
+using static Monads.Results.ResultFactory;
+using static SharedKernel.Models.ApplicationErrorFactory;
+using static SharedKernel.Models.Common.DomainErrorFactory;
 
 namespace Users.Application.Adapters;
 
@@ -33,13 +38,28 @@ internal sealed class UserExistenceService : IUserExistenceService
     /// <param name="userId">The unique identifier of the user.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>True if the user exists; otherwise, false.</returns>
-    public async Task<bool> ExistsAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task<Result<Unit, IError>> VerifyUserExistsAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default
+    )
     {
         Debug.Assert(_service is not null, "Service should be assigned correctly.");
 
-        bool result = await _service.UserExistsAsync(userId, cancellationToken);
-        Debug.Assert(result || !result, "result should be a boolean value");
+        bool exists;
+        try
+        {
+            exists = await _service.UserExistsAsync(userId, cancellationToken);
+        }
+        catch (Exception exc)
+        {
+            return Failure<Unit, IError>(FromDomainError(DatabaseError(exc)));
+        }
+        Debug.Assert(exists || !exists, "exists should be a valid boolean");
 
-        return result;
+        if (!exists)
+            return Failure<Unit, IError>(AssigneeNotFound(userId));
+        Debug.Assert(exists, "exists should be true here");
+
+        return Success<Unit, IError>(default);
     }
 }
