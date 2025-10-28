@@ -35,14 +35,14 @@ internal sealed class UserService : IUserService
     /// <param name="userId">The unique identifier of the user.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>True if the user exists; otherwise, false.</returns>
-    public Task<bool> UserExistsAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task<bool> UserExistsAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         Debug.Assert(_database is not null, "Database should be assigned correctly");
 
-        bool result = _database.Query<UserEntity>().Any(u => u.UserId == userId);
+        bool result = await _database.Query<UserEntity>().AnyAsync(u => u.UserId == userId);
 
         Debug.Assert(result || !result, "result should be a valid boolean");
 
-        return Task.FromResult(result);
+        return result;
     }
 }
