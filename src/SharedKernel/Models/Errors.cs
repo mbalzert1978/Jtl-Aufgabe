@@ -21,6 +21,15 @@ public sealed record NotFoundError(Guid Id, Type Type) : IError
     public ErrorType ErrorType => ErrorType.NotFound;
 }
 
+public sealed record AssigneeNotFoundError(Guid AssigneeId) : IError
+{
+    /// <inheritdoc/>
+    public string Message => $"Assignee with ID '{AssigneeId}' was not found.";
+
+    /// <inheritdoc/>
+    public ErrorType ErrorType => ErrorType.NotFound;
+}
+
 /// <summary>
 /// Represents a validation error.
 /// </summary>
@@ -84,4 +93,6 @@ internal static class ApplicationErrorFactory
     /// </summary>
     /// <returns>An <see cref="IError"/> representing an unexpected internal error.</returns>
     public static IError UnexpectedError() => new InternalError(UnknownErrorMessage);
+
+    public static IError AssigneeNotFound(Guid assigneeId) => new AssigneeNotFoundError(assigneeId);
 }
