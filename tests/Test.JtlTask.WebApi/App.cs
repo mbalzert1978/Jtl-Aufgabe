@@ -1,5 +1,4 @@
 ﻿using JtlTask.WebApi.Features.Users.RegisterUser;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -9,21 +8,9 @@ using WorkItems.Infrastructure.Persistence;
 
 namespace Test.JtlTask.WebApi;
 
-[DisableWafCache]
 public class App : AppFixture<Program>
 {
-    public TestUser TestUser { get; private set; } = null!;
-    public TestUser TestUser2 { get; private set; } = null!;
-
-    protected override async ValueTask SetupAsync()
-    {
-        RegisterUserResponse result = await CreateTestUser("John_Doe");
-        TestUser = new(result.UserId, result.Username);
-        RegisterUserResponse result2 = await CreateTestUser("Jane_Smith");
-        TestUser2 = new(result2.UserId, result2.Username);
-    }
-
-    private async Task<RegisterUserResponse> CreateTestUser(string username = "John_Doe")
+    public async Task<TestUser> CreateTestUser(string username = "John_Doe")
     {
         using HttpClient client = CreateClient();
         (HttpResponseMessage resp, RegisterUserResponse result) = await client.POSTAsync<
@@ -31,13 +18,10 @@ public class App : AppFixture<Program>
             RegisterUserRequest,
             RegisterUserResponse
         >(new(username));
-        resp.EnsureSuccessStatusCode();
-        return result;
-    }
 
-    protected override void ConfigureApp(IWebHostBuilder a)
-    {
-        // do host builder configuration here
+        resp.EnsureSuccessStatusCode();
+
+        return new(result.UserId, result.Username);
     }
 
     protected override void ConfigureServices(IServiceCollection s)
@@ -49,7 +33,9 @@ public class App : AppFixture<Program>
         s.AddSingleton<TimeProvider>(provider);
     }
 
-    protected override async ValueTask TearDownAsync()
+    protected override async ValueTask TearDownAsync() { }
+
+    public async Task CleanDatabaseAsync()
     {
         await using AsyncServiceScope scope = Services.CreateAsyncScope();
         UsersDbContext uContext = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
