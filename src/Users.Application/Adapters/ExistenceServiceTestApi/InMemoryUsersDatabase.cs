@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using SharedKernel.Abstractions;
 
-namespace Users.Application.Adapters.TestFramework;
+namespace Users.Application.Adapters.ExistenceServiceTestApi;
 
 /// <summary>
 /// In-memory implementation of <see cref="IUsersDatabase"/> for testing purposes.
@@ -16,7 +16,7 @@ namespace Users.Application.Adapters.TestFramework;
 /// TestFramework pattern. Used as a test double for moving parts while keeping real
 /// implementations for services and business logic.
 /// </remarks>
-public sealed class InMemoryUsersDatabase : IUsersDatabase
+internal sealed class InMemoryUsersDatabase : IUsersDatabase
 {
     private readonly ConcurrentDictionary<Type, ConcurrentBag<object>> _storage = new();
 
@@ -28,11 +28,8 @@ public sealed class InMemoryUsersDatabase : IUsersDatabase
     public IQueryable<TEntity> Query<TEntity>()
         where TEntity : class
     {
-        Type entityType = typeof(TEntity);
-        if (!_storage.TryGetValue(entityType, out ConcurrentBag<object>? bag))
-        {
+        if (!_storage.TryGetValue(typeof(TEntity), out ConcurrentBag<object>? bag))
             return Enumerable.Empty<TEntity>().AsQueryable();
-        }
 
         Debug.Assert(bag is not null, "Storage bag should not be null when retrieved.");
         return bag.Cast<TEntity>().AsQueryable();
@@ -55,7 +52,10 @@ public sealed class InMemoryUsersDatabase : IUsersDatabase
         ConcurrentBag<object> bag = _storage.GetOrAdd(entityType, _ => []);
         bag.Add(entity);
 
-        Debug.Assert(_storage.ContainsKey(entityType), "Entity type should be in storage after adding.");
+        Debug.Assert(
+            _storage.ContainsKey(entityType),
+            "Entity type should be in storage after adding."
+        );
         Debug.Assert(bag.Contains(entity), "Entity should be in storage bag after adding.");
 
         return Task.CompletedTask;
