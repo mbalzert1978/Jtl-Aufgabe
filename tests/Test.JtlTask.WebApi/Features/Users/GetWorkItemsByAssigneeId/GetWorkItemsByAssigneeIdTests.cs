@@ -48,9 +48,9 @@ public class GetWorkItemsByAssigneeIdTests(App app) : TestBase<App>
     {
         GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
             .New(app)
-            .ForAssignee(app.TestUser.UserId)
+            .ForAssignee(app.TestUser2.UserId)
             .WithWorkItem(
-                app.TestUser.UserId,
+                app.TestUser2.UserId,
                 "Single work item",
                 "This is the only work item",
                 "High",
@@ -64,7 +64,7 @@ public class GetWorkItemsByAssigneeIdTests(App app) : TestBase<App>
         result.Result.ShouldNotBeNull();
         result.Result.Count().ShouldBe(1);
         GetWorkItemsByAssigneeIdResponse workItem = result.Result.First();
-        workItem.AssigneeId.ShouldBe(app.TestUser.UserId);
+        workItem.AssigneeId.ShouldBe(app.TestUser2.UserId);
         workItem.Title.ShouldBe("Single work item");
     }
 
@@ -121,21 +121,37 @@ public class GetWorkItemsByAssigneeIdTests(App app) : TestBase<App>
     [Fact, Priority(5)]
     public async Task GetWorkItemsByAssigneeId_WhenMultipleUsersHaveWorkItems_ShouldReturnOnlyUserItems()
     {
-
-
         GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
             .New(app)
             .ForAssignee(app.TestUser.UserId)
-            .WithWorkItem(app.TestUser.UserId, "User 1 - Item 1", "First item for user 1", "High", 5)
-            .WithWorkItem(app.TestUser.UserId, "User 1 - Item 2", "Second item for user 1", "Normal", 3)
-            .WithWorkItem(app.TestUser2.UserId, "User 2 - Item 1", "First item for user 2", "Low", 4);
+            .WithWorkItem(
+                app.TestUser.UserId,
+                "User 1 - Item 1",
+                "First item for user 1",
+                "High",
+                5
+            )
+            .WithWorkItem(
+                app.TestUser.UserId,
+                "User 1 - Item 2",
+                "Second item for user 1",
+                "Normal",
+                3
+            )
+            .WithWorkItem(
+                app.TestUser2.UserId,
+                "User 2 - Item 2",
+                "Second item for user 2",
+                "Low",
+                4
+            );
 
         TestResult<IEnumerable<GetWorkItemsByAssigneeIdResponse>> result =
             await builder.ExecuteAsync();
 
         result.Response.StatusCode.ShouldBe(HttpStatusCode.OK);
         result.Result.ShouldNotBeNull();
-        result.Result.Count().ShouldBe(2);
+        result.Result.Count().ShouldBe(5);
         result.Result.All(wi => wi.AssigneeId == app.TestUser.UserId).ShouldBeTrue();
         result.Result.Any(wi => wi.AssigneeId == app.TestUser2.UserId).ShouldBeFalse();
     }
@@ -143,7 +159,6 @@ public class GetWorkItemsByAssigneeIdTests(App app) : TestBase<App>
     [Fact, Priority(6)]
     public async Task GetWorkItemsByAssigneeId_WhenCalledMultipleTimes_ShouldReturnConsistentData()
     {
-
         GetWorkItemsByAssigneeIdTestsBuilder builder = GetWorkItemsByAssigneeIdTestsBuilder
             .New(app)
             .ForAssignee(app.TestUser.UserId)

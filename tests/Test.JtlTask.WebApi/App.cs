@@ -9,6 +9,7 @@ using WorkItems.Infrastructure.Persistence;
 
 namespace Test.JtlTask.WebApi;
 
+[DisableWafCache]
 public class App : AppFixture<Program>
 {
     public TestUser TestUser { get; private set; } = null!;
@@ -52,7 +53,8 @@ public class App : AppFixture<Program>
     {
         await using AsyncServiceScope scope = Services.CreateAsyncScope();
         UsersDbContext uContext = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
-        WorkItemsDbContext wContext = scope.ServiceProvider.GetRequiredService<WorkItemsDbContext>();
+        WorkItemsDbContext wContext =
+            scope.ServiceProvider.GetRequiredService<WorkItemsDbContext>();
 
         await wContext.Database.ExecuteSqlRawAsync("DELETE FROM WorkItems");
         await uContext.Database.ExecuteSqlRawAsync("DELETE FROM Users");
