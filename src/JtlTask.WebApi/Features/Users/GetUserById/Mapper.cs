@@ -3,8 +3,7 @@
 // </copyright>
 
 using System.Diagnostics;
-using FastEndpoints;
-using JtlTask.WebApi.Features.User.RegisterUser;
+using JtlTask.WebApi.Features.Users.RegisterUser;
 using Users.Application.Adapters;
 
 namespace JtlTask.WebApi.Features.Users.GetUserById;

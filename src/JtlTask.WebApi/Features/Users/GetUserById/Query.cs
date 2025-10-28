@@ -2,7 +2,6 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-using System.Diagnostics;
 using Users.Application.Adapters;
 
 namespace JtlTask.WebApi.Features.Users.GetUserById;

@@ -3,8 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using System.Net;
-using FastEndpoints;
 using Users.Application.Adapters;
 
 namespace JtlTask.WebApi.Features.Users.GetUserById;
@@ -21,22 +19,14 @@ internal sealed class Endpoint
     public override void Configure()
     {
         AllowAnonymous();
-        Get("api/v1/users/{UserId:guid}");
+        Get("/{UserId:guid}");
+        Group<Route>();
 
-        Summary(s =>
+        Description(b =>
         {
-            Debug.Assert(s is not null, "Summary configuration object cannot be null.");
-
-            s.Summary = "Get user by ID";
-            s.Description = "Retrieves a user by their unique identifier";
-            s.Response<GetUserByIdResponse>(StatusCodes.Status200OK, "User successfully retrieved");
-            s.Response(StatusCodes.Status404NotFound, "User with the specified ID does not exist");
-        });
-
-        Options(x =>
-        {
-            Debug.Assert(x is not null, "Options configuration object cannot be null.");
-            x.WithTags("Users");
+            Debug.Assert(b is not null, "Description configuration object cannot be null.");
+            b.Produces<GetUserByIdResponse>(StatusCodes.Status200OK);
+            b.Produces<ProblemDetails>(StatusCodes.Status404NotFound);
         });
     }
 
@@ -52,7 +42,8 @@ internal sealed class Endpoint
                 await Send.OkAsync(Map.FromEntity(user), ct);
                 break;
             default:
-                await Send.NotFoundAsync(ct);
+                AddError($"User with ID '{req.UserId}' was not found.", "UserNotFound");
+                await Send.ErrorsAsync(StatusCodes.Status404NotFound, ct);
                 return;
         }
     }
