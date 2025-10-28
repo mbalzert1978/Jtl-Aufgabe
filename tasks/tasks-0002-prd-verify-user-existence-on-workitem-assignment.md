@@ -57,8 +57,8 @@
 ## Tasks
 
 - [ ] 1.0 Setup Users Module - Domain Service for User Existence Checking (TDD)
-  - [ ] 1.1 **RED**: Create `InMemoryUsersDatabase.cs` TestFramework in `src/Users.Application/Adapters/TestFramework/` implementing `IUsersDatabase` for in-memory testing
-  - [ ] 1.2 **RED**: Write failing test `UserExistenceService_ExistsAsync_WhenUserExists_ShouldReturnTrue` in `tests/Tests.Users/Domain/UserExistenceServiceTests.cs` (test will fail - service doesn't exist yet)
+  - [x] 1.1 **RED**: Create `InMemoryUsersDatabase.cs` TestFramework in `src/Users.Application/Adapters/TestFramework/` implementing `IUsersDatabase` for in-memory testing
+  - [x] 1.2 **RED**: Write failing test `UserExistenceService_ExistsAsync_WhenUserExists_ShouldReturnTrue` in `tests/Tests.Users/Domain/UserExistenceServiceTests.cs` (test will fail - service doesn't exist yet)
   - [ ] 1.3 **GREEN**: Create `IUserExistenceService.cs` interface in `src/Users.Domain/Abstractions/` with `ExistsAsync(Guid userId, CancellationToken)` method (internal)
   - [ ] 1.4 **GREEN**: Implement minimal `UserExistenceService.cs` in `src/Users.Infrastructure/Services/` to make test pass (use `IUsersDatabase.Query<UserEntity>()`)
   - [ ] 1.5 **GREEN**: Register `IUserExistenceService` → `UserExistenceService` as Scoped in `src/Users.Infrastructure/DependencyInjection.cs`
