@@ -15,7 +15,7 @@ public static class DependencyInjection
     {
         services.AddSingleton(TimeProvider.System);
         services.AddDbContext<WorkItemsDbContext>(opt =>
-            opt.UseSqlite("Data Source=/app/data/.workItems.db")
+            opt.UseSqlite("Data Source=.workItems.db")
         );
         services.AddScoped<IWorkItemsDatabase>(p => p.GetRequiredService<WorkItemsDbContext>());
         return services;

@@ -51,9 +51,25 @@ internal sealed class Endpoint
             s.Description = "Creates a new work item and assigns it to the specified user";
             s.Response<AssignWorkItemResponse>(
                 StatusCodes.Status201Created,
-                "Work item successfully assigned"
+                "The work item was successfully assigned."
+            );
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "The request was invalid.");
+            s.Response<ProblemDetails>(
+                StatusCodes.Status404NotFound,
+                "The specified user was not found."
+            );
+            s.Response<InternalErrorResponse>(
+                StatusCodes.Status500InternalServerError,
+                "An internal server error occurred."
             );
         });
+
+        Description(b =>
+            b.Produces<AssignWorkItemResponse>(StatusCodes.Status201Created, "application/json")
+                .ProducesProblemDetails(StatusCodes.Status400BadRequest)
+                .ProducesProblemDetails(StatusCodes.Status404NotFound)
+                .ProducesProblemFE<InternalErrorResponse>(StatusCodes.Status500InternalServerError)
+        );
 
         Options(x =>
         {
@@ -143,6 +159,11 @@ internal sealed class Endpoint
             case ErrorType.Validation:
                 AddError(error.Message);
                 await Send.ErrorsAsync(StatusCodes.Status400BadRequest, ct);
+                break;
+
+            case ErrorType.NotFound:
+                AddError(error.Message);
+                await Send.ErrorsAsync(StatusCodes.Status404NotFound, ct);
                 break;
 
             default:

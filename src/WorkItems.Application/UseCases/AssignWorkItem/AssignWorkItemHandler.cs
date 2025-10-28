@@ -12,6 +12,7 @@ using WorkItems.Application.Adapters;
 using WorkItems.Domain.Abstractions;
 using WorkItems.Domain.Models.WorkItems;
 using WorkItems.Domain.Models.WorkItems.ValueObjects;
+using static SharedKernel.Models.ApplicationErrorFactory;
 
 namespace WorkItems.Application.UseCases.AssignWorkItem;
 
@@ -21,27 +22,42 @@ namespace WorkItems.Application.UseCases.AssignWorkItem;
 internal sealed class AssignWorkItemHandler : ICommandHandler<AssignWorkItemCommand, WorkItemEntity>
 {
     private readonly IWorkItemRepository _workItemRepository;
+    private readonly IUserExistenceService _userService;
     private readonly TimeProvider _timeProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AssignWorkItemHandler"/> class.
     /// </summary>
     /// <param name="workItemRepository">The repository for work item persistence operations.</param>
+    /// <param name="userService">The user service for validating user existence.</param>
     /// <param name="timeProvider">The time provider for event timestamps.</param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="workItemRepository"/> or <paramref name="timeProvider"/> is null.</exception>
-    public AssignWorkItemHandler(IWorkItemRepository workItemRepository, TimeProvider timeProvider)
+    public AssignWorkItemHandler(
+        IWorkItemRepository workItemRepository,
+        IUserExistenceService userService,
+        TimeProvider timeProvider
+    )
     {
         ArgumentNullException.ThrowIfNull(workItemRepository);
+        ArgumentNullException.ThrowIfNull(userService);
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         _workItemRepository = workItemRepository;
+        _userService = userService;
         _timeProvider = timeProvider;
 
         Debug.Assert(
             _workItemRepository == workItemRepository,
-            "WorkItemRepository instance was not set correctly."
+            "WorkItemRepository instance should be assigned correctly."
         );
-        Debug.Assert(_timeProvider == timeProvider, "TimeProvider instance was not set correctly.");
+        Debug.Assert(
+            _userService == userService,
+            "UserService instance should be assigned correctly."
+        );
+        Debug.Assert(
+            _timeProvider == timeProvider,
+            "TimeProvider instance should be assigned correctly."
+        );
     }
 
     /// <summary>
@@ -57,35 +73,39 @@ internal sealed class AssignWorkItemHandler : ICommandHandler<AssignWorkItemComm
     {
         Debug.Assert(command is not null, "Command must not be null.");
 
-        return await WorkItem
-            .Create(
-                command.AssigneeId,
-                command.Title,
-                command.Description,
-                command.Priority,
-                command.EstimatedHours,
-                command.DueDate,
-                command.ParentTaskId,
-                command.Tags ?? [],
-                _timeProvider
-            )
-            .BindAsync(workItem =>
-                _workItemRepository
-                    .AddAsync(workItem, cancellationToken)
-                    .MapAsync(_ => new WorkItemEntity(
-                        workItem.Id,
-                        workItem.AssigneeId.Value,
-                        workItem.Title.Value,
-                        workItem.Description.Value,
-                        workItem.Status.ToString(),
-                        workItem.Priority.ToString(),
-                        workItem.DueDate?.Value,
-                        workItem.CompletedAt,
-                        workItem.EstimatedHours.Value,
-                        [.. workItem.Tags.Value.Select(tag => new WorkItemTag(tag))],
-                        workItem.ParentTaskId
-                    ))
-            )
-            .MapErrAsync(ApplicationErrorFactory.FromDomainError);
+        return await _userService
+            .VerifyUserExistsAsync(command.AssigneeId, cancellationToken)
+            .BindAsync(_ =>
+                WorkItem
+                    .Create(
+                        command.AssigneeId,
+                        command.Title,
+                        command.Description,
+                        command.Priority,
+                        command.EstimatedHours,
+                        command.DueDate,
+                        command.ParentTaskId,
+                        command.Tags ?? [],
+                        _timeProvider
+                    )
+                    .BindAsync(workItem =>
+                        _workItemRepository
+                            .AddAsync(workItem, cancellationToken)
+                            .MapAsync(_ => new WorkItemEntity(
+                                workItem.Id,
+                                workItem.AssigneeId.Value,
+                                workItem.Title.Value,
+                                workItem.Description.Value,
+                                workItem.Status.ToString(),
+                                workItem.Priority.ToString(),
+                                workItem.DueDate?.Value,
+                                workItem.CompletedAt,
+                                workItem.EstimatedHours.Value,
+                                [.. workItem.Tags.Value.Select(tag => new WorkItemTag(tag))],
+                                workItem.ParentTaskId
+                            ))
+                    )
+                    .MapErrAsync(FromDomainError)
+            );
     }
 }

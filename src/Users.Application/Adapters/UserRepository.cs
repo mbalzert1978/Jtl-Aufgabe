@@ -19,7 +19,7 @@ internal sealed class UserRepository : IUserRepository
 
         _database = database;
 
-        Debug.Assert(_database == database, "Database instance was not set correctly.");
+        Debug.Assert(_database == database, "Database instance should be assigned correctly.");
     }
 
     public async Task<Result<Unit, DomainError>> AddAsync(
