@@ -8,12 +8,10 @@ services:
     ports:
       - "5050:8080"
     volumes:
-      # Persist SQLite databases
       - jtltask-data:/app/data
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_HTTP_PORTS=8080
-      # Remove HTTPS configuration for containerized deployment
       - ASPNETCORE_URLS=http://+:8080
     restart: unless-stopped
     networks:
