@@ -1,16 +1,37 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using JtlTask.WebApi.Features.Users.RegisterUser;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Time.Testing;
+using Users.Infrastructure.Persistence;
+using WorkItems.Infrastructure.Persistence;
 
 namespace Test.JtlTask.WebApi;
 
 public class App : AppFixture<Program>
 {
-    protected override ValueTask SetupAsync()
+    public TestUser TestUser { get; private set; } = null!;
+    public TestUser TestUser2 { get; private set; } = null!;
+
+    protected override async ValueTask SetupAsync()
     {
-        // place one-time setup for the fixture here
-        return ValueTask.CompletedTask;
+        RegisterUserResponse result = await CreateTestUser("John_Doe");
+        TestUser = new(result.UserId, result.Username);
+        RegisterUserResponse result2 = await CreateTestUser("Jane_Smith");
+        TestUser2 = new(result2.UserId, result2.Username);
+    }
+
+    private async Task<RegisterUserResponse> CreateTestUser(string username = "John_Doe")
+    {
+        using HttpClient client = CreateClient();
+        (HttpResponseMessage resp, RegisterUserResponse result) = await client.POSTAsync<
+            Endpoint,
+            RegisterUserRequest,
+            RegisterUserResponse
+        >(new(username));
+        resp.EnsureSuccessStatusCode();
+        return result;
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)
@@ -27,9 +48,15 @@ public class App : AppFixture<Program>
         s.AddSingleton<TimeProvider>(provider);
     }
 
-    protected override ValueTask TearDownAsync()
+    protected override async ValueTask TearDownAsync()
     {
-        // do cleanups here
-        return ValueTask.CompletedTask;
+        await using AsyncServiceScope scope = Services.CreateAsyncScope();
+        UsersDbContext uContext = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
+        WorkItemsDbContext wContext = scope.ServiceProvider.GetRequiredService<WorkItemsDbContext>();
+
+        await wContext.Database.ExecuteSqlRawAsync("DELETE FROM WorkItems");
+        await uContext.Database.ExecuteSqlRawAsync("DELETE FROM Users");
     }
 }
+
+public sealed record TestUser(Guid UserId, string Username);

@@ -2,7 +2,7 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-using JtlTask.WebApi.Features.User.RegisterUser;
+using JtlTask.WebApi.Features.Users.RegisterUser;
 
 namespace Test.JtlTask.WebApi.Features.Users.RegisterUser;
 

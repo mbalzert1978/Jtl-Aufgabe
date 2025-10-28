@@ -3,10 +3,10 @@
 // </copyright>
 
 using System.Diagnostics;
-using JtlTask.WebApi.Features.User.RegisterUser;
 using JtlTask.WebApi.Features.Users.GetUserById;
+using JtlTask.WebApi.Features.Users.RegisterUser;
 using GetUserByIdEndpoint = JtlTask.WebApi.Features.Users.GetUserById.Endpoint;
-using RegisterUserEndpoint = JtlTask.WebApi.Features.User.RegisterUser.Endpoint;
+using RegisterUserEndpoint = JtlTask.WebApi.Features.Users.RegisterUser.Endpoint;
 
 namespace Test.JtlTask.WebApi.Features.Users.GetUserById;
 

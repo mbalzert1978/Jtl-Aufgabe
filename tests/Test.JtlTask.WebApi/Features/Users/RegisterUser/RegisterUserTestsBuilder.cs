@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Diagnostics;
-using JtlTask.WebApi.Features.User.RegisterUser;
+using JtlTask.WebApi.Features.Users.RegisterUser;
 
 namespace Test.JtlTask.WebApi.Features.Users.RegisterUser;
 
