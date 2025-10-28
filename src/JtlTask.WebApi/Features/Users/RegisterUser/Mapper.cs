@@ -3,11 +3,9 @@
 // </copyright>
 
 using System.Diagnostics;
-using FastEndpoints;
-using JtlTask.WebApi.Features.User.RegisterUser;
 using Users.Application.Adapters;
 
-namespace JtlTask.WebApi.Features.User.RegisterUser;
+namespace JtlTask.WebApi.Features.Users.RegisterUser;
 
 /// <summary>
 /// Maps between <see cref="RegisterUserRequest"/>, <see cref="RegisterUserResponse"/>, and <see cref="UserEntity"/>.

@@ -3,17 +3,14 @@
 // </copyright>
 
 using System.Diagnostics;
-using System.Net;
-using FastEndpoints;
 using Mediator;
 using Monads.Results;
-using Monads.Results.Extensions.Async;
 using Monads.Results.Extensions.Sync;
 using SharedKernel.Abstractions;
 using Users.Application.Adapters;
 using Users.Application.UseCases.RegisterUser;
 
-namespace JtlTask.WebApi.Features.User.RegisterUser;
+namespace JtlTask.WebApi.Features.Users.RegisterUser;
 
 /// <summary>
 /// Endpoint for registering a new user in the system.
@@ -41,24 +38,14 @@ internal sealed class Endpoint
         Debug.Assert(Config is not null, "Config must be initialized.");
 
         AllowAnonymous();
-        Post("api/v1/users");
+        Post("/");
+        Group<Route>();
 
-        Summary(s =>
+        Description(b =>
         {
-            Debug.Assert(s is not null, "Summary configuration object cannot be null.");
-
-            s.Summary = "Register a new user";
-            s.Description = "Creates a new user account with the provided username";
-            s.Response<RegisterUserResponse>(
-                StatusCodes.Status201Created,
-                "User successfully registered"
-            );
-        });
-
-        Options(x =>
-        {
-            Debug.Assert(x is not null, "Options configuration object cannot be null.");
-            x.WithTags("Users");
+            Debug.Assert(b is not null, "Description configuration object cannot be null.");
+            b.Produces<RegisterUserResponse>(StatusCodes.Status201Created);
+            b.ProducesProblemDetails(StatusCodes.Status400BadRequest);
         });
     }
 
@@ -81,52 +68,24 @@ internal sealed class Endpoint
         await result
             .Map(Map.FromEntity)
             .Match(
-                response => SendSuccessResponseAsync(response, ct),
-                error => HandleErrorAsync(error, ct)
+                response => Send.ResponseAsync(response, StatusCodes.Status201Created, ct),
+                error =>
+                {
+                    switch (error.ErrorType)
+                    {
+                        case ErrorType.Validation:
+                            AddError(error.Message);
+                            Send.ErrorsAsync(StatusCodes.Status400BadRequest, ct);
+                            break;
+
+                        default:
+                            AddError(InternalServerError);
+                            Send.ErrorsAsync(StatusCodes.Status500InternalServerError, ct);
+                            break;
+                    }
+
+                    return Task.CompletedTask;
+                }
             );
-    }
-
-    /// <summary>
-    /// Sends a successful response with the registered user data.
-    /// </summary>
-    /// <param name="response">The response containing the registered user data.</param>
-    /// <param name="ct">The cancellation token.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    private async Task SendSuccessResponseAsync(RegisterUserResponse response, CancellationToken ct)
-    {
-        Debug.Assert(response is not null, "Response should not be null.");
-        Debug.Assert(response.UserId != Guid.Empty, "Response ID must be valid.");
-        Debug.Assert(
-            !string.IsNullOrWhiteSpace(response.Username),
-            "Response username should not be empty."
-        );
-
-        await PublishAsync(new UserRegisteredEvent(response.UserId), cancellation: ct);
-        await Send.ResponseAsync(response, StatusCodes.Status201Created, ct);
-    }
-
-    /// <summary>
-    /// Handles errors by mapping them to appropriate HTTP responses.
-    /// </summary>
-    /// <param name="error">The error to handle.</param>
-    /// <param name="ct">The cancellation token.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    private async Task HandleErrorAsync(IError error, CancellationToken ct)
-    {
-        Debug.Assert(error is not null, "Error cannot be null.");
-        Debug.Assert(!string.IsNullOrWhiteSpace(error.Message), "Error message cannot be empty.");
-
-        switch (error.ErrorType)
-        {
-            case ErrorType.Validation:
-                AddError(error.Message);
-                await Send.ErrorsAsync(StatusCodes.Status400BadRequest, ct);
-                break;
-
-            default:
-                AddError(InternalServerError);
-                await Send.ErrorsAsync(StatusCodes.Status500InternalServerError, ct);
-                break;
-        }
     }
 }

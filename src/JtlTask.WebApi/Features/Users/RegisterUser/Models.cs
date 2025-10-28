@@ -2,11 +2,9 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-using System.Diagnostics;
-using FastEndpoints;
 using FluentValidation;
 
-namespace JtlTask.WebApi.Features.User.RegisterUser;
+namespace JtlTask.WebApi.Features.Users.RegisterUser;
 
 /// <summary>
 /// Represents a request to register a new user.
