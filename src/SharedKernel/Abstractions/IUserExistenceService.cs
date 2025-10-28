@@ -2,7 +2,10 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-namespace Users.Domain.Abstractions;
+using Monads.Results;
+using SharedKernel.Models.Common;
+
+namespace SharedKernel.Abstractions;
 
 /// <summary>
 /// Domain service interface for checking user existence.
@@ -21,7 +24,10 @@ internal interface IUserExistenceService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A task that represents the asynchronous operation.
-    /// The task result contains <see langword="true"/> if the user exists; otherwise, <see langword="false"/>.
+    /// The task result contains a <see cref="Result{TSuccess, TError}"/> indicating success or failure.
     /// </returns>
-    Task<bool> ExistsAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task<Result<Unit, IError>> VerifyUserExistsAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default
+    );
 }
