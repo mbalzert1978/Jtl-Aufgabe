@@ -46,8 +46,8 @@ internal sealed class User : Entity, IAggregateRoot
         Id = id;
         Username = username;
 
-        Debug.Assert(Id == id, "User ID was not set correctly.");
-        Debug.Assert(Username == username, "Username was not set correctly.");
+        Debug.Assert(Id == id, "User ID should be assigned correctly.");
+        Debug.Assert(Username == username, "Username should be assigned correctly.");
     }
 
     /// <summary>

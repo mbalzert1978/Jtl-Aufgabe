@@ -31,7 +31,7 @@ internal sealed class WorkItemRepository : IWorkItemRepository
 
         _database = database;
 
-        Debug.Assert(_database == database, "Database instance was not set correctly.");
+        Debug.Assert(_database == database, "Database instance should be assigned correctly.");
     }
 
     /// <inheritdoc/>

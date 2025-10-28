@@ -38,9 +38,12 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
 
         Debug.Assert(
             _userRepository == userRepository,
-            "UserRepository instance was not set correctly."
+            "UserRepository instance should be assigned correctly."
         );
-        Debug.Assert(_timeProvider == timeProvider, "TimeProvider instance was not set correctly.");
+        Debug.Assert(
+            _timeProvider == timeProvider,
+            "TimeProvider instance should be assigned correctly."
+        );
     }
 
     /// <summary>
