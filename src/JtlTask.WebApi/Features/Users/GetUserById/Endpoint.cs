@@ -36,14 +36,14 @@ internal sealed class Endpoint
 
         GetUserByIdQuery query = new(req.UserId);
 
-        switch (await query.ExecuteAsync(ct))
+        switch (await query.ExecuteAsync(ct).ConfigureAwait(false))
         {
             case UserEntity user:
-                await Send.OkAsync(Map.FromEntity(user), ct);
+                await Send.OkAsync(Map.FromEntity(user), ct).ConfigureAwait(false);
                 break;
             default:
                 AddError($"User with ID '{req.UserId}' was not found.", "UserNotFound");
-                await Send.ErrorsAsync(StatusCodes.Status404NotFound, ct);
+                await Send.ErrorsAsync(StatusCodes.Status404NotFound, ct).ConfigureAwait(false);
                 return;
         }
     }

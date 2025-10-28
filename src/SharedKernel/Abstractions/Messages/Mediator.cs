@@ -62,6 +62,6 @@ internal sealed class Mediator : IMediator
             );
         Debug.Assert(pipeline is not null, "Pipeline delegate must be constructed.");
 
-        return await pipeline();
+        return await pipeline().ConfigureAwait(false);
     }
 }

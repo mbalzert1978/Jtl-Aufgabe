@@ -54,9 +54,9 @@ public sealed class UsersDbContext : DbContext, IUsersDatabase
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        await Set<TEntity>().AddAsync(entity);
+        await Set<TEntity>().AddAsync(entity).ConfigureAwait(false);
 
-        int rowsAffected = await SaveChangesAsync(cancellationToken);
+        int rowsAffected = await SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         Debug.Assert(rowsAffected > 0, "Entity must have been persisted to the database.");
     }
 

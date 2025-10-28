@@ -78,7 +78,7 @@ internal sealed class Endpoint
         );
         // csharpier-ignore
         Result<WorkItemEntity, IError> result =
-            await _mediator.SendAsync<AssignWorkItemCommand, WorkItemEntity>(cmd, ct);
+            await _mediator.SendAsync<AssignWorkItemCommand, WorkItemEntity>(cmd, ct).ConfigureAwait(false);
 
         await result
             .Map(Map.FromEntity)
@@ -105,6 +105,7 @@ internal sealed class Endpoint
 
                     return Task.CompletedTask;
                 }
-            );
+            )
+            .ConfigureAwait(false);
     }
 }

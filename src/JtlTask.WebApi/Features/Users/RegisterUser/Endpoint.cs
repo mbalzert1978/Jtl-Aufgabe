@@ -63,7 +63,7 @@ internal sealed class Endpoint
         Debug.Assert(cmd.Username == req.Username, "Command username must match request.");
         // csharpier-ignore
         Result<UserEntity, IError> result =
-            await _mediator.SendAsync<RegisterUserCommand, UserEntity>(cmd, ct);
+            await _mediator.SendAsync<RegisterUserCommand, UserEntity>(cmd, ct).ConfigureAwait(false);
 
         await result
             .Map(Map.FromEntity)
@@ -86,6 +86,7 @@ internal sealed class Endpoint
 
                     return Task.CompletedTask;
                 }
-            );
+            )
+            .ConfigureAwait(false);
     }
 }

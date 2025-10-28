@@ -64,7 +64,7 @@ internal sealed class LoggingBehavior<TRequest, TResponse>
         var sw = Stopwatch.StartNew();
         try
         {
-            Result<TResponse, IError> result = await @delegate();
+            Result<TResponse, IError> result = await @delegate().ConfigureAwait(false);
             sw.Stop();
 
             if (result.IsOk)

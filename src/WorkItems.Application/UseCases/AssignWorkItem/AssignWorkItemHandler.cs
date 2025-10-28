@@ -104,6 +104,7 @@ internal sealed class AssignWorkItemHandler : ICommandHandler<AssignWorkItemComm
                             ))
                     )
                     .MapErrAsync(FromDomainError)
-            );
+            )
+            .ConfigureAwait(false);
     }
 }

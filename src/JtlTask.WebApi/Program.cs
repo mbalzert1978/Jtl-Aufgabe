@@ -31,6 +31,6 @@ app.UseDefaultExceptionHandler()
     })
     .UseSwaggerGen();
 
-await app.Services.EnsureUsersDatabaseCreated();
-await app.Services.EnsureWorkItemsDatabaseCreated();
-await app.RunAsync();
+await app.Services.EnsureUsersDatabaseCreated().ConfigureAwait(false);
+await app.Services.EnsureWorkItemsDatabaseCreated().ConfigureAwait(false);
+await app.RunAsync().ConfigureAwait(false);

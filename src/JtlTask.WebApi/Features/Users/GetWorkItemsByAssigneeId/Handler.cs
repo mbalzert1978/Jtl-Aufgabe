@@ -36,7 +36,8 @@ internal sealed class GetWorkItemsByAssigneeIdHandler
         List<WorkItemEntity> workItems = await _context
             .WorkItems.Include(w => w.Tags)
             .Where(w => w.AssigneeId == command.AssigneeId)
-            .ToListAsync(ct);
+            .ToListAsync(ct)
+            .ConfigureAwait(false);
 
         Debug.Assert(workItems is not null, "Query result must not be null, even if empty.");
         Debug.Assert(

@@ -40,6 +40,9 @@ internal sealed class UserService : IUserService
     )
     {
         Debug.Assert(_database is not null, "Database should be assigned correctly");
-        return await _database.Query<UserEntity>().AnyAsync(u => u.UserId == userId);
+        return await _database
+            .Query<UserEntity>()
+            .AnyAsync(u => u.UserId == userId)
+            .ConfigureAwait(false);
     }
 }

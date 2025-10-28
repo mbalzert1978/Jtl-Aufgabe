@@ -46,7 +46,9 @@ internal sealed class UserExistenceService : IUserExistenceService
         bool exists;
         try
         {
-            exists = await _service.UserExistsAsync(userId, cancellationToken);
+            exists = await _service
+                .UserExistsAsync(userId, cancellationToken)
+                .ConfigureAwait(false);
         }
         catch (Exception exc)
         {

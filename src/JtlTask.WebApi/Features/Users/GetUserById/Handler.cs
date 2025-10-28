@@ -28,7 +28,9 @@ internal sealed class GetUserByIdHandler : ICommandHandler<GetUserByIdQuery, Use
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        UserEntity? user = await _context.Users.FindAsync(command.UserId);
+        UserEntity? user = await _context
+            .Users.FindAsync([command.UserId], ct)
+            .ConfigureAwait(false);
         Debug.Assert(
             user is null || user.UserId == command.UserId,
             "Retrieved user's ID must match the requested UserId."
