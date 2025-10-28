@@ -1,6 +1,5 @@
 ﻿using Mediator;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel;
 using SharedKernel.Abstractions;
 using Users.Application.Adapters;
 using Users.Application.UseCases.RegisterUser;

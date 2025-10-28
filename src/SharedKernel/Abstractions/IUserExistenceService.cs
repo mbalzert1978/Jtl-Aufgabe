@@ -3,7 +3,6 @@
 // </copyright>
 
 using Monads.Results;
-using SharedKernel.Models.Common;
 
 namespace SharedKernel.Abstractions;
 

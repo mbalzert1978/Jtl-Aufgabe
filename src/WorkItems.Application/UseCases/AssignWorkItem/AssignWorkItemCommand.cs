@@ -2,7 +2,6 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-using System.Collections.Immutable;
 using Mediator;
 using WorkItems.Application.Adapters;
 

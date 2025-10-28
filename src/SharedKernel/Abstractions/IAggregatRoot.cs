@@ -1,5 +1,3 @@
-using SharedKernel.Models.Common;
-
 // <copyright file="IAggregateRoot.cs" company="Markus - Iorio">
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>

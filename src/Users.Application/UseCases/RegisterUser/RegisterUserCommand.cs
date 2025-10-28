@@ -3,7 +3,6 @@
 // </copyright>
 
 using Mediator;
-using Monads.Results;
 using Users.Application.Adapters;
 
 namespace Users.Application.UseCases.RegisterUser;

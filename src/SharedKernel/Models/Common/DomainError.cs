@@ -2,9 +2,6 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-using System.Diagnostics;
-using SharedKernel.Abstractions;
-
 namespace SharedKernel.Models.Common;
 
 /// <summary>

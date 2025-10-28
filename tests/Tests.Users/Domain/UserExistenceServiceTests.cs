@@ -2,15 +2,10 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-using Microsoft.EntityFrameworkCore;
 using Monads.Results;
 using SharedKernel.Abstractions;
 using Shouldly;
-using Users.Application.Adapters;
 using Users.Application.Adapters.ExistenceServiceTestApi;
-using Users.Domain.Abstractions;
-using Users.Infrastructure.Persistence;
-using Users.Infrastructure.Services;
 
 namespace Tests.Users.Domain;
 

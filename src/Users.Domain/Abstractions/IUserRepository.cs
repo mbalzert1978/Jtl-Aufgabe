@@ -3,7 +3,6 @@
 // </copyright>
 
 using Monads.Results;
-using SharedKernel.Models;
 using SharedKernel.Models.Common;
 using Users.Domain.Models.Users;
 

@@ -350,8 +350,8 @@ dotnet_diagnostic.CS8618.severity = none
 
 # IDE Code Analyzers rules
 
-# IDE0005
-dotnet_diagnostic.IDE0005.severity = none
+# IDE0005: Using directive is unnecessary
+dotnet_diagnostic.IDE0005.severity = warning
 
 # IDE0011
 dotnet_diagnostic.IDE0011.severity = none

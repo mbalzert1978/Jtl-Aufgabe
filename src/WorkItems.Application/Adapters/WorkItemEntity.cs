@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using Tasks.Domain.Models.Tasks;
 
 namespace WorkItems.Application.Adapters;
 

@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace WorkItems.Domain.Models.WorkItems.ValueObjects;
 
 /// <summary>

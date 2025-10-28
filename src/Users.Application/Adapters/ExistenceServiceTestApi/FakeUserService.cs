@@ -2,14 +2,8 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Monads.Results;
 using SharedKernel.Abstractions;
-using SharedKernel.Models;
 
 namespace Users.Application.Adapters.ExistenceServiceTestApi;
 

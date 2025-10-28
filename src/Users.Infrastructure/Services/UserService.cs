@@ -6,7 +6,6 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Abstractions;
 using Users.Application.Adapters;
-using Users.Infrastructure.Persistence;
 
 namespace Users.Infrastructure.Services;
 

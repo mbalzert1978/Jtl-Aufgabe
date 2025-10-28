@@ -5,8 +5,6 @@
 using System.Diagnostics;
 using Monads.Results;
 using SharedKernel.Abstractions;
-using SharedKernel.Models;
-using SharedKernel.Models.Common;
 using static Monads.Results.ResultFactory;
 using static SharedKernel.Models.ApplicationErrorFactory;
 using static SharedKernel.Models.Common.DomainErrorFactory;

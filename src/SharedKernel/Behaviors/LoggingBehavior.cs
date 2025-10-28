@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Mediator;
 using Microsoft.Extensions.Logging;
 using Monads.Results;

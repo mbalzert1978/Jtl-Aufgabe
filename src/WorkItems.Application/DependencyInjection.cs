@@ -1,7 +1,5 @@
 ﻿using Mediator;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel;
-using SharedKernel.Abstractions;
 using WorkItems.Application.Adapters;
 using WorkItems.Application.UseCases.AssignWorkItem;
 using WorkItems.Domain.Abstractions;

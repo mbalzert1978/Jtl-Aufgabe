@@ -3,9 +3,7 @@
 // </copyright>
 
 using Monads.Results;
-using SharedKernel.Models;
 using SharedKernel.Models.Common;
-using Tasks.Domain.Models.Tasks;
 using WorkItems.Domain.Models.WorkItems;
 
 namespace WorkItems.Domain.Abstractions;
