@@ -38,11 +38,6 @@ internal sealed class UserService : IUserService
     public async Task<bool> UserExistsAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         Debug.Assert(_database is not null, "Database should be assigned correctly");
-
-        bool result = await _database.Query<UserEntity>().AnyAsync(u => u.UserId == userId);
-
-        Debug.Assert(result || !result, "result should be a valid boolean");
-
-        return result;
+        return await _database.Query<UserEntity>().AnyAsync(u => u.UserId == userId);
     }
 }
