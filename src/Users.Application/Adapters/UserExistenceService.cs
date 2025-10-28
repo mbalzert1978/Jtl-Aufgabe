@@ -54,12 +54,9 @@ internal sealed class UserExistenceService : IUserExistenceService
         {
             return Failure<Unit, IError>(FromDomainError(DatabaseError(exc)));
         }
-        Debug.Assert(exists || !exists, "exists should be a valid boolean");
 
-        if (!exists)
-            return Failure<Unit, IError>(AssigneeNotFound(userId));
-        Debug.Assert(exists, "exists should be true here");
-
-        return Success<Unit, IError>(default);
+        return exists
+            ? Success<Unit, IError>(default)
+            : Failure<Unit, IError>(AssigneeNotFound(userId));
     }
 }

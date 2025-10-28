@@ -46,7 +46,7 @@ internal sealed class UserExistenceServiceTestApiBuilder
     )
     {
         UserEntity userEntity = new(userId, username);
-        _repository.AddAsync(userEntity).GetAwaiter();
+        _repository.AddAsync(userEntity).GetAwaiter().GetResult();
         return this;
     }
 
