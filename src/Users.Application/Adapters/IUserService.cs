@@ -2,7 +2,7 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
-namespace SharedKernel.Abstractions;
+namespace Users.Application.Adapters;
 
 /// <summary>
 /// Defines the contract for user-related operations in the application layer.
