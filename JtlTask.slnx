@@ -7,12 +7,16 @@
   <Folder Name="/src/">
     <Project Path="src/JtlTask.WebApi/JtlTask.WebApi.csproj" />
     <Project Path="src/SharedKernel/SharedKernel.csproj" />
-    <Project Path="src/Users.Application/Users.Application.csproj" />
-    <Project Path="src/Users.Domain/Users.Domain.csproj" />
-    <Project Path="src/Users.Infrastructure/Users.Infrastructure.csproj" />
-    <Project Path="src/WorkItems.Application/WorkItems.Application.csproj" />
-    <Project Path="src/WorkItems.Domain/WorkItems.Domain.csproj" />
-    <Project Path="src/WorkItems.Infrastructure/WorkItems.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Taskmanagement/">
+    <Project Path="src/Taskmanagement/WorkItems.Application/WorkItems.Application.csproj" />
+    <Project Path="src/Taskmanagement/WorkItems.Domain/WorkItems.Domain.csproj" />
+    <Project Path="src/Taskmanagement/WorkItems.Infrastructure/WorkItems.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Usermanagement/">
+    <Project Path="src/Usermanagement/Users.Application/Users.Application.csproj" />
+    <Project Path="src/Usermanagement/Users.Domain/Users.Domain.csproj" />
+    <Project Path="src/Usermanagement/Users.Infrastructure/Users.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Test.JtlTask.WebApi/Test.JtlTask.WebApi.csproj" />
