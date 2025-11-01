@@ -14,7 +14,6 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        services.AddSingleton(TimeProvider.System);
         services.AddDbContext<WorkItemsDbContext>(opt =>
             opt.UseSqlite(configuration.GetConnectionString("WorkItemsDatabase"))
         );
