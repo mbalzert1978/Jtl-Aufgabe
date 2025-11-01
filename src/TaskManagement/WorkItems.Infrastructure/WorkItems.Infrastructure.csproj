@@ -4,6 +4,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../Users.Application/Users.Application.csproj" />
+    <ProjectReference Include="../WorkItems.Application/WorkItems.Application.csproj" />
   </ItemGroup>
+
 </Project>

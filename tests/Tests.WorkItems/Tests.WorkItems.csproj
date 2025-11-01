@@ -8,16 +8,13 @@
     <PackageReference Include="NetArchTest.Rules" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="xunit.v3" />
-    <PackageReference
-      Include="xunit.runner.visualstudio"
-      PrivateAssets="all"
-      IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive"
-    />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/JtlTask.WebApi/JtlTask.WebApi.csproj" />
-    <ProjectReference Include="../../src/WorkItems.Application/WorkItems.Application.csproj" />
-    <ProjectReference Include="../../src/WorkItems.Domain/WorkItems.Domain.csproj" />
-    <ProjectReference Include="../../src/WorkItems.Infrastructure/WorkItems.Infrastructure.csproj" />
+    <ProjectReference Include="../../src/Taskmanagement/WorkItems.Application/WorkItems.Application.csproj" />
+    <ProjectReference Include="../../src/Taskmanagement/WorkItems.Domain/WorkItems.Domain.csproj" />
+    <ProjectReference Include="../../src/Taskmanagement/WorkItems.Infrastructure/WorkItems.Infrastructure.csproj" />
+
   </ItemGroup>
 </Project>

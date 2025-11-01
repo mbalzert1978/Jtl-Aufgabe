@@ -4,18 +4,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FastEndpoints" />
-    <PackageReference
-      Include="FastEndpoints.Generator"
-      PrivateAssets="all"
-      IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive"
-    />
+    <PackageReference Include="FastEndpoints.Generator" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="FastEndpoints.Security" />
     <PackageReference Include="FastEndpoints.Swagger" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../Users.Application/Users.Application.csproj" />
-    <ProjectReference Include="../Users.Infrastructure/Users.Infrastructure.csproj" />
-    <ProjectReference Include="../WorkItems.Application/WorkItems.Application.csproj" />
-    <ProjectReference Include="../WorkItems.Infrastructure/WorkItems.Infrastructure.csproj" />
+    <ProjectReference Include="../Taskmanagement/WorkItems.Application/WorkItems.Application.csproj" />
+    <ProjectReference Include="../Taskmanagement/WorkItems.Infrastructure/WorkItems.Infrastructure.csproj" />
+    <ProjectReference Include="../Usermanagement/Users.Application/Users.Application.csproj" />
+    <ProjectReference Include="../Usermanagement/Users.Infrastructure/Users.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
